@@ -1,0 +1,80 @@
+import { useEffect, useRef, useState } from 'react';
+import { NAV, url, type PageId } from '../lib/routes';
+
+const item =
+  'relative inline-block whitespace-nowrap text-[12px] font-medium uppercase leading-none tracking-[0.08em] text-hero-deep no-underline ' +
+  'max-nav:text-[15px] max-nav:tracking-[0.2em]';
+// subrayado fino al pasar o enfocar; fijo en la página actual
+const underline =
+  "after:absolute after:left-0 after:right-[0.16em] after:-bottom-[6px] after:h-px after:origin-left after:scale-x-0 after:bg-current after:content-[''] " +
+  'after:transition-transform after:duration-[400ms] after:ease-[ease] hover:after:scale-x-100 focus-visible:after:scale-x-100 aria-[current=page]:after:scale-x-100';
+const pill =
+  'rounded-full border border-hero-deep/50 px-[18px] py-[10px] transition-colors duration-300 hover:bg-hero-deep hover:text-hero-cream ' +
+  'aria-[current=page]:bg-hero-deep aria-[current=page]:text-hero-cream';
+
+/**
+ * Menú principal: una página por sección. En ≤ 1100 px, botón Menú/Cerrar que abre la lista a pantalla
+ * completa (Esc cierra y devuelve el foco al botón). `intro` (solo portada): entra con la animación del hero.
+ */
+export function Navigation({ current, intro = false }: { current?: PageId; intro?: boolean }) {
+  const [open, setOpen] = useState(false);
+  const toggle = useRef<HTMLButtonElement>(null);
+  const firstLink = useRef<HTMLAnchorElement>(null);
+
+  useEffect(() => {
+    // abierto: la página no se desplaza y el encabezado pasa por delante del contenido (ver .nav-open)
+    document.documentElement.classList.toggle('nav-open', open);
+    if (!open) return;
+    firstLink.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      setOpen(false);
+      toggle.current?.focus();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.documentElement.classList.remove('nav-open');
+    };
+  }, [open]);
+
+  return (
+    <nav aria-label="Principal" data-intro={intro ? 'nav' : undefined}>
+      <button
+        ref={toggle}
+        type="button"
+        aria-expanded={open}
+        aria-controls="site-nav-list"
+        onClick={() => setOpen((v) => !v)}
+        className="focus-ring hidden cursor-pointer rounded-full border border-hero-deep/50 bg-transparent px-[18px] py-[10px] text-[11px] font-medium uppercase leading-none tracking-[0.16em] text-hero-deep max-nav:relative max-nav:z-21 max-nav:inline-block"
+      >
+        {open ? 'Cerrar' : 'Menú'}
+      </button>
+      <ul
+        id="site-nav-list"
+        className={
+          'm-0 flex list-none items-center gap-[clamp(16px,1.9vw,32px)] p-0 ' +
+          'max-nav:fixed max-nav:inset-0 max-nav:z-20 max-nav:flex-col max-nav:items-start max-nav:justify-center max-nav:gap-[26px] max-nav:bg-hero-cream max-nav:px-gutter ' +
+          (open
+            ? 'max-nav:visible max-nav:opacity-100 max-nav:[transition:opacity_0.35s_ease]'
+            : 'max-nav:invisible max-nav:opacity-0 max-nav:[transition:opacity_0.35s_ease,visibility_0s_linear_0.35s]')
+        }
+      >
+        {NAV.map((p, i) => (
+          // separador fino antes de Contacto (solo en la barra horizontal)
+          <li key={p.id} className={p.contact ? 'nav:border-l nav:border-hero-deep/22 nav:pl-[clamp(16px,1.9vw,32px)]' : undefined}>
+            <a
+              ref={i === 0 ? firstLink : undefined}
+              href={url(p.id)}
+              aria-current={p.id === current ? 'page' : undefined}
+              onClick={() => setOpen(false)}
+              className={`focus-ring ${item} ${p.contact ? `${pill} max-nav:mt-2` : underline}`}
+            >
+              {p.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}

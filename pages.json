@@ -1,0 +1,59 @@
+[
+  {
+    "id": "inicio",
+    "label": "Inicio",
+    "path": "",
+    "ready": true,
+    "title": "PANAMOSAB — Parque Nacional Montaña de Santa Bárbara",
+    "description": "Sitio institucional del Parque Nacional Montaña de Santa Bárbara: hero inmersivo sobre el relieve real y transición hacia El Parque."
+  },
+  {
+    "id": "comanejo",
+    "label": "Comanejo",
+    "path": "comanejo/",
+    "ready": true,
+    "title": "Comanejo — PANAMOSAB",
+    "description": "Las instituciones que comparten el manejo del Parque Nacional Montaña de Santa Bárbara mediante el convenio de comanejo de 2026."
+  },
+  {
+    "id": "biodiversidad",
+    "label": "Biodiversidad",
+    "path": "biodiversidad/",
+    "ready": false,
+    "title": "Biodiversidad — PANAMOSAB",
+    "description": "Biodiversidad del Parque Nacional Montaña de Santa Bárbara."
+  },
+  {
+    "id": "conservacion",
+    "label": "Conservación",
+    "path": "conservacion/",
+    "ready": false,
+    "title": "Conservación — PANAMOSAB",
+    "description": "Conservación en el Parque Nacional Montaña de Santa Bárbara."
+  },
+  {
+    "id": "investigacion",
+    "label": "Investigación",
+    "path": "investigacion/",
+    "ready": false,
+    "title": "Investigación — PANAMOSAB",
+    "description": "Investigación en el Parque Nacional Montaña de Santa Bárbara."
+  },
+  {
+    "id": "visitanos",
+    "label": "Visítanos",
+    "path": "visitanos/",
+    "ready": false,
+    "title": "Visítanos — PANAMOSAB",
+    "description": "Información para visitar el Parque Nacional Montaña de Santa Bárbara."
+  },
+  {
+    "id": "contacto",
+    "label": "Contacto",
+    "path": "contacto/",
+    "ready": false,
+    "contact": true,
+    "title": "Contacto — PANAMOSAB",
+    "description": "Contacto del Parque Nacional Montaña de Santa Bárbara."
+  }
+]

@@ -1,0 +1,108 @@
+/* Solo se escanean las clases de src/ (no legacy/ ni los recursos del terreno) */
+@import "tailwindcss" source("..");
+
+/* ---------- Tokens de diseño ---------- */
+
+@theme {
+  /* Puntos de corte del diseño aprobado: móvil ≤ 820 px (max-md:) y menú compacto ≤ 1100 px (max-nav:) */
+  --breakpoint-*: initial;
+  --breakpoint-md: 821px;
+  --breakpoint-nav: 1101px;
+
+  --color-ivory: #f1f0e8;       /* base institucional (= PAGE_COLOR en src/three/config.ts) */
+  --color-forest: #183a32;      /* color institucional y de contraste */
+  --color-gold: #b7a46a;        /* acento: solo en pequeños detalles */
+  --color-warm: #f7f2e6;        /* blanco cálido sobre fotografía */
+  --color-ink: #1c2823;
+  --color-ink-dim: #56615b;
+  --color-rule: rgb(24 58 50 / 0.16);
+  --color-mist: #c3ccd0;
+  /* Hero: interfaz neutra sobre el paisaje */
+  --color-hero-cream: #f4f0e6;
+  --color-hero-deep: #123c32;
+  --color-hero-forest: #28553a;
+  --color-hero-mist: #c8d8df;   /* azul niebla: fondo del hero si no hay WebGL */
+  /* Acentos del relato (sutiles, tomados del paisaje): bosque y agua */
+  --color-sage: #e3e9da;        /* fondo verde salvia: zonificación */
+  --color-moss: #5d7d47;        /* verde musgo: cifras y acentos sobre claro (5.0:1 sobre salvia) */
+  --color-lake: #dbe8eb;        /* fondo azul lago: agua */
+  --color-water: #2c6274;       /* azul profundo: texto y acentos sobre lago (5.8:1) */
+  --color-ochre: #7a5e22;       /* ocre: zona de amortiguamiento, texto sobre salvia (5.0:1); trazo y relleno en gold */
+
+  --font-sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Manrope", "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+
+  /* margen lateral de toda la página: px-gutter, left-gutter, -mr-gutter… */
+  --spacing-gutter: clamp(16px, 4.2vw, 64px);
+}
+
+/* Halo de la marca de la cumbre (01): se expande y se desvanece despacio */
+@keyframes peak-halo {
+  0% { transform: scale(0.35); opacity: 0.9; }
+  70%, 100% { transform: scale(1.25); opacity: 0; }
+}
+
+/* 03 · mapa de zonas: se dibuja al entrar en pantalla ([data-inview] en la sección) */
+.zone-line { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2.2s cubic-bezier(0.65, 0, 0.35, 1) var(--delay, 0s); }
+.zone-fill, .zone-fade { opacity: 0; transition: opacity 1.2s ease var(--delay, 0s), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s); }
+.zone-fade { transform: translateY(8px); }
+.zone-bar { transform: scaleX(0); transform-origin: left; transition: transform 1.6s cubic-bezier(0.65, 0, 0.35, 1) var(--delay, 0s); }
+[data-inview] .zone-line { stroke-dashoffset: 0; }
+[data-inview] .zone-fill, [data-inview] .zone-fade { opacity: 1; transform: none; }
+[data-inview] .zone-bar { transform: scaleX(1); }
+/* frontera exterior: un trazo discontinuo que avanza muy despacio, como una ronda */
+@keyframes zone-patrol { to { stroke-dashoffset: -60; } }
+.zone-patrol { animation: zone-patrol 9s linear infinite; }
+/* al señalar una zona (en el mapa o en la leyenda), la otra se atenúa */
+[data-zone] { transition: opacity 0.45s ease; }
+[data-focus="core"] [data-zone="buffer"], [data-focus="buffer"] [data-zone="core"] { opacity: 0.32; }
+@media (prefers-reduced-motion: reduce) {
+  .zone-line, .zone-fill, .zone-fade, .zone-bar { transition: none; }
+  .zone-patrol { animation: none; }
+}
+
+/* Anillo de foco de los enlaces y botones sobre el paisaje */
+@utility focus-ring {
+  &:focus-visible {
+    outline: 1px solid currentColor;
+    outline-offset: 6px;
+    border-radius: 2px;
+  }
+}
+
+/* ---------- Base ---------- */
+
+@layer base {
+  html {
+    background: var(--color-mist);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-ivory);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  @media (width < 821px) {
+    body { font-size: 16px; }
+  }
+
+  /* Antes de la intro, el texto del hero no se ve (GSAP lo revela). Si el relieve no puede mostrarse
+     (sin WebGL o error de carga), todo queda visible desde el principio. */
+  [data-intro] { opacity: 0; }
+  [data-status="error"] [data-intro] { opacity: 1; }
+
+  /* menú compacto abierto: la página no se desplaza por debajo */
+  @media (width < 1101px) {
+    .nav-open { overflow: hidden; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { scroll-behavior: auto !important; }
+  }
+}
