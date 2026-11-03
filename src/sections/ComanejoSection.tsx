@@ -20,19 +20,18 @@ export function ComanejoSection() {
         </div>
       </EditorialHeader>
 
-      <div className="-mx-gutter mt-[clamp(48px,8vh,96px)] h-[clamp(380px,56vh,560px)] text-forest max-md:h-[400px]">
+      <div className="logo-orbit -mx-gutter mt-[clamp(48px,8vh,96px)] h-[clamp(380px,56vh,560px)] text-forest max-md:h-[400px]">
         <CircularCarousel
           items={LOGOS}
           preset="orbit"
           intro="rise"
-          cardWidth={230}
-          gap={34}
+          cardWidth={220}
+          gap={96}
           autoplay="drift"
           speed={9}
           depthFade={0.65}
           fadeColor="#f1f0e8"
-          innerShade={0.25}
-          cornerRadius={18}
+          cornerRadius={0}
           parallax={0.15}
           stretch={0.25}
           captions

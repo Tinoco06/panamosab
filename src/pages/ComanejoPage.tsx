@@ -1,38 +1,31 @@
-import { Body, EditorialHeader, Facts, Lead, Sources } from '../components/editorial';
-import { OrgProfile } from '../components/OrgProfile';
-import { SignatoryList } from '../components/SignatoryList';
+import { Aim } from '../components/comanejo/Aim';
+import { Intro } from '../components/comanejo/Intro';
+import { OrgProfile } from '../components/comanejo/OrgProfile';
+import { Signatories } from '../components/comanejo/Signatories';
+import { Sources } from '../components/editorial';
 import { COMANEJO, PROFILES } from '../content/comanejo';
 
-/** Página de comanejo: la alianza completa y el perfil de cada organización con información respaldada. */
+/**
+ * Página de comanejo. El título anuncia el recorrido: «Cinco instituciones» (la franja de firmantes) y
+ * «un compromiso con la montaña» (el objetivo de manejo que comparten); después, el perfil de cada
+ * organización con información respaldada. Ritmo de fondos: marfil · verde bosque · marfil (ASIDE) ·
+ * salvia (CASM) · marfil (Árbol de Misericordia).
+ */
 export function ComanejoPage() {
   return (
     <>
-      <EditorialHeader as="h1" large eyebrow={COMANEJO.eyebrow} title={COMANEJO.title}>
-        <Lead>{COMANEJO.lead}</Lead>
-        <Body>{COMANEJO.body}</Body>
-        <Facts items={COMANEJO.facts} />
-      </EditorialHeader>
-
-      {/* objetivo de manejo (cita textual del convenio) */}
-      <figure className="mx-auto mt-[clamp(72px,13vh,140px)] mb-0 max-w-[60rem] text-center">
-        <blockquote className="m-0 text-[length:clamp(22px,2.2vw,34px)] font-medium leading-[1.35] tracking-[-0.015em] text-forest">
-          “{COMANEJO.aim.text}”
-        </blockquote>
-        <figcaption className="mx-auto mt-6 max-w-[44ch] text-[11px] font-semibold uppercase leading-[1.6] tracking-[0.2em] text-ink-dim">
-          {COMANEJO.aim.attribution}
-        </figcaption>
-      </figure>
-
-      <div className="mt-[clamp(72px,13vh,140px)]">
-        <SignatoryList profileHref={(id) => `#${id}`} />
-      </div>
-
-      <div className="mt-[clamp(96px,16vh,180px)] grid gap-[clamp(112px,18vh,200px)]">
-        {PROFILES.map((org, i) => (
-          <OrgProfile key={org.id} org={org} flip={i % 2 === 1} />
-        ))}
-      </div>
-
+      <Intro />
+      <Signatories />
+      <Aim />
+      {PROFILES.map((org, i) => (
+        <OrgProfile
+          key={org.id}
+          org={org}
+          index={String(i + 1).padStart(2, '0')}
+          // los perfiles con fotografías alternan de lado: el segundo, el cuarto… se invierten
+          flip={!!org.photos && PROFILES.slice(0, i).filter((p) => p.photos).length % 2 === 1}
+        />
+      ))}
       <Sources>{COMANEJO.sources}</Sources>
     </>
   );

@@ -50,9 +50,18 @@ export const PARQUE = {
     eyebrow: 'Agua',
     title: 'Agua para cuatro municipios.',
     body:
-      'Entre los servicios ecosistémicos que brinda la montaña está el abastecimiento de agua a los municipios de ' +
-      'Las Vegas, Santa Bárbara, Concepción Sur y Gualala.',
+      'Entre los servicios ecosistémicos de gran importancia que brinda la montaña está el abastecimiento de agua ' +
+      'a los municipios que la rodean.',
+    // grafía del Plan de Manejo (p. 7); el convenio de comanejo escribe «Concepción de Sur»
     places: ['Las Vegas', 'Santa Bárbara', 'Concepción Sur', 'Gualala'],
+    // frase narrativa sobre la fotografía (síntesis del texto anterior, sin datos nuevos)
+    quote: 'De la montaña nace el agua que sostiene la vida.',
+    placesLabel: 'Municipios que abastece',
+    photo: {
+      alt: 'Río de montaña que baja entre rocas cubiertas de musgo, rodeado de vegetación densa de bosque nuboso.',
+      credit: 'Fotografía ilustrativa: río Savegre, bosque nuboso de San Gerardo de Dota (Costa Rica). Rodtico21, CC BY-SA 4.0.',
+      creditUrl: 'https://commons.wikimedia.org/wiki/File:Savegre_river._Costa_Rica.jpg',
+    },
   },
   sources:
     'Fuente: Plan de Manejo del Parque Nacional Montaña de Santa Bárbara 2018–2029 (resumen ejecutivo y antecedentes).',

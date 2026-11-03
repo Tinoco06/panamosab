@@ -109,7 +109,7 @@ export function ZonesSection() {
               loading="lazy"
               decoding="async"
               style={delay(0)}
-              className="zone-fill block size-full [mask-image:radial-gradient(closest-side,#000_66%,transparent)]"
+              className="reveal-fill block size-full [mask-image:radial-gradient(closest-side,#000_66%,transparent)]"
             />
             <svg viewBox={`0 0 ${zones.viewBox} ${zones.viewBox}`} role="img" aria-label={PARQUE.map.alt} className="absolute inset-0 size-full overflow-visible">
               <defs>
@@ -124,32 +124,32 @@ export function ZonesSection() {
 
               {/* zona de amortiguamiento: franja de 2 km (rayado dorado) */}
               <g data-zone="buffer" {...hover('buffer')} className="cursor-pointer">
-                <path d={zones.buffer} fill="var(--color-gold)" fillOpacity="0.16" style={delay(1.1)} className="zone-fill" />
-                <path d={zones.buffer} fill="url(#zone-hatch)" style={delay(1.3)} className="zone-fill" />
-                <path d={zones.buffer} pathLength={1} fill="none" stroke="var(--color-ochre)" strokeWidth="1.6" vectorEffect="non-scaling-stroke" style={delay(0.2)} className="zone-line" />
-                <path d={zones.buffer} fill="none" stroke="var(--color-ochre)" strokeOpacity="0.6" strokeWidth="1" strokeDasharray="2 6" vectorEffect="non-scaling-stroke" style={delay(2.4)} className="zone-fill zone-patrol" />
+                <path d={zones.buffer} fill="var(--color-gold)" fillOpacity="0.16" style={delay(1.1)} className="reveal-fill" />
+                <path d={zones.buffer} fill="url(#zone-hatch)" style={delay(1.3)} className="reveal-fill" />
+                <path d={zones.buffer} pathLength={1} fill="none" stroke="var(--color-ochre)" strokeWidth="1.6" vectorEffect="non-scaling-stroke" style={delay(0.2)} className="reveal-line" />
+                <path d={zones.buffer} fill="none" stroke="var(--color-ochre)" strokeOpacity="0.6" strokeWidth="1" strokeDasharray="2 6" vectorEffect="non-scaling-stroke" style={delay(2.4)} className="reveal-fill zone-patrol" />
               </g>
               {/* zona núcleo: por encima de 1,800 msnm */}
               <g data-zone="core" {...hover('core')} className="cursor-pointer">
-                <path d={zones.core} fill="url(#zone-core-fill)" style={delay(1.9)} className="zone-fill" />
-                <path d={zones.core} pathLength={1} fill="none" stroke="var(--color-forest)" strokeWidth="2.4" vectorEffect="non-scaling-stroke" style={delay(1.0)} className="zone-line" />
+                <path d={zones.core} fill="url(#zone-core-fill)" style={delay(1.9)} className="reveal-fill" />
+                <path d={zones.core} pathLength={1} fill="none" stroke="var(--color-forest)" strokeWidth="2.4" vectorEffect="non-scaling-stroke" style={delay(1.0)} className="reveal-line" />
               </g>
             </svg>
 
             {/* etiquetas */}
             <p aria-hidden="true" data-zone="core" style={{ left: `${zones.coreLabel[0]}%`, top: `${zones.coreLabel[1] + 9}%`, ...delay(2.4) }}
-              className="zone-fade pointer-events-none absolute m-0 -translate-x-1/2 whitespace-nowrap rounded-full bg-forest px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-hero-cream">
+              className="reveal-fade pointer-events-none absolute m-0 -translate-x-1/2 whitespace-nowrap rounded-full bg-forest px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-hero-cream">
               Zona núcleo
             </p>
             <p aria-hidden="true" data-zone="buffer" style={{ left: `${zones.bufferLabel[0]}%`, top: `${zones.bufferLabel[1] + 9}%`, ...delay(2.6) }}
-              className="zone-fade pointer-events-none absolute m-0 -translate-x-1/2 -rotate-90 whitespace-nowrap rounded-full bg-sage/90 px-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-ochre">
+              className="reveal-fade pointer-events-none absolute m-0 -translate-x-1/2 -rotate-90 whitespace-nowrap rounded-full bg-sage/90 px-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-ochre">
               Amortiguamiento · 2 km
             </p>
             {/* cumbre */}
             <div className="pointer-events-none absolute" style={{ left: `${zones.peak[0]}%`, top: `${zones.peak[1]}%` }}>
               <span aria-hidden="true" className="absolute -top-[18px] -left-[18px] size-[36px] rounded-full border border-hero-cream/80 motion-safe:animate-[peak-halo_3.2s_ease-out_infinite]" />
-              <span aria-hidden="true" style={delay(2.2)} className="zone-fade absolute -top-[6px] -left-[6px] size-[12px] rounded-full border-2 border-hero-cream bg-forest" />
-              <p style={delay(2.5)} className="zone-fade absolute -top-[12px] left-4 m-0 whitespace-nowrap rounded-full bg-hero-cream/90 px-2.5 py-0.5 text-[12px] font-semibold tracking-[0.02em] text-forest">
+              <span aria-hidden="true" style={delay(2.2)} className="reveal-fade absolute -top-[6px] -left-[6px] size-[12px] rounded-full border-2 border-hero-cream bg-forest" />
+              <p style={delay(2.5)} className="reveal-fade absolute -top-[12px] left-4 m-0 whitespace-nowrap rounded-full bg-hero-cream/90 px-2.5 py-0.5 text-[12px] font-semibold tracking-[0.02em] text-forest">
                 Cumbre · 2,744 msnm
               </p>
             </div>

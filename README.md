@@ -51,10 +51,12 @@ src/
   app/App.tsx              composición de la página; crea y destruye el motor 3D (un useEffect)
   app/pageRefs.ts          elementos del DOM que el motor mide
   sections/                HeroSection · ParkSection · TerritorySection · ComanejoSection
-  components/              Header · Navigation · HeroTitle · ScrollIndicator · Eyebrow · Loader · OrgProfile
+  components/              Header · Navigation · HeroTitle · ScrollIndicator · Eyebrow · Loader · Reveal
+  components/comanejo/     página de comanejo: Intro · Signatories · Aim · OrgProfile (sistema en ui.ts)
   content/comanejo.ts      textos de «Comanejo» con su fuente; para sumar una organización, añadir su
-                           perfil a PROFILES y su id en SIGNATORIES (sin perfil, solo aparece por su nombre)
-  assets/comanejo/         fotografías y logotipo de ASIDE (optimizados a partir de recursos/)
+                           perfil a PROFILES y su id en SIGNATORIES (sin perfil, solo aparece por su nombre y logotipo)
+  assets/comanejo/         fotografías de ASIDE (de recursos/) y de Árbol de Misericordia (de su sitio
+                           institucional), optimizadas
   lib/                     máscara de niebla del título · scroll suave a una sección
   three/
     engine.ts              motor imperativo: capas WebGL, cámara, scroll, niebla, antialiasing de
@@ -98,7 +100,8 @@ por vértice · máscara del título a 256×80 · un solo bucle y una sola fuent
 - `src/components/react-bits/CircularCarousel.*`: componente de [React Bits](https://reactbits.dev)
   (registro `@react-bits/CircularCarousel-JS-CSS`), copiado como haría `npx shadcn add`; solo se añadieron
   las props `ariaLabel` y `ofText`.
-- `src/assets/logos/*.webp` (tarjetas del carrusel): ASIDE, de su presentación 2026; CASM, de casm.hn;
+- `src/assets/logos/*.webp` (carrusel de la portada; fondo transparente) y `logos/trim/*.webp` (los mismos,
+  recortados al trazo, para la página de comanejo): ASIDE, de su presentación 2026; CASM, de casm.hn;
   CODEMUSSBA, de codemussba.org; Árbol de Misericordia, archivo oficial facilitado por el equipo; ICF,
   recortado del convenio escaneado (provisional: sustituir por el archivo oficial).
 

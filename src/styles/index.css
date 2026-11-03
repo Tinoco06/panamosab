@@ -27,6 +27,7 @@
   --color-moss: #5d7d47;        /* verde musgo: cifras y acentos sobre claro (5.0:1 sobre salvia) */
   --color-lake: #dbe8eb;        /* fondo azul lago: agua */
   --color-water: #2c6274;       /* azul profundo: texto y acentos sobre lago (5.8:1) */
+  --color-stream: #5a9db1;      /* azul agua: corrientes (trazo, sin texto) */
   --color-ochre: #7a5e22;       /* ocre: zona de amortiguamiento, texto sobre salvia (5.0:1); trazo y relleno en gold */
 
   --font-sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
@@ -42,13 +43,13 @@
   70%, 100% { transform: scale(1.25); opacity: 0; }
 }
 
-/* 03 · mapa de zonas: se dibuja al entrar en pantalla ([data-inview] en la sección) */
-.zone-line { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2.2s cubic-bezier(0.65, 0, 0.35, 1) var(--delay, 0s); }
-.zone-fill, .zone-fade { opacity: 0; transition: opacity 1.2s ease var(--delay, 0s), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s); }
-.zone-fade { transform: translateY(8px); }
+/* Trazos que se dibujan y elementos que aparecen al entrar en pantalla ([data-inview] en la sección): 03 y 04 */
+.reveal-line { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2.2s cubic-bezier(0.65, 0, 0.35, 1) var(--delay, 0s); }
+.reveal-fill, .reveal-fade { opacity: 0; transition: opacity 1.2s ease var(--delay, 0s), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s); }
+.reveal-fade { transform: translateY(8px); }
 .zone-bar { transform: scaleX(0); transform-origin: left; transition: transform 1.6s cubic-bezier(0.65, 0, 0.35, 1) var(--delay, 0s); }
-[data-inview] .zone-line { stroke-dashoffset: 0; }
-[data-inview] .zone-fill, [data-inview] .zone-fade { opacity: 1; transform: none; }
+[data-inview] .reveal-line { stroke-dashoffset: 0; }
+[data-inview] .reveal-fill, [data-inview] .reveal-fade { opacity: 1; transform: none; }
 [data-inview] .zone-bar { transform: scaleX(1); }
 /* frontera exterior: un trazo discontinuo que avanza muy despacio, como una ronda */
 @keyframes zone-patrol { to { stroke-dashoffset: -60; } }
@@ -56,9 +57,21 @@
 /* al señalar una zona (en el mapa o en la leyenda), la otra se atenúa */
 [data-zone] { transition: opacity 0.45s ease; }
 [data-focus="core"] [data-zone="buffer"], [data-focus="buffer"] [data-zone="core"] { opacity: 0.32; }
+/* 04 · el agua corre por los cauces: trazo discontinuo que avanza; solo mientras la sección está en pantalla */
+@keyframes water-flow { to { stroke-dashoffset: -64; } }
+.water-flow { animation: water-flow 5s linear infinite; animation-play-state: paused; }
+[data-flowing] .water-flow { animation-play-state: running; }
+/* onda en el punto de llegada de cada municipio */
+@keyframes water-ripple { 0% { transform: scale(0.4); opacity: 0.7; } 100% { transform: scale(1.9); opacity: 0; } }
+.water-ripple { animation: water-ripple 3.6s ease-out infinite; animation-play-state: paused; }
+[data-flowing] .water-ripple { animation-play-state: running; }
+/* 05 · carrusel de logotipos: logos recortados que flotan, sin tarjeta. Los logos tienen fondo transparente y la
+   lejanía atenúa el propio logo (no un velo rectangular encima) */
+.logo-orbit .circular-carousel__shade { display: none; }
+.logo-orbit .circular-carousel__photo { opacity: calc(1 - var(--cc-depth, 0)); }
 @media (prefers-reduced-motion: reduce) {
-  .zone-line, .zone-fill, .zone-fade, .zone-bar { transition: none; }
-  .zone-patrol { animation: none; }
+  .reveal-line, .reveal-fill, .reveal-fade, .zone-bar { transition: none; }
+  .zone-patrol, .water-flow, .water-ripple { animation: none; }
 }
 
 /* Anillo de foco de los enlaces y botones sobre el paisaje */
