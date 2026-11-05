@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import photo1280 from '../assets/water/savegre-1280.webp';
-import photo2000 from '../assets/water/savegre-2000.webp';
-import photoMobile from '../assets/water/savegre-m.webp';
+import photo800 from '../assets/water/sendero-bosque-800.webp';
+import photo1280 from '../assets/water/sendero-bosque-1280.webp';
+import photo2000 from '../assets/water/sendero-bosque-2000.webp';
 import { Eyebrow } from '../components/Eyebrow';
 import { PARQUE } from '../content/parque';
 
 gsap.registerPlugin(ScrollTrigger);
 
 /*
- * 04 Agua: el mensaje sobre fondo celeste y, debajo, una fotografía panorámica de un río de montaña a todo el
+ * 04 Agua: el mensaje sobre fondo celeste y, debajo, una fotografía del bosque nublado (un sendero) a todo el
  * ancho, con bordes ondulados (como la superficie del agua) que funde el celeste de arriba con el marfil de
  * la sección siguiente. Sobre la fotografía, la frase narrativa y los cuatro municipios.
  * Movimiento: al entrar, la fotografía se abre desde un recorte redondeado y el texto aparece en orden; al
@@ -87,21 +87,19 @@ export function WaterSection() {
           ref={band}
           className="relative h-[clamp(520px,86vh,900px)] overflow-hidden transition-[clip-path] duration-[1600ms] ease-[cubic-bezier(0.65,0,0.35,1)] [clip-path:inset(10%_5%_6%_5%_round_48px)] in-[[data-inview]]:[clip-path:inset(0_0_0_0_round_0)] motion-reduce:transition-none max-md:h-[min(118svh,880px)]"
         >
-          <picture>
-            <source media="(max-width: 820px)" srcSet={photoMobile} />
-            <img
-              ref={img}
-              src={photo2000}
-              srcSet={`${photo1280} 1280w, ${photo2000} 2000w`}
-              sizes="100vw"
-              alt={W.photo.alt}
-              width={2000}
-              height={1125}
-              loading="lazy"
-              decoding="async"
-              className="absolute inset-x-0 -top-[7%] block h-[114%] w-full object-cover object-[50%_60%] transition-transform duration-[2200ms] ease-[cubic-bezier(0.22,1,0.36,1)] [scale:1.08] in-[[data-inview]]:[scale:1] motion-reduce:transition-none"
-            />
-          </picture>
+          {/* fotografía vertical: en pantallas anchas se ve la franja central (helechos y luz entre los árboles) */}
+          <img
+            ref={img}
+            src={photo2000}
+            srcSet={`${photo800} 800w, ${photo1280} 1280w, ${photo2000} 2000w`}
+            sizes="100vw"
+            alt={W.photo.alt}
+            width={2000}
+            height={2666}
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-x-0 -top-[7%] block h-[114%] w-full object-cover object-[50%_45%] transition-transform duration-[2200ms] ease-[cubic-bezier(0.22,1,0.36,1)] [scale:1.08] in-[[data-inview]]:[scale:1] motion-reduce:transition-none"
+          />
 
           {/* lectura del texto: un velo suave de agua profunda, abajo (municipios) y a la izquierda (frase) */}
           <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(ellipse_52%_46%_at_14%_34%,rgb(14_40_36/0.62),transparent),linear-gradient(0deg,rgb(18_52_64/0.82)_0%,rgb(18_52_64/0.38)_34%,transparent_58%),linear-gradient(90deg,rgb(16_44_40/0.42)_0%,transparent_46%)] max-md:bg-[radial-gradient(ellipse_90%_40%_at_20%_36%,rgb(14_40_36/0.6),transparent),linear-gradient(0deg,rgb(18_52_64/0.85)_0%,rgb(18_52_64/0.4)_36%,transparent_60%)]" />
@@ -143,12 +141,6 @@ export function WaterSection() {
             </ol>
           </div>
         </div>
-        {/* crédito, sobre el marfil de la sección siguiente */}
-        <figcaption className="bg-ivory px-gutter pt-1 text-right text-[11px] leading-[1.5] text-ink-dim max-md:text-left">
-          <a href={W.photo.creditUrl} target="_blank" rel="noopener noreferrer" className="focus-ring inline-block py-3 text-ink-dim underline decoration-ink-dim/40 underline-offset-2 hover:text-forest">
-            {W.photo.credit}
-          </a>
-        </figcaption>
       </figure>
     </section>
   );

@@ -60,10 +60,9 @@ export const PARQUE = {
       label: 'comunidades, dentro del área protegida y en su área de influencia, reciben agua de la montaña.',
       source: 'Plan de Manejo 2026–2038 (borrador), p. 10.',
     },
+    // fotografía propia (sin pie de crédito)
     photo: {
-      alt: 'Río de montaña que baja entre rocas cubiertas de musgo, rodeado de vegetación densa de bosque nuboso.',
-      credit: 'Fotografía ilustrativa: río Savegre, bosque nuboso de San Gerardo de Dota (Costa Rica). Rodtico21, CC BY-SA 4.0.',
-      creditUrl: 'https://commons.wikimedia.org/wiki/File:Savegre_river._Costa_Rica.jpg',
+      alt: 'Sendero de tierra que se adentra en el bosque nublado, bajo helechos arborescentes y árboles altos atravesados por la luz.',
     },
   },
   sources:
