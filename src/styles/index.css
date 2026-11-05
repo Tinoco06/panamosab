@@ -33,8 +33,12 @@
   --font-sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
   --font-display: "Manrope", "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
 
-  /* margen lateral de toda la página: px-gutter, left-gutter, -mr-gutter… */
-  --spacing-gutter: clamp(16px, 4.2vw, 64px);
+  /* margen lateral de toda la página: px-gutter, left-gutter, -mr-gutter… Nunca menor que el área segura
+     (notch o Dynamic Island de un iPhone en horizontal; viewport-fit=cover en el HTML) */
+  --spacing-gutter: max(clamp(16px, 4.2vw, 64px), env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+  /* áreas seguras arriba y abajo (barra de estado, indicador de inicio) */
+  --spacing-safe-t: env(safe-area-inset-top, 0px);
+  --spacing-safe-b: env(safe-area-inset-bottom, 0px);
 }
 
 /* Halo de la marca de la cumbre (01): se expande y se desvanece despacio */
@@ -65,13 +69,18 @@
 @keyframes water-ripple { 0% { transform: scale(0.4); opacity: 0.7; } 100% { transform: scale(1.9); opacity: 0; } }
 .water-ripple { animation: water-ripple 3.6s ease-out infinite; animation-play-state: paused; }
 [data-flowing] .water-ripple { animation-play-state: running; }
-/* 05 · carrusel de logotipos: logos recortados que flotan, sin tarjeta. Los logos tienen fondo transparente y la
-   lejanía atenúa el propio logo (no un velo rectangular encima) */
-.logo-orbit .circular-carousel__shade { display: none; }
-.logo-orbit .circular-carousel__photo { opacity: calc(1 - var(--cc-depth, 0)); }
 @media (prefers-reduced-motion: reduce) {
   .reveal-line, .reveal-fill, .reveal-fade, .zone-bar { transition: none; }
   .zone-patrol, .water-flow, .water-ripple { animation: none; }
+}
+
+/* Capas WebGL fijas (portada). Alto de la pantalla «grande» (100lvh): en Safari para iOS las barras del navegador
+   cambian el alto visible al hacer scroll; con lvh el canvas no cambia de tamaño (el motor no recalcula nada) y,
+   con las barras visibles, su borde inferior queda simplemente detrás de ellas. 100vh es el respaldo. */
+.webgl-layer {
+  position: fixed; top: 0; left: 0; display: block; width: 100%;
+  height: 100vh; height: 100lvh;
+  pointer-events: none;
 }
 
 /* Anillo de foco de los enlaces y botones sobre el paisaje */
@@ -89,6 +98,8 @@
   html {
     background: var(--color-mist);
     -webkit-text-size-adjust: 100%;
+    /* iOS: el resaltado al tocar un enlace, discreto y en el verde institucional (no el gris del sistema) */
+    -webkit-tap-highlight-color: rgb(24 58 50 / 0.1);
   }
 
   body {

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import contoursUrl from '../assets/park/contours.svg';
 import zones from '../assets/park/zones.json';
 import { CountUp } from '../components/CountUp';
-import { Body, grid12 } from '../components/editorial';
+import { grid12 } from '../components/editorial';
 import { Eyebrow } from '../components/Eyebrow';
 import { PARQUE } from '../content/parque';
 
@@ -59,7 +59,6 @@ export function ZonesSection() {
           <h2 id="zonas-title" className="mt-0 mb-7 max-w-[12ch] text-[length:clamp(36px,3.9vw,64px)] font-medium leading-[1.02] tracking-[-0.03em] text-forest max-md:text-[length:clamp(32px,8.4vw,44px)]">
             {Z.title}
           </h2>
-          <Body>{Z.body}</Body>
 
           {/* proporción de cada zona (las cifras también van en el texto) */}
           <div aria-hidden="true" className="mt-12 flex h-[10px] gap-[3px]">
@@ -89,9 +88,6 @@ export function ZonesSection() {
                     <span className={`text-[13px] font-semibold uppercase tracking-[0.2em] ${t.text}`}>ha</span>
                   </p>
                   <p className="mt-4 mb-0 text-[15px] leading-[1.55] text-ink">{z.text}</p>
-                  {'sub' in z && z.sub && (
-                    <p className="mt-2 mb-0 text-[13px] leading-[1.6] text-ink-dim">{z.sub.join(' · ')}</p>
-                  )}
                 </div>
               );
             })}

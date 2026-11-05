@@ -31,7 +31,7 @@ export function ParkSection({ refs }: { refs: PageRefs }) {
           {/* Datos: tipografía grande sobre líneas finas, sin tarjetas */}
           <dl data-reveal className="mt-[48px] mb-0 grid gap-0 max-md:order-6 max-md:mt-9">
             {PARQUE.facts.map((f) => (
-              <div key={f.label} className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-6 border-t border-rule py-[18px] last:border-b max-md:grid-cols-1 max-md:gap-1.5">
+              <div key={f.label} className="grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-6 border-t border-rule py-[18px] last:border-b max-md:grid-cols-1 max-md:gap-1.5">
                 <dt className="text-right text-[11px] font-semibold uppercase leading-[1.5] tracking-[0.18em] text-ink-dim max-md:text-left">{f.label}</dt>
                 <dd className="m-0 order-first whitespace-nowrap text-[length:clamp(32px,2.9vw,46px)] font-normal leading-none tracking-[-0.035em] tabular-nums text-forest max-md:order-none">
                   {f.value}
@@ -66,9 +66,6 @@ export function ParkSection({ refs }: { refs: PageRefs }) {
               </div>
             </div>
           </div>
-          <figcaption ref={refs.parkCaption} data-reveal className="mt-[14px] pr-gutter text-[12px] leading-[1.5] text-ink-dim">
-            Macizo de Santa Bárbara. Vista aérea sobre relieve real.
-          </figcaption>
         </figure>
       </div>
     </section>

@@ -1,11 +1,11 @@
 import { COMANEJO } from '../../content/comanejo';
 import { Eyebrow } from '../Eyebrow';
 import { Reveal } from '../Reveal';
-import { delay, grid, label } from './ui';
+import { delay, grid, label } from '../ui';
 
 /**
  * Apertura de la página: el título a todo el ancho (cada frase sube desde su línea), el texto institucional
- * en dos columnas asimétricas y los datos del convenio como indicadores grandes sobre un filete.
+ * a media página y los datos del convenio como indicadores grandes sobre un filete.
  */
 export function Intro() {
   const C = COMANEJO;
@@ -32,9 +32,6 @@ export function Intro() {
       <div className={`${grid} mt-[clamp(44px,7vh,80px)] gap-y-6`}>
         <p style={delay(0.45)} className="reveal-fade col-span-6 m-0 text-[length:clamp(19px,1.45vw,22px)] leading-[1.55] text-ink max-nav:col-span-7 max-md:col-span-1">
           {C.lead}
-        </p>
-        <p style={delay(0.55)} className="reveal-fade col-span-4 col-start-8 m-0 text-[17px] leading-[1.65] text-ink-dim max-nav:col-span-5 max-nav:col-start-8 max-md:col-span-1 max-md:col-start-auto">
-          {C.body}
         </p>
       </div>
 

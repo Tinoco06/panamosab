@@ -19,39 +19,23 @@
     "id": "biodiversidad",
     "label": "Biodiversidad",
     "path": "biodiversidad/",
-    "ready": false,
+    "ready": true,
     "title": "Biodiversidad — PANAMOSAB",
-    "description": "Biodiversidad del Parque Nacional Montaña de Santa Bárbara."
+    "description": "La vida del Parque Nacional Montaña de Santa Bárbara: su flora, el quetzal y la salamandra narizona, endémica del área protegida."
   },
   {
-    "id": "conservacion",
-    "label": "Conservación",
-    "path": "conservacion/",
-    "ready": false,
-    "title": "Conservación — PANAMOSAB",
-    "description": "Conservación en el Parque Nacional Montaña de Santa Bárbara."
-  },
-  {
-    "id": "investigacion",
-    "label": "Investigación",
-    "path": "investigacion/",
-    "ready": false,
-    "title": "Investigación — PANAMOSAB",
-    "description": "Investigación en el Parque Nacional Montaña de Santa Bárbara."
-  },
-  {
-    "id": "visitanos",
-    "label": "Visítanos",
-    "path": "visitanos/",
-    "ready": false,
-    "title": "Visítanos — PANAMOSAB",
-    "description": "Información para visitar el Parque Nacional Montaña de Santa Bárbara."
+    "id": "turismo",
+    "label": "Turismo",
+    "path": "turismo/",
+    "ready": true,
+    "title": "Turismo — PANAMOSAB",
+    "description": "Turismo de naturaleza en el Parque Nacional Montaña de Santa Bárbara: puntos de interés y actividades mencionados en su Plan de Manejo."
   },
   {
     "id": "contacto",
     "label": "Contacto",
     "path": "contacto/",
-    "ready": false,
+    "ready": true,
     "contact": true,
     "title": "Contacto — PANAMOSAB",
     "description": "Contacto del Parque Nacional Montaña de Santa Bárbara."

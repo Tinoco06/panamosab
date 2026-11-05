@@ -5,13 +5,20 @@ import { createRoot } from 'react-dom/client';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { page, type PageId } from './lib/routes';
+import { BiodiversidadPage } from './pages/BiodiversidadPage';
 import { ComanejoPage } from './pages/ComanejoPage';
+import { ContactoPage } from './pages/ContactoPage';
 import { PendingPage } from './pages/PendingPage';
+import { TurismoPage } from './pages/TurismoPage';
 import './styles/index.css';
 
 function Content({ id }: { id: PageId }) {
   switch (id) {
     case 'comanejo': return <ComanejoPage />;
+    case 'biodiversidad': return <BiodiversidadPage />;
+    case 'turismo': return <TurismoPage />;
+    case 'contacto': return <ContactoPage />;
+    // una sección nueva sin contenido validado (`ready: false` en pages.json) muestra el aviso «en preparación»
     default: return <PendingPage info={page(id)} />;
   }
 }

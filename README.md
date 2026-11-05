@@ -24,39 +24,53 @@ rendimiento (`window.PANAMOSAB_SCROLL`, `__js`, `__dpr`, `__R`, `__renderFull`).
 
 Sitio de varias páginas (una entrada HTML por página, sin enrutador en el navegador; funciona en
 cualquier hosting estático). El mapa del sitio está en `pages.json`: de ahí salen el menú, el pie, las
-entradas de Vite y los HTML de las páginas interiores (`tools/gen-pages.mjs`, se ejecuta solo antes de
-`dev` y `build`; no se editan a mano ni se versionan: están en `.gitignore`).
+entradas de Vite y el HTML de las páginas interiores. Ese HTML no existe en disco: lo genera en memoria el plugin
+`innerPages` de `vite.config.ts`, tanto en `npm run dev` como al compilar (`dist/<ruta>/index.html`).
 
 | Ruta | Contenido |
 |---|---|
-| `/` | Portada y relato del parque: hero 3D · 01 El Parque · 02 El Territorio · 03 Cómo se protege · 04 Agua · 05 Comanejo (carrusel de logotipos y enlace a su página) |
-| `/comanejo/` | La alianza del convenio y los perfiles de ASIDE y CASM |
-| `/biodiversidad/` `/conservacion/` `/investigacion/` `/visitanos/` `/contacto/` | Aviso «en preparación» (`ready: false`) |
+| `/` | Portada y relato del parque: hero 3D · 01 El Parque · 02 El Territorio · 03 Cómo se protege · 04 Agua · 05 Comanejo (firmantes y enlace a su página) · índice «Sigue explorando» |
+| `/comanejo/` | La alianza del convenio, los cinco firmantes y el perfil de cada uno (ICF, ASIDE, CASM, CODEMUSSBA, Árbol de Misericordia) |
+| `/biodiversidad/` | Cifras del inventario (preliminar), el quetzal, la salamandra narizona, la flora y los valores hídricos |
+| `/turismo/` | Puntos de interés y actividades que menciona el Plan de Manejo, sin rutas ni datos comerciales |
+| `/contacto/` | Datos del parque; teléfono y correo **provisionales** (`src/content/contacto.ts`) |
 
-Para publicar una sección pendiente: crear su componente en `src/pages/`, añadirlo en `src/inner.tsx` y
-poner `"ready": true` en `pages.json`.
+Navegación principal: Inicio · Comanejo · Biodiversidad · Turismo · Contacto. Una sección nueva sin contenido
+validado se añade a `pages.json` con `"ready": false` y muestra el aviso «en preparación» (`PendingPage`);
+al validarla, se crea su componente en `src/pages/`, se añade en `src/inner.tsx` y se marca `"ready": true`.
+
+Fuentes por sección: Inicio, Plan de Manejo 2018–2029 (las superficies coinciden con el 2026–2038) y el
+borrador 2026–2038 para las 94 comunidades; Biodiversidad y Turismo, solo el **borrador** del Plan de Manejo
+2026–2038 (`src/PLAN_DE_MANEJO_PANAMOSAB_2026_2038_ Borrador.pdf`, fuera del repositorio), con la página citada.
+
+Investigación de los perfiles de ICF y CODEMUSSBA, con sus fuentes: `docs/INSTITUTIONAL_RESEARCH_ICF_CODEMUSSBA.md`.
 
 ## Estructura
 
 ```
 index.html                 entrada de la portada (fuentes de Google, raíz de React)
 pages.json                 mapa del sitio (rutas, títulos, descripciones)
-<ruta>/index.html          páginas interiores, generadas a partir de pages.json
+vite.config.ts             plugin innerPages: HTML de las páginas interiores, en memoria, a partir de pages.json
 src/inner.tsx              entrada de las páginas interiores (no carga el motor 3D)
-src/pages/                 ComanejoPage · PendingPage
-src/content/parque.ts      textos del parque (Plan de Manejo); src/content/comanejo.ts, los de comanejo
+src/pages/                 ComanejoPage · BiodiversidadPage · TurismoPage · ContactoPage · PendingPage
+src/content/               textos con su fuente: parque · comanejo · biodiversidad · turismo · contacto · media (tipo Photo)
 public/assets/             datos del terreno (PNG en base64; los genera tools/build_terrain.py)
 src/
   main.tsx                 monta <App> en StrictMode
   app/App.tsx              composición de la página; crea y destruye el motor 3D (un useEffect)
   app/pageRefs.ts          elementos del DOM que el motor mide
-  sections/                HeroSection · ParkSection · TerritorySection · ComanejoSection
-  components/              Header · Navigation · HeroTitle · ScrollIndicator · Eyebrow · Loader · Reveal
-  components/comanejo/     página de comanejo: Intro · Signatories · Aim · OrgProfile (sistema en ui.ts)
+  sections/                HeroSection · ParkSection · TerritorySection · ZonesSection · WaterSection · ComanejoSection · ExploreSection
+  components/              Header · Navigation · HeroTitle · ScrollIndicator · Eyebrow · Loader · Reveal · RiseLines
+  components/ui.ts         sistema visual de las páginas interiores (retícula, etiquetas, escalas)
+  components/media/        Photo: imagen con encuadre y marco que se abre al entrar en pantalla
+  components/comanejo/     página de comanejo: Intro · Signatories · Aim · OrgProfile
   content/comanejo.ts      textos de «Comanejo» con su fuente; para sumar una organización, añadir su
                            perfil a PROFILES y su id en SIGNATORIES (sin perfil, solo aparece por su nombre y logotipo)
   assets/comanejo/         fotografías de ASIDE (de recursos/) y de Árbol de Misericordia (de su sitio
                            institucional), optimizadas
+  assets/logos/official/   logotipos oficiales del ICF y CODEMUSSBA, descargados de sus sitios (perfiles)
+  assets/biodiversidad/    fotografías extraídas del Plan de Manejo 2026–2038 (portada y contraportada)
+  assets/turismo/          fotografía del mar de nubes del mismo documento (p. 2)
   lib/                     máscara de niebla del título · scroll suave a una sección
   three/
     engine.ts              motor imperativo: capas WebGL, cámara, scroll, niebla, antialiasing de

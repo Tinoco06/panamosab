@@ -3,7 +3,7 @@
    muestra un aviso de «en preparación», nunca texto inventado. */
 import pages from '../../pages.json';
 
-export type PageId = 'inicio' | 'comanejo' | 'biodiversidad' | 'conservacion' | 'investigacion' | 'visitanos' | 'contacto';
+export type PageId = 'inicio' | 'comanejo' | 'biodiversidad' | 'turismo' | 'contacto';
 
 export interface PageInfo {
   id: PageId;

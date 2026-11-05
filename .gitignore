@@ -4,11 +4,6 @@ dist/
 *.tsbuildinfo
 .vite/
 
-# --- Páginas interiores generadas (tools/gen-pages.mjs las crea a partir de pages.json antes de dev/build)
-/*/index.html
-!/public/**
-!/src/**
-
 # --- Documentos de trabajo (convenio, plan de manejo, presentaciones): no se publican en el repositorio
 recursos/
 *.pdf
@@ -36,3 +31,8 @@ desktop.ini
 !.vscode/extensions.json
 .idea/
 *.swp
+
+# --- Auditoría responsive: capturas pesadas (se regeneran con tools/audit/responsive_audit.py --shots).
+#     Se versionan los resultados (JSON) y las comparaciones de docs/audit/before-after/
+docs/audit/**/shots/
+docs/audit/**/*.log

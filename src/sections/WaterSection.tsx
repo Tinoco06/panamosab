@@ -72,7 +72,12 @@ export function WaterSection() {
         </div>
         <div className="col-span-4 col-start-9 pb-2 max-md:col-span-1">
           <p className="m-0 text-[18px] leading-[1.6] text-ink max-md:text-[17px]">{W.body}</p>
-          <p className="mt-6 mb-0 text-[12px] leading-[1.55] text-ink-dim">{PARQUE.sources}</p>
+          {/* la relación con las comunidades, con su fuente */}
+          <p className="mt-8 mb-0 flex items-start gap-4 border-t border-water/25 pt-5">
+            <span className="font-display text-[length:clamp(48px,4.4vw,72px)] font-extrabold leading-[0.82] tracking-[-0.04em] text-water tabular-nums">{W.communities.value}</span>
+            <span className="text-[16px] leading-[1.5] text-ink">{W.communities.label}</span>
+          </p>
+          <p className="mt-3 mb-0 text-[12px] leading-[1.5] text-ink-dim">{W.communities.source}</p>
         </div>
       </div>
 
@@ -125,10 +130,12 @@ export function WaterSection() {
                 <li
                   key={place}
                   style={delay(1.5 + i * 0.18)}
-                  className="reveal-fade border-l border-hero-cream/25 pt-4 pl-[clamp(14px,1.6vw,24px)] first:border-l-0 first:pl-0 max-md:border-l-0 max-md:pl-0 max-md:odd:pr-3"
+                  // el mismo aire a ambos lados de cada filete; los nombres largos («Concepción del Sur») pasan a dos
+                  // líneas equilibradas antes que acercarse a la línea del municipio siguiente
+                  className="reveal-fade border-l border-hero-cream/25 px-[clamp(16px,2vw,32px)] pt-4 first:border-l-0 first:pl-0 last:pr-0 max-md:border-l-0 max-md:px-0 max-md:odd:pr-5"
                 >
                   <span className="block text-[12px] font-semibold tracking-[0.14em] text-hero-cream/70 tabular-nums">{String(i + 1).padStart(2, '0')}</span>
-                  <span className="mt-1.5 block text-[length:clamp(22px,2.4vw,40px)] font-medium leading-[1.05] tracking-[-0.02em] text-hero-cream max-md:text-[length:clamp(19px,5.6vw,24px)]">
+                  <span className="mt-1.5 block text-balance text-[length:clamp(22px,2.4vw,40px)] font-medium leading-[1.05] tracking-[-0.02em] text-hero-cream max-md:text-[length:clamp(19px,5.6vw,24px)]">
                     {place}
                   </span>
                 </li>
@@ -138,7 +145,7 @@ export function WaterSection() {
         </div>
         {/* crédito, sobre el marfil de la sección siguiente */}
         <figcaption className="bg-ivory px-gutter pt-1 text-right text-[11px] leading-[1.5] text-ink-dim max-md:text-left">
-          <a href={W.photo.creditUrl} target="_blank" rel="noopener noreferrer" className="focus-ring text-ink-dim underline decoration-ink-dim/40 underline-offset-2 hover:text-forest">
+          <a href={W.photo.creditUrl} target="_blank" rel="noopener noreferrer" className="focus-ring inline-block py-3 text-ink-dim underline decoration-ink-dim/40 underline-offset-2 hover:text-forest">
             {W.photo.credit}
           </a>
         </figcaption>

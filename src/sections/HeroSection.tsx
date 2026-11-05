@@ -19,7 +19,7 @@ export function HeroSection({ refs }: { refs: PageRefs }) {
         <ScrollIndicator />
         <p
           data-intro="cue"
-          className="absolute right-gutter bottom-[clamp(24px,5vh,48px)] m-0 text-[10px] tracking-[0.02em] text-hero-cream/60 max-md:bottom-3 max-md:left-gutter max-md:text-[9px] in-[[data-status=error]]:text-hero-deep/70"
+          className="absolute right-gutter bottom-[clamp(24px,5vh,48px)] m-0 text-[10px] tracking-[0.02em] text-hero-cream/60 max-md:bottom-[calc(12px+var(--spacing-safe-b))] max-md:left-gutter max-md:text-[10px] in-[[data-status=error]]:text-hero-deep/70"
         >
           Relieve: AWS Terrain Tiles · Imagen: Esri, Maxar, Earthstar Geographics
         </p>

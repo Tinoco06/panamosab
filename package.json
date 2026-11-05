@@ -5,11 +5,8 @@
   "description": "Sitio institucional del Parque Nacional Montaña de Santa Bárbara (PANAMOSAB)",
   "type": "module",
   "scripts": {
-    "pages": "node tools/gen-pages.mjs",
-    "predev": "node tools/gen-pages.mjs",
     "dev": "vite",
     "typecheck": "tsc --noEmit",
-    "prebuild": "node tools/gen-pages.mjs",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview"
   },

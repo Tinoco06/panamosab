@@ -1,0 +1,353 @@
+[
+ {
+  "scrollWidth": 375,
+  "vw": 375,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "9": 1,
+   "10": 2,
+   "11": 10
+  },
+  "images": [
+   {
+    "src": "contours-KXmmOx27.svg",
+    "broken": false,
+    "distorted": false,
+    "w": 375,
+    "nat": 150,
+    "dpr": 1
+   }
+  ],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 9449,
+  "route": "index.html",
+  "label": "iPhone SE",
+  "w": 375,
+  "h": 667,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 7.9
+ },
+ {
+  "scrollWidth": 390,
+  "vw": 390,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "9": 1,
+   "10": 2,
+   "11": 10
+  },
+  "images": [
+   {
+    "src": "contours-KXmmOx27.svg",
+    "broken": false,
+    "distorted": false,
+    "w": 390,
+    "nat": 150,
+    "dpr": 1
+   }
+  ],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 10499,
+  "route": "index.html",
+  "label": "iPhone 13/14",
+  "w": 390,
+  "h": 844,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 7.8
+ },
+ {
+  "scrollWidth": 393,
+  "vw": 393,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "9": 1,
+   "10": 2,
+   "11": 10
+  },
+  "images": [
+   {
+    "src": "contours-KXmmOx27.svg",
+    "broken": false,
+    "distorted": false,
+    "w": 393,
+    "nat": 150,
+    "dpr": 1
+   }
+  ],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 10553,
+  "route": "index.html",
+  "label": "iPhone 15 Pro",
+  "w": 393,
+  "h": 852,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 7.9
+ },
+ {
+  "scrollWidth": 430,
+  "vw": 430,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "9": 1,
+   "10": 2,
+   "11": 10
+  },
+  "images": [
+   {
+    "src": "contours-KXmmOx27.svg",
+    "broken": false,
+    "distorted": false,
+    "w": 430,
+    "nat": 150,
+    "dpr": 1
+   }
+  ],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 11000,
+  "route": "index.html",
+  "label": "iPhone Pro Max",
+  "w": 430,
+  "h": 932,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 7.8
+ },
+ {
+  "scrollWidth": 844,
+  "vw": 844,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Fotografía ilustrativa: río Sa",
+    560,
+    41
+   ]
+  ],
+  "tinyText": {
+   "10": 2,
+   "11": 11
+  },
+  "images": [
+   {
+    "src": "contours-KXmmOx27.svg",
+    "broken": false,
+    "distorted": false,
+    "w": 439,
+    "nat": 150,
+    "dpr": 1
+   }
+  ],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 6085,
+  "route": "index.html",
+  "label": "iPhone horizontal",
+  "w": 844,
+  "h": 390,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 7.9
+ },
+ {
+  "scrollWidth": 768,
+  "vw": 768,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Fotografía ilustrativa: río Sa",
+    560,
+    41
+   ]
+  ],
+  "tinyText": {
+   "9": 1,
+   "10": 2,
+   "11": 10
+  },
+  "images": [
+   {
+    "src": "contours-KXmmOx27.svg",
+    "broken": false,
+    "distorted": false,
+    "w": 768,
+    "nat": 150,
+    "dpr": 1
+   }
+  ],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 11845,
+  "route": "index.html",
+  "label": "iPad Mini",
+  "w": 768,
+  "h": 1024,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 8.0
+ },
+ {
+  "scrollWidth": 820,
+  "vw": 820,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Fotografía ilustrativa: río Sa",
+    560,
+    41
+   ]
+  ],
+  "tinyText": {
+   "9": 1,
+   "10": 2,
+   "11": 10
+  },
+  "images": [
+   {
+    "src": "contours-KXmmOx27.svg",
+    "broken": false,
+    "distorted": false,
+    "w": 820,
+    "nat": 150,
+    "dpr": 1
+   }
+  ],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 12682,
+  "route": "index.html",
+  "label": "iPad",
+  "w": 820,
+  "h": 1180,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 8.1
+ },
+ {
+  "scrollWidth": 1024,
+  "vw": 1024,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Fotografía ilustrativa: río Sa",
+    560,
+    41
+   ]
+  ],
+  "tinyText": {
+   "10": 2,
+   "11": 11
+  },
+  "images": [
+   {
+    "src": "contours-KXmmOx27.svg",
+    "broken": false,
+    "distorted": false,
+    "w": 533,
+    "nat": 150,
+    "dpr": 1
+   }
+  ],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 11290,
+  "route": "index.html",
+  "label": "iPad Air/Pro",
+  "w": 1024,
+  "h": 1366,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 8.1
+ },
+ {
+  "scrollWidth": 1180,
+  "vw": 1180,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Fotografía ilustrativa: río Sa",
+    560,
+    41
+   ]
+  ],
+  "tinyText": {
+   "10": 2,
+   "11": 10
+  },
+  "images": [
+   {
+    "src": "contours-KXmmOx27.svg",
+    "broken": false,
+    "distorted": false,
+    "w": 614,
+    "nat": 150,
+    "dpr": 1
+   }
+  ],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 8001,
+  "route": "index.html",
+  "label": "Tablet horizontal",
+  "w": 1180,
+  "h": 820,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 8.0
+ }
+]

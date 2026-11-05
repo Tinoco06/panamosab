@@ -27,7 +27,6 @@ export interface ExperienceElements {
   parkText: HTMLElement;
   parkFrame: HTMLElement;         // hueco invisible donde flota el fragmento de montaña
   parkPeak: HTMLElement;          // marca de la cumbre (altitud) sobre el fragmento: el motor la sigue
-  parkCaption: HTMLElement;
   territory: HTMLElement;
   territoryStage: HTMLElement;
   territoryColumn: HTMLElement;
@@ -92,6 +91,19 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
   els.layerHost.append(...canvases);
 
   const renderers: THREE.WebGLRenderer[] = [];
+
+  // Pérdida del contexto WebGL (iOS la provoca al pasar la pestaña a segundo plano o con poca memoria). Three.js
+  // la gestiona en cada renderer (deja de dibujar y, al restaurarse, vuelve a subir geometrías y texturas); aquí
+  // solo se marca que las capas que no se redibujan en cada fotograma (cielo, niebla) deben volver a pintarse.
+  let contextLost = 0;
+  canvases.forEach((c) => {
+    c.addEventListener('webglcontextlost', (e) => { e.preventDefault(); contextLost++; });
+    c.addEventListener('webglcontextrestored', () => {
+      contextLost = Math.max(0, contextLost - 1);
+      skyStill = false;
+      mistVisible = true;
+    });
+  });
   const makeRenderer = (p: THREE.WebGLRendererParameters) => {
     const r = new THREE.WebGLRenderer(p);
     renderers.push(r);
@@ -271,9 +283,22 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
     aaTarget.setSize(bufSize.x, bufSize.y);
     aaMat.uniforms.uInv.value.set(1 / bufSize.x, 1 / bufSize.y);
   }
-  function resize() {
-    W = window.innerWidth;
-    H = window.innerHeight;
+  // Alto de la pantalla «grande» (100lvh, el mismo que tienen los canvas: ver .webgl-layer). Se mide con una sonda
+  // de estilo en línea, no con el canvas: al crear el motor la hoja de estilos puede no estar aplicada todavía y el
+  // canvas mediría su tamaño por defecto (300 × 150). En iOS el `resize` se dispara cada vez que las barras de
+  // Safari aparecen o se ocultan; con el alto grande el tamaño no cambia y no se recalcula nada. Solo se recalcula
+  // si el tamaño cambió de verdad (ancho, giro del dispositivo, ventana de escritorio).
+  const vpProbe = document.createElement('div');
+  vpProbe.setAttribute('aria-hidden', 'true');
+  vpProbe.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100vh;height:100lvh;visibility:hidden;pointer-events:none';
+  document.body.append(vpProbe);
+  cleanups.push(() => vpProbe.remove());
+  function resize(force = false) {
+    const w = window.innerWidth;
+    const h = Math.max(window.innerHeight, vpProbe.offsetHeight);
+    if (!force && w === W && h === H) return;
+    W = w;
+    H = h;
     sizeScene();
     mistRenderer.setSize(W, H, false);
     skyRenderer.setSize(W, H, false);
@@ -283,7 +308,9 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
     fogFrontMat.uniforms.uAspect.value = W / H;
     layoutTitle();
   }
-  listen('resize', resize);
+  listen('resize', () => resize());
+  // al girar el dispositivo, iOS informa del tamaño nuevo con retraso: se vuelve a medir tras el giro
+  listen('orientationchange', () => setTimeout(() => resize(), 250));
 
   // Ventana de la sección institucional. Durante la transición se usa su posición "de llegada";
   // después sigue al scroll real, como cualquier fotografía de la página.
@@ -707,6 +734,13 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
       raf = requestAnimationFrame(frame);
       return;
     }
+    // sin contexto no se dibuja ni se mide (la resolución adaptativa interpretaría la pausa como lentitud)
+    if (contextLost) {
+      updateScroll(now);
+      lastFrame = lastNow = now;
+      raf = requestAnimationFrame(frame);
+      return;
+    }
     adaptResolution(now);
     updateScroll(now);
     lastFrame = now;
@@ -763,12 +797,6 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
         autoAlpha: 0, y: 22, duration: 1.1, ease: 'power3.out', stagger: 0.08,
         scrollTrigger: { trigger: els.park, start: 'top 30%' },
       });
-
-      // el pie de foto de 01 se va antes de que el territorio se extienda bajo él
-      gsap.to(els.parkCaption, {
-        autoAlpha: 0, ease: 'none',
-        scrollTrigger: { trigger: els.territory, start: 'top bottom', end: 'top 88%', scrub: true },
-      });
     });
   }
 
@@ -817,7 +845,7 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
     requestAnimationFrame(() => (disposed ? reject(new Cancelled()) : resolve()));
   });
 
-  resize();
+  resize(true);
   raf = requestAnimationFrame(frame);
 
   (async () => {

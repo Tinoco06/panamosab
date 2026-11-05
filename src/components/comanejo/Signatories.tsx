@@ -1,10 +1,11 @@
 import { COMANEJO, PROFILES, SIGNATORIES } from '../../content/comanejo';
+import { onAnchorClick } from '../../lib/smoothScroll';
 import { Reveal } from '../Reveal';
-import { delay, label, section } from './ui';
+import { delay, label, section } from '../ui';
 
 /**
  * Franja de las cinco instituciones firmantes: logotipo oficial, sigla y nombre completo, con el mismo
- * espacio para cada una. Solo ASIDE y CASM (perfiles publicados) enlazan a su perfil en esta página; el
+ * espacio para cada una. Solo las que tienen perfil publicado (PROFILES) enlazan a él en esta página; el
  * resto se identifica sin enlace.
  */
 export function Signatories() {
@@ -45,7 +46,7 @@ export function Signatories() {
           return (
             <li key={s.acronym} style={delay(0.08 * i)} className="reveal-fade">
               {linked ? (
-                <a href={`#${s.profileId}`} className={`group focus-ring no-underline ${row}`} aria-label={`${s.acronym}, ${s.name}: ver perfil`}>
+                <a href={`#${s.profileId}`} onClick={onAnchorClick} className={`group focus-ring no-underline ${row}`} aria-label={`${s.acronym}, ${s.name}: ver perfil`}>
                   {body}
                 </a>
               ) : (

@@ -2,7 +2,7 @@ import { scrollToSection } from '../lib/scrollToSection';
 import { url, type PageId } from '../lib/routes';
 import { Navigation } from './Navigation';
 
-const brand = 'focus-ring text-[13px] font-semibold leading-none tracking-[0.32em] text-hero-deep no-underline max-nav:in-[.nav-open]:relative max-nav:in-[.nav-open]:z-21';
+const brand = 'focus-ring inline-flex min-h-11 items-center text-[13px] font-semibold leading-none tracking-[0.32em] text-hero-deep no-underline max-nav:in-[.nav-open]:relative max-nav:in-[.nav-open]:z-21';
 
 /**
  * Marca a la izquierda, menú a la derecha; sin barra ni fondo.
@@ -13,7 +13,7 @@ export function Header({ home = false, current }: { home?: boolean; current?: Pa
   return (
     <header
       className={
-        'flex items-center justify-between gap-8 px-gutter pt-[clamp(20px,4vh,40px)] ' +
+        'flex items-center justify-between gap-8 px-gutter pt-[max(clamp(20px,4vh,40px),calc(var(--spacing-safe-t)+12px))] ' +
         (home ? 'absolute inset-x-0 top-0' : 'relative z-20 pb-4')
       }
     >

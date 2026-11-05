@@ -1,8 +1,8 @@
-import type { ReactNode } from 'react';
-import { markOf, type OrgProfile as Profile, type Photo } from '../../content/comanejo';
+import { markOf, type OrgProfile as Profile } from '../../content/comanejo';
+import { Frame, Img } from '../media/Photo';
 import { Eyebrow } from '../Eyebrow';
 import { Reveal } from '../Reveal';
-import { blockTitle, delay, grid, label, mobile, section } from './ui';
+import { blockTitle, delay, grid, label, mobile, section } from '../ui';
 
 /*
  * Perfil de una organización comanejadora. Todos los perfiles comparten piezas y jerarquía:
@@ -11,37 +11,12 @@ import { blockTitle, delay, grid, label, mobile, section } from './ui';
  * Cambia la distribución según el material disponible:
  *   - con fotografías (`photos`): fondo marfil, la fotografía a todo el ancho y una segunda junto a las listas;
  *     `flip` invierte los lados para que dos perfiles con fotografías seguidos no se repitan;
- *   - sin fotografías: banda salvia; el logotipo grande ocupa el lugar de la imagen y las declaraciones
- *     institucionales (misión, enfoque) el de la fotografía. No se usan imágenes de relleno.
+ *   - sin fotografías: el logotipo grande ocupa el lugar de la imagen y las declaraciones institucionales
+ *     (misión, enfoque) el de la fotografía. No se usan imágenes de relleno. Si el logotipo oficial solo existe
+ *     para fondo oscuro (`logo.onDark`), va sobre una placa verde bosque, sin recolorearlo; `flip` lo pasa a la
+ *     derecha.
+ * El fondo (`tone`: marfil o salvia) lo decide la página para alternar el ritmo entre perfiles.
  */
-
-function Img({ photo, sizes, className = '' }: { photo: Photo; sizes: string; className?: string }) {
-  return (
-    <img
-      src={photo.src}
-      srcSet={photo.srcSet}
-      sizes={sizes}
-      width={photo.width}
-      height={photo.height}
-      alt={photo.alt}
-      loading="lazy"
-      decoding="async"
-      style={photo.focus ? { objectPosition: photo.focus } : undefined}
-      className={`block size-full bg-rule object-cover ${className}`}
-    />
-  );
-}
-
-/** Marco que se abre desde un recorte al entrar en pantalla, con la imagen asentándose despacio. */
-function Frame({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return (
-    <div className={`overflow-hidden transition-[clip-path] duration-[1400ms] ease-[cubic-bezier(0.65,0,0.35,1)] [clip-path:inset(6%_4%_6%_4%)] in-[[data-inview]]:[clip-path:inset(0)] motion-reduce:transition-none ${className}`}>
-      <div className="size-full transition-[scale] duration-[2000ms] ease-[cubic-bezier(0.22,1,0.36,1)] [scale:1.06] in-[[data-inview]]:[scale:1] motion-reduce:transition-none">
-        {children}
-      </div>
-    </div>
-  );
-}
 
 function Website({ site }: { site: Profile['website'] }) {
   return (
@@ -49,7 +24,7 @@ function Website({ site }: { site: Profile['website'] }) {
       href={site.href}
       target="_blank"
       rel="noopener noreferrer"
-      className={`${label} group focus-ring mt-9 inline-flex items-center gap-2.5 text-forest no-underline`}
+      className={`${label} group focus-ring mt-9 inline-flex min-h-11 items-center gap-2.5 text-forest no-underline`}
     >
       <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:100%_1px] bg-bottom-left bg-no-repeat pb-1 transition-[background-size] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:bg-[length:0%_1px] group-hover:bg-right-bottom">
         {site.label}
@@ -65,6 +40,8 @@ function Identity({ org, index, withMark }: { org: Profile; index: string; withM
   const mark = markOf(org.id);
   // sin sigla (un nombre de varias palabras): dos líneas, en minúscula, y el logotipo encima en lugar de al lado
   const long = org.acronym.includes(' ');
+  // siglas largas (CODEMUSSBA): una escala menor, para que quepan en su columna y en móvil
+  const wide = !long && org.acronym.length > 6;
   return (
     <div>
       <Eyebrow num={index} className="reveal-fade">Perfil institucional</Eyebrow>
@@ -85,7 +62,9 @@ function Identity({ org, index, withMark }: { org: Profile; index: string; withM
             'm-0 font-display font-extrabold text-forest ' +
             (long
               ? 'max-w-[9ch] text-[length:clamp(52px,6.2vw,108px)] leading-[0.9] tracking-[-0.04em] max-md:text-[length:clamp(44px,12.4vw,60px)]'
-              : 'text-[length:clamp(76px,10.5vw,184px)] uppercase leading-[0.8] tracking-[-0.035em] max-md:text-[length:clamp(64px,21vw,96px)]')
+              : wide
+                ? 'text-[length:clamp(52px,6.4vw,112px)] uppercase leading-[0.84] tracking-[-0.035em] max-md:text-[length:clamp(38px,11.6vw,56px)]'
+                : 'text-[length:clamp(76px,10.5vw,184px)] uppercase leading-[0.8] tracking-[-0.035em] max-md:text-[length:clamp(64px,21vw,96px)]')
           }
         >
           {org.acronym}
@@ -97,6 +76,17 @@ function Identity({ org, index, withMark }: { org: Profile; index: string; withM
       </h2>
       <p style={delay(0.25)} className={`reveal-fade mb-0 text-[15px] leading-[1.5] text-ink-dim ${long ? 'mt-6' : 'mt-3'}`}>{org.meta.join(' · ')}</p>
     </div>
+  );
+}
+
+/** Cifra destacada, solo si consta en las fuentes de la organización. */
+function Figure({ org }: { org: Profile }) {
+  if (!org.figure) return null;
+  return (
+    <p style={delay(0.45)} className="reveal-fade mt-12 mb-0 flex flex-wrap items-start gap-x-5 gap-y-3 border-t border-rule pt-6">
+      <span className="font-display text-[length:clamp(56px,5vw,84px)] font-extrabold leading-[0.82] tracking-[-0.04em] text-moss tabular-nums">{org.figure.value}</span>
+      <span className="max-w-[30ch] text-[15px] leading-[1.5] text-ink">{org.figure.label}</span>
+    </p>
   );
 }
 
@@ -119,14 +109,15 @@ function Areas({ org }: { org: Profile }) {
 
 /** Lista secundaria (áreas protegidas, departamentos): el ítem de PANAMOSAB se distingue en verde. */
 function Extra({ org }: { org: Profile }) {
-  const { title, items, highlight } = org.extra;
+  const { title, items, highlight, note } = org.extra;
+  const marked = new Set(Array.isArray(highlight) ? highlight : highlight ? [highlight] : []);
   const inline = items.every((a) => a.length <= 16);
   return (
     <div>
       <h3 className={`${label} mt-0 mb-6 text-ink-dim`}>{title}</h3>
       <ul className={`m-0 list-none p-0 ${inline ? 'flex flex-wrap gap-x-7 gap-y-3' : 'grid gap-2.5'}`}>
         {items.map((a) => {
-          const here = a === highlight;
+          const here = marked.has(a);
           return (
             <li
               key={a}
@@ -145,6 +136,7 @@ function Extra({ org }: { org: Profile }) {
           );
         })}
       </ul>
+      {note && <p className="mt-5 mb-0 max-w-[52ch] text-[14px] leading-[1.55] text-ink-dim">{note}</p>}
     </div>
   );
 }
@@ -226,12 +218,7 @@ function PhotoProfile({ org, index, flip }: { org: Profile; index: string; flip:
       <Reveal className={`${grid} mt-[clamp(64px,10vh,112px)] gap-y-14`}>
         <div className={`col-span-4 max-nav:col-span-6 max-md:col-span-1 ${flip ? `col-start-5 row-start-1 ${reset}` : ''}`}>
           <Areas org={org} />
-          {org.figure && (
-            <p style={delay(0.45)} className="reveal-fade mt-12 mb-0 flex flex-wrap items-start gap-x-5 gap-y-3 border-t border-rule pt-6">
-              <span className="font-display text-[length:clamp(56px,5vw,84px)] font-extrabold leading-[0.82] tracking-[-0.04em] text-moss tabular-nums">{org.figure.value}</span>
-              <span className="max-w-[26ch] text-[15px] leading-[1.5] text-ink">{org.figure.label}</span>
-            </p>
-          )}
+          <Figure org={org} />
         </div>
         <div className={`col-span-4 max-nav:col-span-6 max-md:col-span-1 ${flip ? `col-start-9 row-start-1 ${reset}` : ''}`}>
           <Extra org={org} />
@@ -250,25 +237,34 @@ function PhotoProfile({ org, index, flip }: { org: Profile; index: string; flip:
 }
 
 /** Perfil sin fotografías: el logotipo grande y las declaraciones institucionales sostienen la composición. */
-function StatementProfile({ org, index }: { org: Profile; index: string }) {
-  const mark = markOf(org.id);
+function StatementProfile({ org, index, flip }: { org: Profile; index: string; flip: boolean }) {
+  const logo = org.logo ?? markOf(org.id);
+  const plate = !!org.logo?.onDark;
+  const img = (
+    <img
+      src={logo.src}
+      width={logo.width}
+      height={logo.height}
+      alt={`Logotipo de ${org.acronym}`}
+      loading="lazy"
+      decoding="async"
+      className={plate ? 'block h-auto w-full max-w-[420px]' : 'block h-[clamp(200px,22vw,320px)] w-auto max-w-full object-contain max-md:h-[150px]'}
+    />
+  );
   return (
     <>
       <Reveal className={`${grid} items-end gap-y-12`}>
-        {/* el logotipo, a la izquierda, ocupa el lugar que en el otro perfil tiene la fotografía */}
-        <div className={`col-span-4 row-start-1 ${mobile} max-md:order-1`}>
-          <img
-            src={mark.src}
-            width={mark.width}
-            height={mark.height}
-            alt={`Logotipo de ${org.acronym}`}
-            loading="lazy"
-            decoding="async"
-            style={delay(0.1)}
-            className="reveal-fade block h-[clamp(200px,22vw,320px)] w-auto max-md:h-[150px]"
-          />
-        </div>
-        <div className={`col-span-7 col-start-6 row-start-1 ${mobile} max-md:order-0`}>
+        {/* el logotipo ocupa el lugar que en los perfiles con fotografías tiene la imagen */}
+        <figure style={delay(0.1)} className={`reveal-fade m-0 row-start-1 ${mobile} max-md:order-1 ${flip ? 'col-span-4 col-start-9' : 'col-span-4'}`}>
+          {plate ? (
+            // versión oficial para fondo oscuro: sobre una placa verde bosque, sin recolorear
+            <div className="flex aspect-[4/3] items-center justify-center bg-forest p-[12%] max-md:aspect-[16/10]">{img}</div>
+          ) : (
+            img
+          )}
+          {org.logo?.credit && <figcaption className="mt-3 text-[13px] leading-[1.5] text-ink-dim">{org.logo.credit}</figcaption>}
+        </figure>
+        <div className={`row-start-1 ${mobile} max-md:order-0 ${flip ? 'col-span-7 col-start-1' : 'col-span-7 col-start-6'}`}>
           <Identity org={org} index={index} withMark={false} />
           <p style={delay(0.3)} className="reveal-fade mt-8 mb-0 max-w-[52ch] text-[length:clamp(18px,1.3vw,20px)] leading-[1.6] text-ink">{org.summary}</p>
           <div style={delay(0.4)} className="reveal-fade">
@@ -282,6 +278,7 @@ function StatementProfile({ org, index }: { org: Profile; index: string }) {
       <Reveal className={`${grid} mt-[clamp(64px,10vh,112px)] gap-y-14`}>
         <div className="col-span-5 max-nav:col-span-6 max-md:col-span-1">
           <Areas org={org} />
+          <Figure org={org} />
         </div>
         <div className="col-span-6 col-start-7 max-nav:col-span-6 max-md:col-span-1 max-md:col-start-auto">
           <Extra org={org} />
@@ -293,15 +290,18 @@ function StatementProfile({ org, index }: { org: Profile; index: string }) {
   );
 }
 
-export function OrgProfile({ org, index, flip = false }: { org: Profile; index: string; flip?: boolean }) {
+export type Tone = 'ivory' | 'sage';
+
+export function OrgProfile({ org, index, flip = false, tone }: { org: Profile; index: string; flip?: boolean; tone?: Tone }) {
   const withPhotos = !!org.photos;
+  const bg = tone ?? (withPhotos ? 'ivory' : 'sage');
   return (
     <article
       id={org.id}
       aria-labelledby={`${org.id}-name`}
-      className={`${section} scroll-mt-8 ${withPhotos ? '' : '-mx-gutter bg-sage px-gutter py-[clamp(88px,14vh,160px)]'}`}
+      className={`${section} scroll-mt-8 outline-none ${bg === 'sage' ? '-mx-gutter bg-sage px-gutter py-[clamp(88px,14vh,160px)]' : ''}`}
     >
-      {withPhotos ? <PhotoProfile org={org} index={index} flip={flip} /> : <StatementProfile org={org} index={index} />}
+      {withPhotos ? <PhotoProfile org={org} index={index} flip={flip} /> : <StatementProfile org={org} index={index} flip={flip} />}
     </article>
   );
 }

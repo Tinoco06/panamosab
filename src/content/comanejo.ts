@@ -3,6 +3,10 @@
      [ASIDE] Presentación institucional «ASIDE - 2026.pptx» (número de diapositiva)
      [CASM]  Documento institucional «CASM.docx»
      [OADM]  Sitio institucional de Árbol de Misericordia (arboldemisericordia.org; textos y fotografías)
+     [ICF]   Sitio oficial icf.gob.hn: «Quiénes somos», «Áreas protegidas», «Vida silvestre», «Reforestación» (consulta 03/11/2026)
+     [COD]   Sitio oficial codemussba.org: «Historia», «Filosofía», «Municipios», «Unidades» (consulta 03/11/2026)
+     [PM26]  Plan de Manejo PANAMOSAB 2026–2038, borrador
+   Investigación completa, con URL de cada fuente: docs/INSTITUTIONAL_RESEARCH_ICF_CODEMUSSBA.md
    Para sumar una organización: añadir su perfil a PROFILES y su id en la lista de firmantes (profileId).
    Solo se publican perfiles con información respaldada; un firmante sin perfil aparece únicamente por su
    nombre y su logotipo en la franja de firmantes. */
@@ -26,16 +30,12 @@ import markAside from '../assets/logos/trim/aside.webp';
 import markCasm from '../assets/logos/trim/casm.webp';
 import markCodemussba from '../assets/logos/trim/codemussba.webp';
 import markIcf from '../assets/logos/trim/icf.webp';
+// logotipos oficiales descargados de los sitios de cada institución, para su perfil
+import officialCodemussba from '../assets/logos/official/codemussba.webp';
+import officialIcf from '../assets/logos/official/icf.webp';
+import { photo, type Photo } from './media';
 
-export interface Photo {
-  src: string;
-  srcSet: string;
-  width: number;
-  height: number;
-  alt: string;
-  /** encuadre en los recortes (object-position), si no basta el centro */
-  focus?: string;
-}
+export type { Photo };
 
 export interface Mark {
   src: string;
@@ -55,8 +55,10 @@ export interface OrgProfile {
   /** declaraciones institucionales (misión, enfoque…); `quoted` si el texto es literal del documento */
   statements?: { label: string; text: string; quoted?: boolean }[];
   areas: { title: string; items: string[] };
-  /** lista secundaria (áreas protegidas, territorio, ejes…); `highlight` marca el ítem de PANAMOSAB */
-  extra: { title: string; items: string[]; highlight?: string };
+  /** lista secundaria (áreas protegidas, territorio, ejes…); `highlight` marca los ítems de PANAMOSAB */
+  extra: { title: string; items: string[]; highlight?: string | string[]; note?: string };
+  /** logotipo oficial propio del perfil (si no, el de la franja); `onDark`: versión para fondo oscuro */
+  logo?: Mark & { onDark?: boolean; credit?: string };
   /** responsabilidades que el convenio asigna a la organización */
   role: { title: string; source: string; items: string[] };
   photos?: { main: Photo; detail: Photo; credit: string };
@@ -66,15 +68,13 @@ export const COMANEJO = {
   eyebrow: 'Comanejo',
   // título de la página: dos frases, una por línea
   title: ['Cinco instituciones.', 'Un compromiso con la montaña.'],
-  homeTitle: 'Cinco instituciones, una misma montaña.',
+  // portada (05): dos frases, una por línea; la segunda se destaca
+  homeTitle: ['Cinco instituciones,', 'una misma montaña.'],
   // [CONV] portada, encabezado, cláusulas segunda, tercera (resp. conjuntas 1 y 23) y duodécima
   lead:
     'La conservación del Parque Nacional Montaña de Santa Bárbara es una tarea compartida. Desde enero de 2026, ' +
     'el Instituto Nacional de Conservación y Desarrollo Forestal, Áreas Protegidas y Vida Silvestre (ICF) y cuatro ' +
     'organizaciones gestionan juntos el parque mediante un convenio de comanejo.',
-  body:
-    'Cada institución designa un enlace ante el Comité Técnico de Comanejo, presidido por el ICF, que planifica y da ' +
-    'seguimiento al manejo del área en los municipios de Las Vegas, Concepción Sur, Gualala y Santa Bárbara.',
   // portada: invitación a la página de comanejo
   teaser:
     'Conoce a las organizaciones que forman la alianza, su trabajo y las responsabilidades que asumen en el parque.',
@@ -99,26 +99,95 @@ export const COMANEJO = {
   signatoriesTitle: 'Instituciones firmantes del convenio',
   sources:
     'Fuentes: Convenio para el co-manejo del Parque Nacional Montaña de Santa Bárbara (13 de enero de 2026); ' +
-    'presentación institucional de ASIDE (2026); documento institucional de CASM; sitio institucional de ' +
-    'Árbol de Misericordia (arboldemisericordia.org).',
+    'presentación institucional de ASIDE (2026); documento institucional de CASM; sitios oficiales del ICF ' +
+    '(icf.gob.hn), CODEMUSSBA (codemussba.org) y Árbol de Misericordia (arboldemisericordia.org); Plan de Manejo ' +
+    'PANAMOSAB 2026–2038 (borrador).',
 };
 
 // [CONV] encabezado: denominaciones de las cinco partes firmantes
 export const SIGNATORIES: { acronym: string; name: string; logo: string; mark: Mark; profileId?: string }[] = [
-  { acronym: 'ICF', name: 'Instituto Nacional de Conservación y Desarrollo Forestal, Áreas Protegidas y Vida Silvestre', logo: logoIcf, mark: { src: markIcf, width: 408, height: 191 } },
+  { acronym: 'ICF', name: 'Instituto Nacional de Conservación y Desarrollo Forestal, Áreas Protegidas y Vida Silvestre', logo: logoIcf, mark: { src: markIcf, width: 408, height: 191 }, profileId: 'icf' },
   { acronym: 'ASIDE', name: 'Asociación de Investigación para el Desarrollo Ecológico y Socioeconómico', logo: logoAside, mark: { src: markAside, width: 409, height: 312 }, profileId: 'aside' },
   { acronym: 'CASM', name: 'Comisión de Acción Social Menonita', logo: logoCasm, mark: { src: markCasm, width: 375, height: 460 }, profileId: 'casm' },
-  { acronym: 'CODEMUSSBA', name: 'Consejo de Municipios del Sur de Santa Bárbara', logo: logoCodemussba, mark: { src: markCodemussba, width: 519, height: 153 } },
+  { acronym: 'CODEMUSSBA', name: 'Consejo de Municipios del Sur de Santa Bárbara', logo: logoCodemussba, mark: { src: markCodemussba, width: 519, height: 153 }, profileId: 'codemussba' },
   { acronym: 'Árbol de Misericordia', name: 'Organización Árbol de Misericordia', logo: logoArbol, mark: { src: markArbol, width: 614, height: 239 }, profileId: 'arbol' },
 ];
 
 export const markOf = (id: string) => SIGNATORIES.find((s) => s.profileId === id)!.mark;
 
-const photo = (src1: string, src2: string, w1: number, w2: number, width: number, height: number, alt: string): Photo => ({
-  src: src1, srcSet: `${src2} ${w2}w, ${src1} ${w1}w`, width, height, alt,
-});
-
 export const PROFILES: OrgProfile[] = [
+  {
+    id: 'icf',
+    acronym: 'ICF',
+    name: 'Instituto Nacional de Conservación y Desarrollo Forestal, Áreas Protegidas y Vida Silvestre',   // [CONV] encabezado
+    meta: ['Organismo desconcentrado, adscrito a la Presidencia de la República', 'Ley Forestal, Áreas Protegidas y Vida Silvestre (Decreto 98-2007)'],  // [CONV] cl. 1.ª · [ICF] áreas protegidas
+    summary:
+      // [ICF] quiénes somos (misión, sintetizada)
+      'Es la institución del Estado hondureño responsable de la administración y el manejo de los recursos ' +
+      'forestales, las áreas protegidas y la vida silvestre, mediante instrumentos normativos y reguladores para ' +
+      'su protección, restauración, aprovechamiento, fomento y conservación.',
+    website: { href: 'https://icf.gob.hn/', label: 'icf.gob.hn' },
+    logo: { src: officialIcf, width: 806, height: 371, onDark: true, credit: 'Logotipo oficial publicado en icf.gob.hn.' },
+    figure: {                                                                                              // [ICF] áreas protegidas
+      value: '93',
+      label: 'áreas protegidas integran el Sistema Nacional de Áreas Protegidas de Honduras (SINAPH): 75 declaradas legalmente y 18 propuestas, según el ICF',
+    },
+    statements: [
+      {                                                                                                    // [ICF] áreas protegidas (art. 111) · [CONV] cl. 1.ª
+        label: 'Mandato',
+        text:
+          'La Ley Forestal, Áreas Protegidas y Vida Silvestre le encarga la administración de las áreas protegidas y ' +
+          'de la vida silvestre del país, y le da la facultad de suscribir convenios de comanejo de esas áreas, como ' +
+          'el de PANAMOSAB.',
+      },
+      {                                                                                                    // [ICF] quiénes somos (visión, textual)
+        label: 'Visión',
+        text:
+          'Ser una institución líder a nivel nacional en la gestión de los bosques de Honduras, que contribuye al ' +
+          'desarrollo socioeconómico del país, a la reducción de la vulnerabilidad ambiental ante el cambio climático, ' +
+          'a promover la participación de las comunidades rurales en el manejo y conservación del bosque y a la ' +
+          'provisión de medios de vida para la población hondureña.',
+        quoted: true,
+      },
+      {                                                                                                    // [PM26] p. 3 · [CONV] resp. conjuntas
+        label: 'En PANAMOSAB',
+        text:
+          'Desde la creación del parque, su administración ha estado a cargo del ICF. En el comanejo preside el ' +
+          'Comité Técnico, que reúne a los enlaces de las cinco instituciones.',
+      },
+    ],
+    areas: {                                                                                               // [ICF] secciones y programas del sitio
+      title: 'Líneas de trabajo',
+      items: [
+        'Áreas protegidas: coordinación del SINAPH y supervisión de sus planes de manejo',
+        'Vida silvestre: normas, monitoreo biológico, control y vigilancia',
+        'Restauración de áreas degradadas: Programa Nacional de Reforestación',
+        'Protección forestal y combate de incendios',
+        'Manejo y desarrollo forestal comunitario',
+      ],
+    },
+    extra: {                                                                                               // [ICF] áreas protegidas
+      title: 'Áreas de conservación que coordina',
+      items: ['Áreas protegidas del SINAPH', 'Reservas naturales privadas', 'Corredores biológicos', 'Reservas de biosfera', 'Sitios de patrimonio'],
+    },
+    role: {                                                                                                // [CONV] cl. 3.ª, ICF 1–11
+      title: 'Su papel en PANAMOSAB',
+      source: 'Responsabilidades asignadas al ICF en el convenio de comanejo (cláusula tercera).',
+      items: [
+        'Dar a conocer el convenio a organizaciones productivas, empresas, ONG e instituciones del Estado a nivel local, para coordinar los programas y proyectos del área.',
+        'Dar a conocer las normas y lineamientos de manejo del área: regular las actividades prohibidas, controlar las permitidas y velar por que las actividades productivas cuenten con sus permisos.',
+        'Apoyar y dictaminar las gestiones de los comanejadores para captar recursos locales, nacionales o internacionales para el manejo del área.',
+        'Establecer cada año con los comanejadores, mediante el comité técnico, los planes operativos anuales de ejecución.',
+        'Brindar acompañamiento técnico en gestión de la información para las auditorías técnicas y administrativas de las actividades en el área.',
+        'Dar seguimiento a las propuestas de los comanejadores ante el Fondo para el Manejo de Áreas Protegidas y Vida Silvestre (FAPVS), el Programa Nacional de Reforestación y el Programa Nacional de Guarda Recursos.',
+        'Gestionar con los comanejadores propuestas financieras para la regularización de la Montaña de Santa Bárbara.',
+        'Coordinar el proceso legal y técnico de regularización del área, la titulación a favor del Estado de las áreas que correspondan y su inscripción en el Catálogo del Patrimonio Público Forestal Inalienable.',
+        'Apoyar, supervisar y aprobar las declaratorias, delimitaciones y demarcaciones de la montaña y de sus microcuencas.',
+        'Fortalecer a las Unidades Municipales Ambientales en el uso de las plataformas informativas del ICF.',
+        'Conformar e integrar los Consejos Consultivos Forestales, Áreas Protegidas y Vida Silvestre en la jurisdicción de cada municipalidad.',
+      ],
+    },
+  },
   {
     id: 'aside',
     acronym: 'ASIDE',
@@ -127,7 +196,7 @@ export const PROFILES: OrgProfile[] = [
     summary:
       'Organización no gubernamental sin fines de lucro dedicada a la investigación ambiental y socioeconómica, ' +
       'y al desarrollo de programas y proyectos sociales en Honduras.',                                     // [ASIDE] 2
-    website: { href: 'https://www.asidehonduras.org', label: 'asidehonduras.org' },                        // [ASIDE] 8
+    website: { href: 'https://asidehonduras.org/', label: 'asidehonduras.org' },                        // [ASIDE] 8
     figure: {                                                                                              // [ASIDE] 6
       value: '79',
       label: 'sistemas de agua potable diseñados, construidos o mejorados para unas 140 comunidades urbanas y rurales',
@@ -177,7 +246,7 @@ export const PROFILES: OrgProfile[] = [
       // [CONV] p. 2 (origen) · [CASM] componentes del desarrollo organizacional
       'Nació en el seno de la Iglesia Evangélica Menonita Hondureña y trabaja en el desarrollo humano integral con ' +
       'enfoque de autogestión, fortaleciendo los procesos de desarrollo local y regional.',
-    website: { href: 'https://casm.hn', label: 'casm.hn' },
+    website: { href: 'https://casm.hn/quienes-somos/', label: 'casm.hn' },
     statements: [
       {                                                                                                    // [CASM] misión (textual)
         label: 'Misión',
@@ -221,6 +290,70 @@ export const PROFILES: OrgProfile[] = [
         'Asesorar a las municipalidades para fortalecer el Programa Nacional de Guarda Recursos del SINAPH.',
         'Asegurar el involucramiento de las comunidades en los proyectos y subvenciones que se ejecutan en el área.',
         'Apoyar el fortalecimiento de capacidades de organizaciones locales y comunidades dentro del área protegida.',
+      ],
+    },
+  },
+  {
+    id: 'codemussba',
+    acronym: 'CODEMUSSBA',
+    name: 'Consejo de Municipios del Sur de Santa Bárbara',                                              // [CONV] encabezado
+    meta: ['Mancomunidad de municipios', 'Sede en Santa Bárbara'],                                        // [COD] historia
+    summary:
+      // [CONV] p. 3 · [COD] historia, municipios y filosofía (objetivo general)
+      'Mancomunidad que surgió en 2002 por iniciativa de alcaldes del sur de Santa Bárbara. Hoy la integran ocho ' +
+      'municipios, que se organizan para gestionar proyectos conjuntos de desarrollo socioeconómico y humano.',
+    website: { href: 'https://www.codemussba.org/', label: 'codemussba.org' },
+    logo: { src: officialCodemussba, width: 470, height: 309, credit: 'Logotipo oficial publicado en codemussba.org.' },
+    statements: [
+      {                                                                                                    // [COD] filosofía (misión, textual)
+        label: 'Misión',
+        text:
+          'Impulsar políticas de desarrollo colectivo y sostenible enmarcado en los principios de armonía, equidad de ' +
+          'género y transparencia; con una amplia participación ciudadana, la articulación y coordinación interinstitucional.',
+        quoted: true,
+      },
+      {                                                                                                    // [COD] filosofía (visión, textual)
+        label: 'Visión',
+        text:
+          'Somos una entidad fortalecida institucionalmente, orgullosa de su identidad cultural, fortaleciendo el ' +
+          'desarrollo humano auto sostenible, con capacidad técnica y administrativa, enfocados en sus propios ideales ' +
+          'que favorecen el interés colectivo de los municipios que la integran.',
+        quoted: true,
+      },
+    ],
+    areas: {                                                                                               // [COD] filosofía (objetivos específicos) y unidades
+      title: 'Líneas de trabajo',
+      items: [
+        'Protección y preservación de los recursos naturales',
+        'Desarrollo productivo agropecuario y forestal sostenible',
+        'Gestión de riesgo para reducir la vulnerabilidad ante desastres',
+        'Ordenamiento territorial y catastro municipal',
+        'Seguridad alimentaria y nutricional',
+      ],
+    },
+    extra: {                                                                                               // [COD] municipios · [PM26] p. 1
+      title: 'Municipios que la integran',
+      items: ['Ceguaca', 'Concepción del Sur', 'Ilama', 'Las Vegas', 'San Pedro Zacapa', 'San Francisco de Ojuera', 'Santa Bárbara', 'Santa Rita'],
+      highlight: ['Concepción del Sur', 'Las Vegas', 'Santa Bárbara'],
+      note:
+        'Marcados, los municipios de la mancomunidad que comprende el parque. PANAMOSAB se extiende también por ' +
+        'Gualala, que no forma parte de CODEMUSSBA.',
+    },
+    role: {                                                                                                // [CONV] cl. 3.ª, CODEMUSSBA 1–11
+      title: 'Su papel en PANAMOSAB',
+      source: 'Responsabilidades asignadas a CODEMUSSBA en el convenio de comanejo (cláusula tercera).',
+      items: [
+        'Identificar y gestionar recursos nacionales o internacionales para el manejo del área protegida.',
+        'Elaborar y presentar planes de actividades, operativos, anuales o bianuales, para ejecutarlos de forma conjunta ante los municipios con influencia en PANAMOSAB.',
+        'Cumplir las políticas, leyes, reglamentos y lineamientos del ICF aplicables al comanejo, conforme al decreto de creación y al plan de manejo.',
+        'Informar a las corporaciones municipales sobre los avances de los planes de actividades.',
+        'Mantener informadas a las comunidades y organizaciones locales —juntas de agua, patronatos, cajas de ahorro y crédito, entre otras— para coordinar las actividades de manejo.',
+        'Apoyar la conformación y el fortalecimiento de los consejos consultivos forestales, de áreas protegidas y vida silvestre a nivel comunitario y municipal.',
+        'Disponer de personal técnico para la gestión de recursos externos.',
+        'Disponer de una estructura administrativa para el control de los fondos destinados al área protegida.',
+        'Presentar informes al ICF según lo establecido en el convenio.',
+        'Gestionar ordenanzas en las corporaciones municipales de la mancomunidad para frenar el deterioro de los recursos naturales del área.',
+        'Gestionar en asamblea general la contribución de los municipios de la mancomunidad para ejecutar los planes operativos del área.',
       ],
     },
   },
@@ -282,9 +415,9 @@ export const PROFILES: OrgProfile[] = [
     },
     photos: {                                                                                              // [OADM]
       main: {
-        ...photo(arbolCampo1280, arbolCampo720, 1280, 720, 1280, 729,
-          'Un hombre y una niña de un centro de educación básica siembran juntos un árbol joven en un campo; al fondo, otros estudiantes.'),
-        focus: '58% 40%',
+        ...photo(arbolCampo1280, arbolCampo720, 1280, 720, 1280, 713,
+          'Tres estudiantes siembran juntos un árbol joven en el patio de su centro educativo.'),
+        focus: '50% 60%',
       },
       detail: photo(arbolVivero934, arbolVivero560, 934, 560, 934, 1245,
         'Vivero con hileras de plántulas de árboles en bolsas, bajo una malla de sombra.'),

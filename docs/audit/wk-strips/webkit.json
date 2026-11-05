@@ -1,0 +1,521 @@
+[
+ {
+  "scrollWidth": 375,
+  "vw": 375,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 22860,
+  "route": "comanejo/",
+  "label": "iPhone SE",
+  "w": 375,
+  "h": 667,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.8
+ },
+ {
+  "scrollWidth": 375,
+  "vw": 375,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 7701,
+  "route": "biodiversidad/",
+  "label": "iPhone SE",
+  "w": 375,
+  "h": 667,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.7
+ },
+ {
+  "scrollWidth": 375,
+  "vw": 375,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 4483,
+  "route": "turismo/",
+  "label": "iPhone SE",
+  "w": 375,
+  "h": 667,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.7
+ },
+ {
+  "scrollWidth": 375,
+  "vw": 375,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600"
+  ],
+  "cls": 0,
+  "docHeight": 2665,
+  "route": "contacto/",
+  "label": "iPhone SE",
+  "w": 375,
+  "h": 667,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.7
+ },
+ {
+  "scrollWidth": 390,
+  "vw": 390,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 23351,
+  "route": "comanejo/",
+  "label": "iPhone 13/14",
+  "w": 390,
+  "h": 844,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.7
+ },
+ {
+  "scrollWidth": 390,
+  "vw": 390,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 8079,
+  "route": "biodiversidad/",
+  "label": "iPhone 13/14",
+  "w": 390,
+  "h": 844,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.8
+ },
+ {
+  "scrollWidth": 390,
+  "vw": 390,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 4904,
+  "route": "turismo/",
+  "label": "iPhone 13/14",
+  "w": 390,
+  "h": 844,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.7
+ },
+ {
+  "scrollWidth": 390,
+  "vw": 390,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600"
+  ],
+  "cls": 0,
+  "docHeight": 2842,
+  "route": "contacto/",
+  "label": "iPhone 13/14",
+  "w": 390,
+  "h": 844,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.7
+ },
+ {
+  "scrollWidth": 844,
+  "vw": 844,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 16338,
+  "route": "comanejo/",
+  "label": "iPhone horizontal",
+  "w": 844,
+  "h": 390,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.7
+ },
+ {
+  "scrollWidth": 844,
+  "vw": 844,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 5718,
+  "route": "biodiversidad/",
+  "label": "iPhone horizontal",
+  "w": 844,
+  "h": 390,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.7
+ },
+ {
+  "scrollWidth": 844,
+  "vw": 844,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 3411,
+  "route": "turismo/",
+  "label": "iPhone horizontal",
+  "w": 844,
+  "h": 390,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.7
+ },
+ {
+  "scrollWidth": 844,
+  "vw": 844,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600"
+  ],
+  "cls": 0,
+  "docHeight": 1676,
+  "route": "contacto/",
+  "label": "iPhone horizontal",
+  "w": 844,
+  "h": 390,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.7
+ },
+ {
+  "scrollWidth": 820,
+  "vw": 820,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 21701,
+  "route": "comanejo/",
+  "label": "iPad",
+  "w": 820,
+  "h": 1180,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 1.0
+ },
+ {
+  "scrollWidth": 820,
+  "vw": 820,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 8317,
+  "route": "biodiversidad/",
+  "label": "iPad",
+  "w": 820,
+  "h": 1180,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.7
+ },
+ {
+  "scrollWidth": 820,
+  "vw": 820,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 5171,
+  "route": "turismo/",
+  "label": "iPad",
+  "w": 820,
+  "h": 1180,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.8
+ },
+ {
+  "scrollWidth": 820,
+  "vw": 820,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600"
+  ],
+  "cls": 0,
+  "docHeight": 2826,
+  "route": "contacto/",
+  "label": "iPad",
+  "w": 820,
+  "h": 1180,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.7
+ },
+ {
+  "scrollWidth": 1180,
+  "vw": 1180,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Inicio",
+    42,
+    44
+   ]
+  ],
+  "tinyText": {
+   "11": 1
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 15504,
+  "route": "comanejo/",
+  "label": "Tablet horizontal",
+  "w": 1180,
+  "h": 820,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.7
+ },
+ {
+  "scrollWidth": 1180,
+  "vw": 1180,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Inicio",
+    42,
+    44
+   ]
+  ],
+  "tinyText": {
+   "11": 1
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 5994,
+  "route": "biodiversidad/",
+  "label": "Tablet horizontal",
+  "w": 1180,
+  "h": 820,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.8
+ },
+ {
+  "scrollWidth": 1180,
+  "vw": 1180,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Inicio",
+    42,
+    44
+   ]
+  ],
+  "tinyText": {
+   "11": 1
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 3807,
+  "route": "turismo/",
+  "label": "Tablet horizontal",
+  "w": 1180,
+  "h": 820,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.7
+ },
+ {
+  "scrollWidth": 1180,
+  "vw": 1180,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Inicio",
+    42,
+    44
+   ]
+  ],
+  "tinyText": {
+   "11": 1
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600"
+  ],
+  "cls": 0,
+  "docHeight": 1865,
+  "route": "contacto/",
+  "label": "Tablet horizontal",
+  "w": 1180,
+  "h": 820,
+  "engine": "webkit",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.7
+ }
+]

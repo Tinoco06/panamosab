@@ -1,0 +1,1169 @@
+[
+ {
+  "scrollWidth": 360,
+  "vw": 360,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Fotografía ilustrativa: río Sa",
+    326,
+    31
+   ]
+  ],
+  "tinyText": {
+   "9": 1,
+   "10": 2,
+   "11": 10
+  },
+  "images": [
+   {
+    "src": "contours-KXmmOx27.svg",
+    "broken": false,
+    "distorted": false,
+    "w": 360,
+    "nat": 150,
+    "dpr": 1
+   }
+  ],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0.0021851481119791664,
+  "docHeight": 10296,
+  "route": "index.html",
+  "label": "Android compacto",
+  "w": 360,
+  "h": 800,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 7.7
+ },
+ {
+  "scrollWidth": 360,
+  "vw": 360,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 24072,
+  "route": "comanejo/",
+  "label": "Android compacto",
+  "w": 360,
+  "h": 800,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 360,
+  "vw": 360,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 8036,
+  "route": "biodiversidad/",
+  "label": "Android compacto",
+  "w": 360,
+  "h": 800,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 360,
+  "vw": 360,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 4818,
+  "route": "turismo/",
+  "label": "Android compacto",
+  "w": 360,
+  "h": 800,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 360,
+  "vw": 360,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600"
+  ],
+  "cls": 0,
+  "docHeight": 2792,
+  "route": "contacto/",
+  "label": "Android compacto",
+  "w": 360,
+  "h": 800,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 412,
+  "vw": 412,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Fotografía ilustrativa: río Sa",
+    368,
+    31
+   ]
+  ],
+  "tinyText": {
+   "9": 1,
+   "10": 2,
+   "11": 10
+  },
+  "images": [
+   {
+    "src": "contours-KXmmOx27.svg",
+    "broken": false,
+    "distorted": false,
+    "w": 412,
+    "nat": 150,
+    "dpr": 1
+   }
+  ],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0.0021716225850279196,
+  "docHeight": 10886,
+  "route": "index.html",
+  "label": "Android estándar",
+  "w": 412,
+  "h": 915,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 7.4
+ },
+ {
+  "scrollWidth": 412,
+  "vw": 412,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 23295,
+  "route": "comanejo/",
+  "label": "Android estándar",
+  "w": 412,
+  "h": 915,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 412,
+  "vw": 412,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 8173,
+  "route": "biodiversidad/",
+  "label": "Android estándar",
+  "w": 412,
+  "h": 915,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 412,
+  "vw": 412,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 4994,
+  "route": "turismo/",
+  "label": "Android estándar",
+  "w": 412,
+  "h": 915,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 412,
+  "vw": 412,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600"
+  ],
+  "cls": 0,
+  "docHeight": 2889,
+  "route": "contacto/",
+  "label": "Android estándar",
+  "w": 412,
+  "h": 915,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 800,
+  "vw": 800,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Fotografía ilustrativa: río Sa",
+    560,
+    14
+   ]
+  ],
+  "tinyText": {
+   "9": 1,
+   "10": 1,
+   "11": 9
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0.0018602811686197918,
+  "docHeight": 8189,
+  "route": "index.html",
+  "label": "Móvil horizontal compacto",
+  "w": 800,
+  "h": 360,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 7.3
+ },
+ {
+  "scrollWidth": 800,
+  "vw": 800,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 19289,
+  "route": "comanejo/",
+  "label": "Móvil horizontal compacto",
+  "w": 800,
+  "h": 360,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 800,
+  "vw": 800,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 7100,
+  "route": "biodiversidad/",
+  "label": "Móvil horizontal compacto",
+  "w": 800,
+  "h": 360,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 800,
+  "vw": 800,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 3773,
+  "route": "turismo/",
+  "label": "Móvil horizontal compacto",
+  "w": 800,
+  "h": 360,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 800,
+  "vw": 800,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [],
+  "tinyText": {
+   "11": 2
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600"
+  ],
+  "cls": 0,
+  "docHeight": 2386,
+  "route": "contacto/",
+  "label": "Móvil horizontal compacto",
+  "w": 800,
+  "h": 360,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 1366,
+  "vw": 1366,
+  "overflow": [],
+  "textClip": [
+   [
+    "dd.m-0.order-first.whitespace-nowrap",
+    "87-87",
+    108,
+    85
+   ]
+  ],
+  "smallTargets": [
+   [
+    "Fotografía ilustrativa: río Sa",
+    560,
+    14
+   ]
+  ],
+  "tinyText": {
+   "10": 2,
+   "11": 10
+  },
+  "images": [
+   {
+    "src": "contours-KXmmOx27.svg",
+    "broken": false,
+    "distorted": false,
+    "w": 711,
+    "nat": 150,
+    "dpr": 1
+   }
+  ],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0.004527251107307728,
+  "docHeight": 7650,
+  "route": "index.html",
+  "label": "Laptop",
+  "w": 1366,
+  "h": 768,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 8.4
+ },
+ {
+  "scrollWidth": 1366,
+  "vw": 1366,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Inicio",
+    42,
+    12
+   ],
+   [
+    "Comanejo",
+    77,
+    12
+   ],
+   [
+    "Biodiversidad",
+    105,
+    12
+   ],
+   [
+    "Turismo",
+    62,
+    12
+   ],
+   [
+    "Contacto",
+    113,
+    34
+   ]
+  ],
+  "tinyText": {
+   "11": 1
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0.00012668048353408834,
+  "docHeight": 15113,
+  "route": "comanejo/",
+  "label": "Laptop",
+  "w": 1366,
+  "h": 768,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 1366,
+  "vw": 1366,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Inicio",
+    42,
+    12
+   ],
+   [
+    "Comanejo",
+    77,
+    12
+   ],
+   [
+    "Biodiversidad",
+    105,
+    12
+   ],
+   [
+    "Turismo",
+    62,
+    12
+   ],
+   [
+    "Contacto",
+    113,
+    34
+   ]
+  ],
+  "tinyText": {
+   "11": 1
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 7.938290077579535e-05,
+  "docHeight": 5853,
+  "route": "biodiversidad/",
+  "label": "Laptop",
+  "w": 1366,
+  "h": 768,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 1366,
+  "vw": 1366,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Inicio",
+    42,
+    12
+   ],
+   [
+    "Comanejo",
+    77,
+    12
+   ],
+   [
+    "Biodiversidad",
+    105,
+    12
+   ],
+   [
+    "Turismo",
+    62,
+    12
+   ],
+   [
+    "Contacto",
+    113,
+    34
+   ]
+  ],
+  "tinyText": {
+   "11": 1
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0.00023004520565910093,
+  "docHeight": 3706,
+  "route": "turismo/",
+  "label": "Laptop",
+  "w": 1366,
+  "h": 768,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 1366,
+  "vw": 1366,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Inicio",
+    42,
+    12
+   ],
+   [
+    "Comanejo",
+    77,
+    12
+   ],
+   [
+    "Biodiversidad",
+    105,
+    12
+   ],
+   [
+    "Turismo",
+    62,
+    12
+   ],
+   [
+    "Contacto",
+    113,
+    34
+   ]
+  ],
+  "tinyText": {
+   "11": 1
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600"
+  ],
+  "cls": 0.000139785361141063,
+  "docHeight": 1873,
+  "route": "contacto/",
+  "label": "Laptop",
+  "w": 1366,
+  "h": 768,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 1440,
+  "vw": 1440,
+  "overflow": [],
+  "textClip": [
+   [
+    "dd.m-0.order-first.whitespace-nowrap",
+    "87-87",
+    114,
+    106
+   ]
+  ],
+  "smallTargets": [
+   [
+    "Fotografía ilustrativa: río Sa",
+    560,
+    14
+   ]
+  ],
+  "tinyText": {
+   "10": 2,
+   "11": 10
+  },
+  "images": [
+   {
+    "src": "contours-KXmmOx27.svg",
+    "broken": false,
+    "distorted": false,
+    "w": 749,
+    "nat": 150,
+    "dpr": 1
+   }
+  ],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0.004612466242283951,
+  "docHeight": 8637,
+  "route": "index.html",
+  "label": "Desktop",
+  "w": 1440,
+  "h": 900,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 8.3
+ },
+ {
+  "scrollWidth": 1440,
+  "vw": 1440,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Inicio",
+    42,
+    12
+   ],
+   [
+    "Comanejo",
+    77,
+    12
+   ],
+   [
+    "Biodiversidad",
+    105,
+    12
+   ],
+   [
+    "Turismo",
+    62,
+    12
+   ],
+   [
+    "Contacto",
+    113,
+    34
+   ]
+  ],
+  "tinyText": {
+   "11": 1
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0.00011316872427983538,
+  "docHeight": 15935,
+  "route": "comanejo/",
+  "label": "Desktop",
+  "w": 1440,
+  "h": 900,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.3
+ },
+ {
+  "scrollWidth": 1440,
+  "vw": 1440,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Inicio",
+    42,
+    12
+   ],
+   [
+    "Comanejo",
+    77,
+    12
+   ],
+   [
+    "Biodiversidad",
+    105,
+    12
+   ],
+   [
+    "Turismo",
+    62,
+    12
+   ],
+   [
+    "Contacto",
+    113,
+    34
+   ]
+  ],
+  "tinyText": {
+   "11": 1
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 7.032857510288065e-05,
+  "docHeight": 6265,
+  "route": "biodiversidad/",
+  "label": "Desktop",
+  "w": 1440,
+  "h": 900,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 1440,
+  "vw": 1440,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Inicio",
+    42,
+    12
+   ],
+   [
+    "Comanejo",
+    77,
+    12
+   ],
+   [
+    "Biodiversidad",
+    105,
+    12
+   ],
+   [
+    "Turismo",
+    62,
+    12
+   ],
+   [
+    "Contacto",
+    113,
+    34
+   ]
+  ],
+  "tinyText": {
+   "11": 1
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0.0002503858024691358,
+  "docHeight": 4048,
+  "route": "turismo/",
+  "label": "Desktop",
+  "w": 1440,
+  "h": 900,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 1440,
+  "vw": 1440,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Inicio",
+    42,
+    12
+   ],
+   [
+    "Comanejo",
+    77,
+    12
+   ],
+   [
+    "Biodiversidad",
+    105,
+    12
+   ],
+   [
+    "Turismo",
+    62,
+    12
+   ],
+   [
+    "Contacto",
+    113,
+    34
+   ]
+  ],
+  "tinyText": {
+   "11": 1
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600"
+  ],
+  "cls": 0.00012024176954732509,
+  "docHeight": 1979,
+  "route": "contacto/",
+  "label": "Desktop",
+  "w": 1440,
+  "h": 900,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 1920,
+  "vw": 1920,
+  "overflow": [],
+  "textClip": [
+   [
+    "dd.m-0.order-first.whitespace-nowrap",
+    "87-87",
+    126,
+    106
+   ]
+  ],
+  "smallTargets": [
+   [
+    "Fotografía ilustrativa: río Sa",
+    560,
+    14
+   ]
+  ],
+  "tinyText": {
+   "10": 2,
+   "11": 10
+  },
+  "images": [
+   {
+    "src": "contours-KXmmOx27.svg",
+    "broken": false,
+    "distorted": false,
+    "w": 1022,
+    "nat": 150,
+    "dpr": 1
+   }
+  ],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0.004528686382152416,
+  "docHeight": 10124,
+  "route": "index.html",
+  "label": "Desktop grande",
+  "w": 1920,
+  "h": 1080,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 8.5
+ },
+ {
+  "scrollWidth": 1920,
+  "vw": 1920,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Inicio",
+    42,
+    12
+   ],
+   [
+    "Comanejo",
+    77,
+    12
+   ],
+   [
+    "Biodiversidad",
+    105,
+    12
+   ],
+   [
+    "Turismo",
+    62,
+    12
+   ],
+   [
+    "Contacto",
+    113,
+    34
+   ]
+  ],
+  "tinyText": {
+   "11": 1
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0,
+  "docHeight": 17033,
+  "route": "comanejo/",
+  "label": "Desktop grande",
+  "w": 1920,
+  "h": 1080,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 1920,
+  "vw": 1920,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Inicio",
+    42,
+    12
+   ],
+   [
+    "Comanejo",
+    77,
+    12
+   ],
+   [
+    "Biodiversidad",
+    105,
+    12
+   ],
+   [
+    "Turismo",
+    62,
+    12
+   ],
+   [
+    "Contacto",
+    113,
+    34
+   ]
+  ],
+  "tinyText": {
+   "11": 1
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 7.726648903677984e-05,
+  "docHeight": 7114,
+  "route": "biodiversidad/",
+  "label": "Desktop grande",
+  "w": 1920,
+  "h": 1080,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 1920,
+  "vw": 1920,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Inicio",
+    42,
+    12
+   ],
+   [
+    "Comanejo",
+    77,
+    12
+   ],
+   [
+    "Biodiversidad",
+    105,
+    12
+   ],
+   [
+    "Turismo",
+    62,
+    12
+   ],
+   [
+    "Contacto",
+    113,
+    34
+   ]
+  ],
+  "tinyText": {
+   "11": 1
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600",
+   "Manrope 800"
+  ],
+  "cls": 0.00025925925925925926,
+  "docHeight": 4437,
+  "route": "turismo/",
+  "label": "Desktop grande",
+  "w": 1920,
+  "h": 1080,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ },
+ {
+  "scrollWidth": 1920,
+  "vw": 1920,
+  "overflow": [],
+  "textClip": [],
+  "smallTargets": [
+   [
+    "Inicio",
+    42,
+    12
+   ],
+   [
+    "Comanejo",
+    77,
+    12
+   ],
+   [
+    "Biodiversidad",
+    105,
+    12
+   ],
+   [
+    "Turismo",
+    62,
+    12
+   ],
+   [
+    "Contacto",
+    113,
+    34
+   ]
+  ],
+  "tinyText": {
+   "11": 1
+  },
+  "images": [],
+  "fonts": [
+   "Instrument Sans 400 600"
+  ],
+  "cls": 0.0001354809670781893,
+  "docHeight": 2118,
+  "route": "contacto/",
+  "label": "Desktop grande",
+  "w": 1920,
+  "h": 1080,
+  "engine": "chromium",
+  "errors": [],
+  "failed": [],
+  "load_s": 0.0
+ }
+]

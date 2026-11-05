@@ -1,5 +1,6 @@
-/* Contenido de la página «El Parque». Fuente: Plan de Manejo del Parque Nacional Montaña de Santa Bárbara
-   2018–2029 (recursos/), resumen ejecutivo (p. 7) y antecedentes (p. 8). */
+/* Contenido de la portada (01–04). Fuente principal: Plan de Manejo del Parque Nacional Montaña de Santa Bárbara
+   2018–2029 (recursos/), resumen ejecutivo (p. 7) y antecedentes (p. 8). Las superficies coinciden con el Plan de
+   Manejo 2026–2038 (borrador, resumen ejecutivo); las comunidades abastecidas proceden de este último (p. 10). */
 
 export const PARQUE = {
   eyebrow: 'El Parque',
@@ -19,9 +20,6 @@ export const PARQUE = {
   zones: {                                                                                              // p. 7–8
     eyebrow: 'Cómo se protege',
     title: 'Un bosque protegido por zonas.',
-    body:
-      'El área protegida se divide en una zona núcleo y una zona de amortiguamiento. Por el este, la zona de ' +
-      'amortiguamiento se traslapa con el área protegida Cuenca del Lago de Yojoa.',
     total: 13942.17,
     items: [
       {
@@ -31,7 +29,6 @@ export const PARQUE = {
       {
         name: 'Zona de amortiguamiento', ha: 7661.88,
         text: 'Una franja de al menos 2 km alrededor de la zona núcleo, cuya función es protegerla.',
-        sub: ['Subzona de uso restringido', 'Subzona de recuperación', 'Subzona de uso sostenible de recursos naturales'],
       },
     ],
   },
@@ -53,10 +50,16 @@ export const PARQUE = {
       'Entre los servicios ecosistémicos de gran importancia que brinda la montaña está el abastecimiento de agua ' +
       'a los municipios que la rodean.',
     // grafía del Plan de Manejo (p. 7); el convenio de comanejo escribe «Concepción de Sur»
-    places: ['Las Vegas', 'Santa Bárbara', 'Concepción Sur', 'Gualala'],
+    places: ['Las Vegas', 'Santa Bárbara', 'Concepción del Sur', 'Gualala'],
     // frase narrativa sobre la fotografía (síntesis del texto anterior, sin datos nuevos)
     quote: 'De la montaña nace el agua que sostiene la vida.',
     placesLabel: 'Municipios que abastece',
+    // Plan de Manejo 2026–2038 (borrador), p. 10: relación del parque con las comunidades
+    communities: {
+      value: '94',
+      label: 'comunidades, dentro del área protegida y en su área de influencia, reciben agua de la montaña.',
+      source: 'Plan de Manejo 2026–2038 (borrador), p. 10.',
+    },
     photo: {
       alt: 'Río de montaña que baja entre rocas cubiertas de musgo, rodeado de vegetación densa de bosque nuboso.',
       credit: 'Fotografía ilustrativa: río Savegre, bosque nuboso de San Gerardo de Dota (Costa Rica). Rodtico21, CC BY-SA 4.0.',

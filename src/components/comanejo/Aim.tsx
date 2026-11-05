@@ -1,6 +1,6 @@
 import { COMANEJO } from '../../content/comanejo';
 import { Reveal } from '../Reveal';
-import { delay, grid, label, section } from './ui';
+import { delay, grid, label, section } from '../ui';
 
 /**
  * El objetivo de manejo, tal como lo cita el convenio, en una banda verde bosque a todo el ancho: la

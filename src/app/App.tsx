@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Footer } from '../components/Footer';
 import { Loader } from '../components/Loader';
 import { ComanejoSection } from '../sections/ComanejoSection';
+import { ExploreSection } from '../sections/ExploreSection';
 import { HeroSection } from '../sections/HeroSection';
 import { ParkSection } from '../sections/ParkSection';
 import { TerritorySection } from '../sections/TerritorySection';
@@ -14,7 +15,9 @@ export type Status = 'loading' | 'ready' | 'error';
 
 // Capas fijas a pantalla completa. De atrás hacia delante: cielo (0) · terreno (2) · contenido (3) ·
 // niebla delantera (4, por encima del texto y sin capturar eventos) · menú compacto abierto (20)
-const layer = 'pointer-events-none fixed inset-0 block h-full w-full';
+// `webgl-layer` (index.css): alto de la pantalla grande (lvh), no `inset-0`, para que las barras de Safari al
+// aparecer y desaparecer no cambien el tamaño de los canvas durante el scroll
+const layer = 'webgl-layer';
 const LAYERS = { sky: `${layer} z-0`, scene: `${layer} z-2`, mist: `${layer} z-4` };
 
 export default function App() {
@@ -60,6 +63,7 @@ export default function App() {
         <ZonesSection />
         <WaterSection />
         <ComanejoSection />
+        <ExploreSection />
       </main>
       <Footer current="inicio" />
 

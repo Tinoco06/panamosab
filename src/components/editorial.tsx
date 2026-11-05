@@ -56,7 +56,7 @@ export function CtaLink({ href, children, onDark = false }: { href: string; chil
     <a
       href={href}
       className={
-        'group focus-ring inline-flex items-center gap-3 rounded-full border px-6 py-[14px] text-[12px] font-semibold uppercase tracking-[0.18em] no-underline transition-colors duration-300 ' +
+        'group focus-ring inline-flex min-h-12 items-center gap-3 rounded-full border px-6 py-[14px] text-[12px] font-semibold uppercase tracking-[0.18em] no-underline transition-colors duration-300 ' +
         (onDark
           ? 'border-hero-cream/50 text-hero-cream hover:bg-hero-cream hover:text-hero-deep'
           : 'border-forest/50 text-forest hover:bg-forest hover:text-ivory')
