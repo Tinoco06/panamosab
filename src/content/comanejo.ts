@@ -10,30 +10,26 @@
    Para sumar una organización: añadir su perfil a PROFILES y su id en la lista de firmantes (profileId).
    Solo se publican perfiles con información respaldada; un firmante sin perfil aparece únicamente por su
    nombre y su logotipo en la franja de firmantes. */
-import asideCampo720 from '../assets/comanejo/aside-campo-720.jpg';
-import asideCampo1280 from '../assets/comanejo/aside-campo-1280.jpg';
-import asideBosque560 from '../assets/comanejo/aside-bosque-560.jpg';
-import asideBosque934 from '../assets/comanejo/aside-bosque-934.jpg';
-import arbolCampo720 from '../assets/comanejo/arbol-campo-720.jpg';
-import arbolCampo1280 from '../assets/comanejo/arbol-campo-1280.jpg';
+import asideCampo720 from '../assets/comanejo/aside-campo-720.webp';
+import asideCampo1280 from '../assets/comanejo/aside-campo-1280.webp';
+import asideBosque560 from '../assets/comanejo/aside-bosque-560.webp';
+import asideBosque934 from '../assets/comanejo/aside-bosque-934.webp';
+import arbolCampo720 from '../assets/comanejo/arbol-campo-720.webp';
+import arbolCampo1280 from '../assets/comanejo/arbol-campo-1280.webp';
 import arbolVivero560 from '../assets/comanejo/arbol-vivero-560.jpg';
 import arbolVivero934 from '../assets/comanejo/arbol-vivero-934.jpg';
-// logotipos cuadrados con margen, para el carrusel de la portada (fuentes de cada logotipo en el README)
-import logoArbol from '../assets/logos/arbol.webp';
-import logoAside from '../assets/logos/aside.webp';
-import logoCasm from '../assets/logos/casm.webp';
-import logoCodemussba from '../assets/logos/codemussba.webp';
-import logoIcf from '../assets/logos/icf.webp';
-// los mismos logotipos recortados al trazo, para la franja de firmantes y los perfiles
+// logotipos recortados al trazo, para las franjas de firmantes, los perfiles y Contacto (fuentes en el README)
 import markArbol from '../assets/logos/trim/arbol.webp';
 import markAside from '../assets/logos/trim/aside.webp';
 import markCasm from '../assets/logos/trim/casm.webp';
 import markCodemussba from '../assets/logos/trim/codemussba.webp';
-import markIcf from '../assets/logos/trim/icf.webp';
-// logotipos oficiales descargados de los sitios de cada institución, para su perfil
-import officialCodemussba from '../assets/logos/official/codemussba.webp';
-import officialIcf from '../assets/logos/official/icf.webp';
-import { photo, type Photo } from './media';
+// ICF: logotipo oficial a color (Gobierno de la República · ICF), entregado por el equipo; fondo transparente
+import logoIcf from '../assets/logos/official/icf-gobierno-color-800.webp';
+import montana640 from '../assets/biblioteca/montana-aerea-640.webp';
+import montana1280 from '../assets/biblioteca/montana-aerea-1280.webp';
+import montana1920 from '../assets/biblioteca/montana-aerea-1920.webp';
+import montana2400 from '../assets/biblioteca/montana-aerea-2400.webp';
+import { photo, sized, type Photo } from './media';
 
 export type { Photo };
 
@@ -57,11 +53,9 @@ export interface OrgProfile {
   areas: { title: string; items: string[] };
   /** lista secundaria (áreas protegidas, territorio, ejes…); `highlight` marca los ítems de PANAMOSAB */
   extra: { title: string; items: string[]; highlight?: string | string[]; note?: string };
-  /** logotipo oficial propio del perfil (si no, el de la franja); `onDark`: versión para fondo oscuro */
-  logo?: Mark & { onDark?: boolean; credit?: string };
-  /** responsabilidades que el convenio asigna a la organización */
-  role: { title: string; source: string; items: string[] };
-  photos?: { main: Photo; detail: Photo; credit: string };
+  /** responsabilidades que el convenio asigna a la organización, sintetizadas en un párrafo */
+  role: { title: string; source: string; text: string };
+  photos?: { main: Photo; detail: Photo };
 }
 
 export const COMANEJO = {
@@ -97,23 +91,23 @@ export const COMANEJO = {
     { value: '5', unit: 'instituciones', label: 'Firmantes del convenio' },
   ],
   signatoriesTitle: 'Instituciones firmantes del convenio',
-  sources:
-    'Fuentes: Convenio para el co-manejo del Parque Nacional Montaña de Santa Bárbara (13 de enero de 2026); ' +
-    'presentación institucional de ASIDE (2026); documento institucional de CASM; sitios oficiales del ICF ' +
-    '(icf.gob.hn), CODEMUSSBA (codemussba.org) y Árbol de Misericordia (arboldemisericordia.org); Plan de Manejo ' +
-    'PANAMOSAB 2026–2038 (borrador).',
+  // entre la apertura y los firmantes: la montaña que el convenio protege (fotografía propia, sin pie)
+  landscape: sized([[montana640, 640], [montana1280, 1280], [montana1920, 1920], [montana2400, 2400]], 2400, 1350,
+    'Vista aérea de laderas cubiertas de bosque denso, con paredes de roca y nubes sobre las cumbres.'),
 };
 
 // [CONV] encabezado: denominaciones de las cinco partes firmantes
-export const SIGNATORIES: { acronym: string; name: string; logo: string; mark: Mark; profileId?: string }[] = [
-  { acronym: 'ICF', name: 'Instituto Nacional de Conservación y Desarrollo Forestal, Áreas Protegidas y Vida Silvestre', logo: logoIcf, mark: { src: markIcf, width: 408, height: 191 }, profileId: 'icf' },
-  { acronym: 'ASIDE', name: 'Asociación de Investigación para el Desarrollo Ecológico y Socioeconómico', logo: logoAside, mark: { src: markAside, width: 409, height: 312 }, profileId: 'aside' },
-  { acronym: 'CASM', name: 'Comisión de Acción Social Menonita', logo: logoCasm, mark: { src: markCasm, width: 375, height: 460 }, profileId: 'casm' },
-  { acronym: 'CODEMUSSBA', name: 'Consejo de Municipios del Sur de Santa Bárbara', logo: logoCodemussba, mark: { src: markCodemussba, width: 519, height: 153 }, profileId: 'codemussba' },
-  { acronym: 'Árbol de Misericordia', name: 'Organización Árbol de Misericordia', logo: logoArbol, mark: { src: markArbol, width: 614, height: 239 }, profileId: 'arbol' },
+export const SIGNATORIES: { acronym: string; name: string; mark: Mark; profileId?: string }[] = [
+  { acronym: 'ICF', name: 'Instituto Nacional de Conservación y Desarrollo Forestal, Áreas Protegidas y Vida Silvestre', mark: { src: logoIcf, width: 800, height: 142 }, profileId: 'icf' },
+  { acronym: 'ASIDE', name: 'Asociación de Investigación para el Desarrollo Ecológico y Socioeconómico', mark: { src: markAside, width: 409, height: 312 }, profileId: 'aside' },
+  { acronym: 'CASM', name: 'Comisión de Acción Social Menonita', mark: { src: markCasm, width: 375, height: 460 }, profileId: 'casm' },
+  { acronym: 'CODEMUSSBA', name: 'Consejo de Municipios del Sur de Santa Bárbara', mark: { src: markCodemussba, width: 519, height: 153 }, profileId: 'codemussba' },
+  { acronym: 'Árbol de Misericordia', name: 'Organización Árbol de Misericordia', mark: { src: markArbol, width: 614, height: 239 }, profileId: 'arbol' },
 ];
 
 export const markOf = (id: string) => SIGNATORIES.find((s) => s.profileId === id)!.mark;
+/** Logotipo apaisado (como el del ICF, de más de 4:1): necesita todo el ancho disponible para leerse. */
+export const isWideMark = (m: Mark) => m.width / m.height > 4;
 
 export const PROFILES: OrgProfile[] = [
   {
@@ -127,7 +121,6 @@ export const PROFILES: OrgProfile[] = [
       'forestales, las áreas protegidas y la vida silvestre, mediante instrumentos normativos y reguladores para ' +
       'su protección, restauración, aprovechamiento, fomento y conservación.',
     website: { href: 'https://icf.gob.hn/', label: 'icf.gob.hn' },
-    logo: { src: officialIcf, width: 806, height: 371, onDark: true, credit: 'Logotipo oficial publicado en icf.gob.hn.' },
     figure: {                                                                                              // [ICF] áreas protegidas
       value: '93',
       label: 'áreas protegidas integran el Sistema Nacional de Áreas Protegidas de Honduras (SINAPH): 75 declaradas legalmente y 18 propuestas, según el ICF',
@@ -172,20 +165,9 @@ export const PROFILES: OrgProfile[] = [
     },
     role: {                                                                                                // [CONV] cl. 3.ª, ICF 1–11
       title: 'Su papel en PANAMOSAB',
-      source: 'Responsabilidades asignadas al ICF en el convenio de comanejo (cláusula tercera).',
-      items: [
-        'Dar a conocer el convenio a organizaciones productivas, empresas, ONG e instituciones del Estado a nivel local, para coordinar los programas y proyectos del área.',
-        'Dar a conocer las normas y lineamientos de manejo del área: regular las actividades prohibidas, controlar las permitidas y velar por que las actividades productivas cuenten con sus permisos.',
-        'Apoyar y dictaminar las gestiones de los comanejadores para captar recursos locales, nacionales o internacionales para el manejo del área.',
-        'Establecer cada año con los comanejadores, mediante el comité técnico, los planes operativos anuales de ejecución.',
-        'Brindar acompañamiento técnico en gestión de la información para las auditorías técnicas y administrativas de las actividades en el área.',
-        'Dar seguimiento a las propuestas de los comanejadores ante el Fondo para el Manejo de Áreas Protegidas y Vida Silvestre (FAPVS), el Programa Nacional de Reforestación y el Programa Nacional de Guarda Recursos.',
-        'Gestionar con los comanejadores propuestas financieras para la regularización de la Montaña de Santa Bárbara.',
-        'Coordinar el proceso legal y técnico de regularización del área, la titulación a favor del Estado de las áreas que correspondan y su inscripción en el Catálogo del Patrimonio Público Forestal Inalienable.',
-        'Apoyar, supervisar y aprobar las declaratorias, delimitaciones y demarcaciones de la montaña y de sus microcuencas.',
-        'Fortalecer a las Unidades Municipales Ambientales en el uso de las plataformas informativas del ICF.',
-        'Conformar e integrar los Consejos Consultivos Forestales, Áreas Protegidas y Vida Silvestre en la jurisdicción de cada municipalidad.',
-      ],
+      source: 'Síntesis de las responsabilidades asignadas al ICF en el convenio de comanejo (cláusula tercera).',
+      text:
+        'El ICF da a conocer el convenio y las normas de manejo del área, regula las actividades prohibidas y controla las permitidas, y coordina la regularización legal y técnica de la montaña, incluidas sus delimitaciones y las de sus microcuencas. Con los comanejadores establece cada año los planes operativos, acompaña y da seguimiento a la gestión de recursos, y fortalece a las unidades ambientales municipales y a los consejos consultivos.',
     },
   },
   {
@@ -220,21 +202,15 @@ export const PROFILES: OrgProfile[] = [
     },
     role: {                                                                                                // [CONV] cl. 3.ª, ASIDE 1–6
       title: 'Su papel en PANAMOSAB',
-      source: 'Responsabilidades asignadas a ASIDE en el convenio de comanejo (cláusula tercera).',
-      items: [
-        'Disponer de una estructura técnica y administrativa para el control, manejo y administración del área protegida.',
-        'Identificar y gestionar recursos nacionales o extranjeros para el manejo del área.',
-        'Gestionar el programa de investigación y los demás planes específicos del plan de manejo.',
-        'Mantener informadas a las comunidades y organizaciones locales sobre el proceso de manejo.',
-        'Presentar el informe bianual de resultados e involucrar a los demás firmantes en las propuestas de proyectos.',
-      ],
+      source: 'Síntesis de las responsabilidades asignadas a ASIDE en el convenio de comanejo (cláusula tercera).',
+      text:
+        'ASIDE aporta una estructura técnica y administrativa para el control y el manejo del área, gestiona recursos nacionales y extranjeros, y conduce el programa de investigación y los demás planes específicos del plan de manejo. Además, mantiene informadas a las comunidades, presenta su informe bianual de resultados e involucra a los demás firmantes en sus propuestas de proyectos.',
     },
     photos: {                                                                                              // [ASIDE] 5
       main: photo(asideCampo1280, asideCampo720, 1280, 720, 1280, 576,
         'Técnicos de ASIDE reunidos con jóvenes y familias de una comunidad en un claro rodeado de bosque.'),
       detail: photo(asideBosque934, asideBosque560, 934, 560, 934, 700,
         'Ave posada en una rama cubierta de musgo y plantas epífitas.'),
-      credit: 'Fotografías: ASIDE, de su trabajo en áreas protegidas y medio ambiente.',
     },
   },
   {
@@ -283,14 +259,9 @@ export const PROFILES: OrgProfile[] = [
     },
     role: {                                                                                                // [CONV] cl. 3.ª, CASM 1–5
       title: 'Su papel en PANAMOSAB',
-      source: 'Responsabilidades asignadas a CASM en el convenio de comanejo (cláusula tercera).',
-      items: [
-        'Gestionar, organizar y brindar los medios de verificación para evaluar la efectividad de manejo del área protegida.',
-        'Elaborar su Plan Operativo Anual o Bianual, base del plan conjunto del área y del plan de acción de comanejo.',
-        'Asesorar a las municipalidades para fortalecer el Programa Nacional de Guarda Recursos del SINAPH.',
-        'Asegurar el involucramiento de las comunidades en los proyectos y subvenciones que se ejecutan en el área.',
-        'Apoyar el fortalecimiento de capacidades de organizaciones locales y comunidades dentro del área protegida.',
-      ],
+      source: 'Síntesis de las responsabilidades asignadas a CASM en el convenio de comanejo (cláusula tercera).',
+      text:
+        'CASM organiza los medios de verificación para evaluar la efectividad de manejo del área y elabora su plan operativo, base del plan conjunto de comanejo. También asesora a las municipalidades en el Programa Nacional de Guarda Recursos, asegura el involucramiento de las comunidades en los proyectos del área y apoya el fortalecimiento de capacidades de las organizaciones locales.',
     },
   },
   {
@@ -303,7 +274,6 @@ export const PROFILES: OrgProfile[] = [
       'Mancomunidad que surgió en 2002 por iniciativa de alcaldes del sur de Santa Bárbara. Hoy la integran ocho ' +
       'municipios, que se organizan para gestionar proyectos conjuntos de desarrollo socioeconómico y humano.',
     website: { href: 'https://www.codemussba.org/', label: 'codemussba.org' },
-    logo: { src: officialCodemussba, width: 470, height: 309, credit: 'Logotipo oficial publicado en codemussba.org.' },
     statements: [
       {                                                                                                    // [COD] filosofía (misión, textual)
         label: 'Misión',
@@ -341,20 +311,9 @@ export const PROFILES: OrgProfile[] = [
     },
     role: {                                                                                                // [CONV] cl. 3.ª, CODEMUSSBA 1–11
       title: 'Su papel en PANAMOSAB',
-      source: 'Responsabilidades asignadas a CODEMUSSBA en el convenio de comanejo (cláusula tercera).',
-      items: [
-        'Identificar y gestionar recursos nacionales o internacionales para el manejo del área protegida.',
-        'Elaborar y presentar planes de actividades, operativos, anuales o bianuales, para ejecutarlos de forma conjunta ante los municipios con influencia en PANAMOSAB.',
-        'Cumplir las políticas, leyes, reglamentos y lineamientos del ICF aplicables al comanejo, conforme al decreto de creación y al plan de manejo.',
-        'Informar a las corporaciones municipales sobre los avances de los planes de actividades.',
-        'Mantener informadas a las comunidades y organizaciones locales —juntas de agua, patronatos, cajas de ahorro y crédito, entre otras— para coordinar las actividades de manejo.',
-        'Apoyar la conformación y el fortalecimiento de los consejos consultivos forestales, de áreas protegidas y vida silvestre a nivel comunitario y municipal.',
-        'Disponer de personal técnico para la gestión de recursos externos.',
-        'Disponer de una estructura administrativa para el control de los fondos destinados al área protegida.',
-        'Presentar informes al ICF según lo establecido en el convenio.',
-        'Gestionar ordenanzas en las corporaciones municipales de la mancomunidad para frenar el deterioro de los recursos naturales del área.',
-        'Gestionar en asamblea general la contribución de los municipios de la mancomunidad para ejecutar los planes operativos del área.',
-      ],
+      source: 'Síntesis de las responsabilidades asignadas a CODEMUSSBA en el convenio de comanejo (cláusula tercera).',
+      text:
+        'Desde la mancomunidad, CODEMUSSBA elabora planes de actividades para ejecutarlos junto a los municipios, informa de sus avances a las corporaciones municipales y gestiona en ellas ordenanzas y contribuciones para proteger los recursos del área. Con su propio personal técnico y administrativo gestiona recursos externos, mantiene informadas a las comunidades —juntas de agua, patronatos, cajas de ahorro—, apoya los consejos consultivos y presenta sus informes al ICF, conforme a sus lineamientos.',
     },
   },
   {
@@ -404,14 +363,9 @@ export const PROFILES: OrgProfile[] = [
     },
     role: {                                                                                                // [CONV] cl. 3.ª, Árbol de Misericordia 1–5
       title: 'Su papel en PANAMOSAB',
-      source: 'Responsabilidades asignadas a Árbol de Misericordia en el convenio de comanejo (cláusula tercera).',
-      items: [
-        'Disponer de personal técnico y administrativo para la protección y el manejo del área protegida, incluida la emisión de políticas locales con ese fin.',
-        'Identificar y gestionar recursos nacionales o externos para el manejo del área, de acuerdo con el convenio, el plan de manejo y los planes operativos.',
-        'Promover programas de sensibilización y educación ambiental con líderes comunitarios, productores, grupos de mujeres, patronatos y alumnos de centros educativos.',
-        'Promover viveros para la producción de especies arbóreas nativas de bosque nublado.',
-        'Apoyar procesos de fortalecimiento de capacidades a organizaciones locales y comunidades dentro del área protegida.',
-      ],
+      source: 'Síntesis de las responsabilidades asignadas a Árbol de Misericordia en el convenio de comanejo (cláusula tercera).',
+      text:
+        'Árbol de Misericordia aporta personal técnico y administrativo para proteger y manejar el área, gestiona recursos para su manejo y promueve viveros de especies arbóreas nativas del bosque nublado. Además, impulsa programas de educación ambiental con líderes comunitarios, productores, grupos de mujeres, patronatos y estudiantes, y apoya el fortalecimiento de capacidades de las comunidades.',
     },
     photos: {                                                                                              // [OADM]
       main: {
@@ -421,7 +375,6 @@ export const PROFILES: OrgProfile[] = [
       },
       detail: photo(arbolVivero934, arbolVivero560, 934, 560, 934, 1245,
         'Vivero con hileras de plántulas de árboles en bolsas, bajo una malla de sombra.'),
-      credit: 'Fotografías: Árbol de Misericordia, de su trabajo en reforestación y medio ambiente.',
     },
   },
 ];

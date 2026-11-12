@@ -1,5 +1,5 @@
-import { CtaLink, Sources } from '../components/editorial';
-import { BgVideo, Frame, Img } from '../components/media/Photo';
+import { CtaLink } from '../components/editorial';
+import { ArtImg, BgVideo, Frame, Img } from '../components/media/Photo';
 import { Reveal } from '../components/Reveal';
 import { RiseLines } from '../components/RiseLines';
 import { delay, display, grid, label, section, sectionTitle } from '../components/ui';
@@ -11,6 +11,7 @@ import { url } from '../lib/routes';
  *   1. portada: el video del bosque nublado a todo el ancho, con el titular encima; debajo, la entradilla;
  *   2. puntos de interés: una lista editorial numerada (nombre en grande y el de sus cabañas), sin mapa
  *      ni rutas inventadas;
+ *   2b. una franja con la cascada a todo el ancho (fotografía propia, sin pie ni ubicación);
  *   3. actividades: las tres que nombra el documento; el aviturismo, con el quetzal y su temporada;
  *   4. antes de visitar: un bloque discreto que remite a Contacto.
  */
@@ -63,6 +64,13 @@ export function TurismoPage() {
         <p style={delay(0.5)} className="reveal-fade mt-6 mb-0 max-w-[80ch] text-[15px] leading-[1.6] text-ink-dim">{T.placesNote}</p>
       </Reveal>
 
+      {/* 2b · el bosque: la cascada a todo el ancho (horizontal en pantallas anchas, vertical en móvil) */}
+      <Reveal as="figure" threshold={0.15} className={`${section} -mx-gutter mb-0`}>
+        <Frame className="h-[clamp(420px,72vh,820px)] max-md:h-[min(125vw,680px)]">
+          <ArtImg wide={T.walk.wide} tall={T.walk.tall} />
+        </Frame>
+      </Reveal>
+
       {/* 3 · actividades */}
       <Reveal as="section" aria-labelledby="actividades-title" className={`${section} ${grid} items-start gap-y-14`}>
         <div className="col-span-5 max-md:col-span-1">
@@ -81,7 +89,6 @@ export function TurismoPage() {
         <article id="aviturismo" aria-labelledby="aviturismo-title" className="col-span-6 col-start-7 scroll-mt-8 max-md:col-span-1 max-md:col-start-auto">
           <figure style={delay(0.2)} className="reveal-fade m-0">
             <div className="aspect-[435/332] w-full max-w-[435px] overflow-hidden"><Img photo={T.birding.photo} sizes="435px" /></div>
-            <figcaption className="mt-3 text-[13px] leading-[1.5] text-ink-dim">{T.birding.photo.credit}</figcaption>
           </figure>
           <h3 id="aviturismo-title" style={delay(0.28)} className={`${label} reveal-fade mt-10 mb-0 text-moss`}>{T.birding.title}</h3>
           <p style={delay(0.32)} className="reveal-fade mt-4 mb-0 max-w-[46ch] text-[length:clamp(19px,1.5vw,22px)] leading-[1.5] text-ink">{T.birding.text}</p>
@@ -109,7 +116,6 @@ export function TurismoPage() {
         </div>
       </Reveal>
 
-      <Sources>{T.sources}</Sources>
     </>
   );
 }

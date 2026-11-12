@@ -1,3 +1,4 @@
+import { PauseIcon, PlayIcon } from '@phosphor-icons/react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { Photo } from '../../content/media';
 
@@ -16,6 +17,16 @@ export function Img({ photo, sizes, className = '', eager = false }: { photo: Ph
       style={photo.focus ? { objectPosition: photo.focus } : undefined}
       className={`block size-full bg-rule object-cover ${className}`}
     />
+  );
+}
+
+/** Dirección de arte: `wide` (horizontal) en pantallas anchas y `tall` (vertical) en móvil, llenando el marco. */
+export function ArtImg({ wide, tall, className = '' }: { wide: Photo; tall: Photo; className?: string }) {
+  return (
+    <picture className="block size-full">
+      <source media="(max-width: 820px)" srcSet={tall.srcSet} sizes="100vw" width={tall.width} height={tall.height} />
+      <Img photo={wide} sizes="100vw" className={className} />
+    </picture>
   );
 }
 
@@ -74,9 +85,7 @@ export function BgVideo({ video, className = '' }: { video: { src: string; poste
         aria-label={playing ? 'Pausar el video' : 'Reproducir el video'}
         className="focus-ring absolute cursor-pointer right-gutter bottom-[clamp(36px,8vh,80px)] z-1 inline-flex size-11 items-center justify-center rounded-full border border-hero-cream/40 bg-[rgb(12_30_27/0.3)] text-hero-cream backdrop-blur-sm transition-colors hover:bg-[rgb(12_30_27/0.5)]"
       >
-        <svg aria-hidden="true" viewBox="0 0 16 16" className="size-3.5 fill-current">
-          {playing ? <path d="M4 2h3v12H4zM9 2h3v12H9z" /> : <path d="M4 2l10 6-10 6z" />}
-        </svg>
+        {playing ? <PauseIcon aria-hidden="true" size={16} weight="fill" /> : <PlayIcon aria-hidden="true" size={16} weight="fill" />}
       </button>
     </>
   );

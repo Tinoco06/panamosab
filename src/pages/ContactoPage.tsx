@@ -1,3 +1,4 @@
+import { ArrowUpRightIcon } from '@phosphor-icons/react';
 import { Eyebrow } from '../components/Eyebrow';
 import { Reveal } from '../components/Reveal';
 import { RiseLines } from '../components/RiseLines';
@@ -35,7 +36,7 @@ export function ContactoPage() {
                 href={o.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group focus-ring grid grid-cols-[clamp(96px,11vw,168px)_minmax(0,1fr)_auto] items-center gap-x-[clamp(24px,3.4vw,56px)] py-[clamp(22px,3.6vh,36px)] no-underline max-md:grid-cols-1 max-md:gap-y-4"
+                className="group focus-ring grid grid-cols-[clamp(120px,14vw,216px)_minmax(0,1fr)_auto] items-center gap-x-[clamp(24px,3.4vw,56px)] py-[clamp(22px,3.6vh,36px)] no-underline max-md:grid-cols-1 max-md:gap-y-4"
               >
                 {/* logotipo en una caja fija: las siglas empiezan a la misma altura en todas las filas (en móvil, encima) */}
                 <span className="flex h-[clamp(52px,5vw,76px)] items-center max-md:h-[48px]">
@@ -58,7 +59,7 @@ export function ContactoPage() {
                 <span className="inline-flex items-center gap-4 justify-self-end text-[16px] text-forest max-md:justify-self-start max-md:text-[15px]">
                   <span className="border-b border-forest/30 pb-0.5 transition-colors duration-300 group-hover:border-forest">{o.label}</span>
                   <span aria-hidden="true" className="inline-flex size-11 items-center justify-center rounded-full border border-forest/25 transition-[background-color,color,border-color] duration-300 group-hover:border-forest group-hover:bg-forest group-hover:text-hero-cream max-md:size-9">
-                    <span className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none">↗</span>
+                    <ArrowUpRightIcon size={18} weight="light" className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none" />
                   </span>
                 </span>
                 <span className="sr-only">(sitio oficial, se abre en una pestaña nueva)</span>

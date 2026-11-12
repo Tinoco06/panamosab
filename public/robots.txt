@@ -1,0 +1,4 @@
+# Rastreo permitido en todo el sitio: páginas, CSS, JavaScript, imágenes y datos del relieve 3D (/assets/).
+# Al compilar con SITE_URL se añade la línea «Sitemap:» con el dominio público (ver vite.config.ts).
+User-agent: *
+Allow: /

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Símbolo del sitio web (favicon): macizo estilizado de la Montaña de Santa Bárbara. No es un logotipo oficial. -->
+  <rect width="64" height="64" rx="13" fill="#183a32"/>
+  <g transform="translate(3.2 3.2) scale(.9)">
+    <path d="M4 50 20 32 32 46 32 50Z" fill="#5d7d47"/>
+    <path d="M11 50 28 24 33 29 40 13 60 50Z" fill="#f1f0e8"/>
+    <path d="M40 13 60 50 47 50 42.5 31 36.5 35.5 33 29Z" fill="#c3ccd0"/>
+  </g>
+</svg>

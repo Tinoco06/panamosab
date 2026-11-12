@@ -53,8 +53,8 @@ export function ParkSection({ refs }: { refs: PageRefs }) {
                 'in-[[data-status=error]]:visible in-[[data-status=error]]:top-[62%] in-[[data-status=error]]:left-[34%] in-[[data-status=error]]:opacity-100'
               }
             >
-              {/* punto en la cumbre, con un halo que respira despacio */}
-              <span aria-hidden="true" className="absolute -top-[22px] -left-[22px] size-[44px] rounded-full border border-moss/60 motion-safe:animate-[peak-halo_3.2s_ease-out_infinite]" />
+              {/* punto en la cumbre, con un halo que respira despacio (solo mientras la marca se ve: data-shown) */}
+              <span aria-hidden="true" className="peak-halo absolute -top-[22px] -left-[22px] size-[44px] rounded-full border border-moss/60" />
               <span aria-hidden="true" className="absolute -top-[6px] -left-[6px] size-[12px] rounded-full border-2 border-forest bg-ivory" />
               <span aria-hidden="true" className="absolute bottom-[6px] left-0 h-[var(--lh)] w-px bg-gradient-to-t from-forest/30 to-forest" />
               <div className="absolute bottom-[calc(var(--lh)+6px)] left-0 whitespace-nowrap pb-3 max-md:right-0 max-md:left-auto max-md:text-right">

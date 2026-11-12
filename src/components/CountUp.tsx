@@ -6,6 +6,8 @@ const format = (n: number, decimals: number) =>
 /**
  * Cifra que se cuenta hasta su valor la primera vez que entra en pantalla (1.8 s, desaceleración suave).
  * Con movimiento reducido aparece directamente. Los lectores de pantalla leen siempre el valor final.
+ * Mientras cuenta usa números de ancho fijo (no tiembla); al terminar, proporcionales: así un «1» inicial no queda
+ * desplazado respecto del texto que tiene debajo.
  */
 export function CountUp({ value, decimals = 0, className = '' }: { value: number; decimals?: number; className?: string }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -32,11 +34,12 @@ export function CountUp({ value, decimals = 0, className = '' }: { value: number
   }, [value]);
 
   const final = format(value, decimals);
+  const done = shown === value;
   return (
     // el valor final, invisible, reserva el ancho: la cifra no empuja nada mientras cuenta
     <span ref={ref} className={`relative inline-block ${className}`}>
-      <span aria-hidden="true" className="invisible tabular-nums">{final}</span>
-      <span aria-hidden="true" className="absolute top-0 left-0 tabular-nums">{format(shown, decimals)}</span>
+      <span aria-hidden="true" className="invisible proportional-nums">{final}</span>
+      <span aria-hidden="true" className={`absolute top-0 left-0 ${done ? 'proportional-nums' : 'tabular-nums'}`}>{format(shown, decimals)}</span>
       <span className="sr-only">{final}</span>
     </span>
   );

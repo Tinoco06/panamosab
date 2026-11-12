@@ -1,5 +1,5 @@
 import { CountUp } from '../components/CountUp';
-import { CtaLink, Sources } from '../components/editorial';
+import { CtaLink } from '../components/editorial';
 import { Eyebrow } from '../components/Eyebrow';
 import { Frame, Img } from '../components/media/Photo';
 import { Reveal } from '../components/Reveal';
@@ -14,8 +14,10 @@ import { url } from '../lib/routes';
  *   2. cifras: dos grandes (plantas y orquídeas) y una complementaria (aves), con la nota de inventario preliminar;
  *   3. especies protagonistas: el quetzal (fotografía y texto) y la salamandra narizona en una banda verde bosque;
  *   4. flora: la fotografía vertical del bosque con epífitas junto al texto, la orquídea y las seis endémicas;
+ *      debajo, un mosaico de seis orquídeas (fotografías propias, sin identificar la especie);
  *   5. cierre en salvia: bosque nublado y sistema hídrico como contexto, con las salidas a Turismo y Comanejo.
  * Fuente única: Plan de Manejo 2026–2038 (borrador); las cifras se presentan como el documento las presenta.
+ * Las fotografías no llevan pie.
  */
 
 
@@ -41,7 +43,6 @@ function Quetzal({ s }: { s: Species }) {
           <Frame className="aspect-[435/332] w-full max-w-[435px]">
             <Img photo={s.photo} sizes="435px" />
           </Frame>
-          <figcaption className="mt-3 max-w-[435px] text-[13px] leading-[1.5] text-ink-dim">{s.photo.credit}</figcaption>
         </figure>
       )}
       <div className="col-span-6 col-start-7 max-md:col-span-1 max-md:col-start-auto">
@@ -69,7 +70,7 @@ function Quetzal({ s }: { s: Species }) {
 function Salamandra({ s }: { s: Species }) {
   const cr = s.status[0];
   return (
-    <Reveal as="article" id={s.id} aria-labelledby={`${s.id}-name`} threshold={0.25} className="mt-[clamp(80px,13vh,144px)] -mx-gutter scroll-mt-8 bg-forest px-gutter py-[clamp(80px,13vh,152px)]">
+    <Reveal as="article" id={s.id} aria-labelledby={`${s.id}-name`} threshold={0.25} className={`${section} -mx-gutter scroll-mt-8 bg-forest px-gutter py-[clamp(80px,13vh,152px)]`}>
       <div className={`${grid} items-end gap-y-12`}>
         <div className="col-span-7 max-md:col-span-1">
           <p style={delay(0)} className={`${label} reveal-fade m-0 text-gold`}>{s.tag}</p>
@@ -86,7 +87,6 @@ function Salamandra({ s }: { s: Species }) {
           {s.photo ? (
             <figure className="m-0">
               <Frame className="aspect-[4/3]"><Img photo={s.photo} sizes="(max-width: 820px) 100vw, 32vw" /></Frame>
-              <figcaption className="mt-3 text-[13px] leading-[1.5] text-hero-cream/65">{s.photo.credit}</figcaption>
             </figure>
           ) : null}
           {/* la categoría de amenaza, en grande: el dato que hace única a esta ficha */}
@@ -100,9 +100,24 @@ function Salamandra({ s }: { s: Species }) {
   );
 }
 
+/*
+ * Mosaico de la galería en escritorio (12 columnas, filas de altura fija): la principal ocupa 7 columnas y 4 filas;
+ * a su lado, dos apaisadas de 5 × 2; debajo, una fila de tres de anchos distintos (4, 5 y 3), para que el ritmo no
+ * sea el de una cuadrícula uniforme. En móvil, una fila que se desliza con el dedo.
+ */
+const MOSAIC = [
+  'col-span-7 row-span-4',
+  'col-span-5 row-span-2',
+  'col-span-5 row-span-2',
+  'col-span-4 row-span-3',
+  'col-span-5 row-span-3',
+  'col-span-3 row-span-3',
+];
+
 export function BiodiversidadPage() {
   const B = BIO;
   const [quetzal, salamandra] = B.species;
+  const orchids = B.figures.main[1];
   return (
     <>
       {/* 1 · apertura */}
@@ -120,12 +135,11 @@ export function BiodiversidadPage() {
         <Frame className="h-[clamp(320px,50vh,540px)] max-md:h-[300px]">
           <Img photo={B.hero} sizes="100vw" eager className="object-[50%_40%]" />
         </Frame>
-        <figcaption className="mt-3 px-gutter text-right text-[13px] leading-[1.5] text-ink-dim max-md:text-left">{B.hero.credit}</figcaption>
       </Reveal>
 
       {/* 2 · cifras */}
       <Reveal as="section" aria-labelledby="cifras-title" className={section}>
-        <h2 id="cifras-title" style={delay(0)} className={`${label} reveal-fade m-0 border-t border-forest/20 pt-5 text-ink-dim`}>La montaña en cifras</h2>
+        <h2 id="cifras-title" style={delay(0)} className={`${label} reveal-fade m-0 text-ink-dim`}>La montaña en cifras</h2>
         <div className="mt-[clamp(32px,5vh,56px)] grid grid-cols-12 gap-x-[clamp(24px,3.4vw,56px)] gap-y-12 max-md:grid-cols-1">
           {B.figures.main.map((f, i) => (
             <div key={f.label} style={delay(0.1 + i * 0.12)} className="reveal-fade col-span-4 max-nav:col-span-6 max-md:col-span-1">
@@ -142,9 +156,6 @@ export function BiodiversidadPage() {
             <p className="mt-4 mb-0 text-[16px] leading-[1.5] text-ink">{B.figures.complement.label}</p>
           </div>
         </div>
-        <p style={delay(0.45)} className="reveal-fade mt-[clamp(40px,6vh,64px)] mb-0 max-w-[88ch] border-l-2 border-gold pl-5 text-[15px] leading-[1.6] text-ink-dim">
-          {B.figures.note}
-        </p>
       </Reveal>
 
       {/* 3 · especies protagonistas */}
@@ -165,7 +176,6 @@ export function BiodiversidadPage() {
           <Frame className="aspect-[4/5] max-md:aspect-[4/3]">
             <Img photo={B.flora.forest} sizes="(max-width: 820px) 100vw, 46vw" />
           </Frame>
-          <figcaption className="mt-3 text-[13px] leading-[1.5] text-ink-dim max-md:px-gutter">{B.flora.forest.credit}</figcaption>
         </figure>
         <div className="col-span-5 col-start-8 max-md:col-span-1 max-md:col-start-auto nav:sticky nav:top-12">
           <p style={delay(0.05)} className={`${label} reveal-fade m-0 text-ink-dim`}>Flora</p>
@@ -173,11 +183,8 @@ export function BiodiversidadPage() {
           <p style={delay(0.2)} className="reveal-fade mt-6 mb-0 text-[18px] leading-[1.6] text-ink">{B.flora.text}</p>
 
           <figure style={delay(0.3)} className="reveal-fade mt-10 mb-0 grid grid-cols-[minmax(0,200px)_1fr] items-end gap-5 max-md:grid-cols-[minmax(0,150px)_1fr]">
-            <div className="aspect-[434/332] overflow-hidden"><Img photo={B.flora.orchid} sizes="200px" /></div>
-            <figcaption>
-              <span className="block text-[17px] font-medium leading-[1.4] text-forest">{B.flora.orchids}</span>
-              <span className="mt-2 block text-[13px] leading-[1.5] text-ink-dim">{B.flora.orchid.credit}</span>
-            </figcaption>
+            <div className="aspect-[4/3] overflow-hidden"><Img photo={B.flora.orchid} sizes="200px" /></div>
+            <figcaption className="text-[17px] font-medium leading-[1.4] text-forest">{B.flora.orchids}</figcaption>
           </figure>
 
           <div style={delay(0.4)} className="reveal-fade mt-12">
@@ -188,9 +195,39 @@ export function BiodiversidadPage() {
               ))}
             </ul>
             <p className="mt-4 mb-0 text-[15px] leading-[1.55] text-ink">{B.flora.endemicNote}</p>
-            <p className="mt-3 mb-0 text-[13px] leading-[1.5] text-ink-dim">{B.flora.source}</p>
           </div>
         </div>
+      </Reveal>
+
+      {/* 4b · galería de orquídeas: mosaico; en móvil, una fila que se desliza con el dedo (sin movimiento automático) */}
+      <Reveal as="section" aria-labelledby="orquideas-title" className={section}>
+        <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-5">
+          <h2 id="orquideas-title" style={delay(0)} className={`${sectionTitle} reveal-fade m-0 max-w-[14ch] text-forest`}>{B.flora.galleryTitle}</h2>
+          <p style={delay(0.08)} className="reveal-fade m-0 flex items-baseline gap-4">
+            <span className="font-display text-[length:clamp(48px,4.6vw,76px)] font-extrabold leading-[0.85] tracking-[-0.045em] text-moss proportional-nums">{orchids.value}</span>
+            <span className="max-w-[24ch] text-[15px] leading-[1.45] text-ink">{orchids.label} en el inventario preliminar del parque</span>
+          </p>
+        </div>
+        <ul
+          tabIndex={0}
+          aria-label={B.flora.galleryTitle}
+          className="group/gal focus-ring m-0 mt-[clamp(32px,5vh,56px)] grid list-none auto-rows-[clamp(84px,8.4vw,152px)] grid-cols-12 gap-[clamp(12px,1.4vw,24px)] p-0 max-md:-mx-gutter max-md:flex max-md:snap-x max-md:snap-mandatory max-md:scroll-px-gutter max-md:overflow-x-auto max-md:overscroll-x-contain max-md:px-gutter max-md:[scrollbar-width:none]"
+        >
+          {B.flora.gallery.map((p, i) => (
+            <li key={p.src} style={delay(0.12 + i * 0.07)} className={`group/item reveal-fade ${MOSAIC[i]} max-md:aspect-[4/3] max-md:w-[78vw] max-md:shrink-0 max-md:snap-start`}>
+              {/* al señalar una foto, se acerca despacio y las demás se atenúan (solo con ratón: el hover no existe en pantallas táctiles) */}
+              <div className="size-full transition-[opacity,filter] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-has-[li:hover]/gal:[&:not(:hover)]:opacity-75 group-has-[li:hover]/gal:[&:not(:hover)]:saturate-[0.35] motion-reduce:transition-none">
+                <Frame className="size-full">
+                  <Img
+                    photo={p}
+                    sizes={i === 0 ? '(max-width: 820px) 78vw, 56vw' : '(max-width: 820px) 78vw, 40vw'}
+                    className="transition-[scale] duration-[1400ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/item:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover/item:scale-100"
+                  />
+                </Frame>
+              </div>
+            </li>
+          ))}
+        </ul>
       </Reveal>
 
       {/* 5 · cierre */}
@@ -215,7 +252,6 @@ export function BiodiversidadPage() {
         </div>
       </Reveal>
 
-      <Sources>{B.sources}</Sources>
     </>
   );
 }

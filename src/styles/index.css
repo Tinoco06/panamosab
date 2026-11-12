@@ -41,11 +41,16 @@
   --spacing-safe-b: env(safe-area-inset-bottom, 0px);
 }
 
-/* Halo de la marca de la cumbre (01): se expande y se desvanece despacio */
+/* Halo de la marca de la cumbre (01 y mapa de 03): se expande y se desvanece despacio. Solo corre mientras se ve
+   (marca de 01 a la vista: data-shown, lo pone el motor; 03 en pantalla: data-active; sin WebGL, la marca de 01 queda
+   fija y visible). Una animación infinita sobre un elemento oculto o fuera de pantalla obliga al navegador a recalcular
+   estilos en cada fotograma. */
 @keyframes peak-halo {
   0% { transform: scale(0.35); opacity: 0.9; }
   70%, 100% { transform: scale(1.25); opacity: 0; }
 }
+.peak-halo { animation: peak-halo 3.2s ease-out infinite; animation-play-state: paused; }
+[data-shown] .peak-halo, [data-active] .peak-halo, [data-status="error"] .peak-halo { animation-play-state: running; }
 
 /* Trazos que se dibujan y elementos que aparecen al entrar en pantalla ([data-inview] en la sección): 03 y 04 */
 .reveal-line { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 2.2s cubic-bezier(0.65, 0, 0.35, 1) var(--delay, 0s); }
@@ -57,7 +62,8 @@
 [data-inview] .zone-bar { transform: scaleX(1); }
 /* frontera exterior: un trazo discontinuo que avanza muy despacio, como una ronda */
 @keyframes zone-patrol { to { stroke-dashoffset: -60; } }
-.zone-patrol { animation: zone-patrol 9s linear infinite; }
+.zone-patrol { animation: zone-patrol 9s linear infinite; animation-play-state: paused; }
+[data-active] .zone-patrol { animation-play-state: running; }
 /* al señalar una zona (en el mapa o en la leyenda), la otra se atenúa */
 [data-zone] { transition: opacity 0.45s ease; }
 [data-focus="core"] [data-zone="buffer"], [data-focus="buffer"] [data-zone="core"] { opacity: 0.32; }
@@ -71,7 +77,7 @@
 [data-flowing] .water-ripple { animation-play-state: running; }
 @media (prefers-reduced-motion: reduce) {
   .reveal-line, .reveal-fill, .reveal-fade, .zone-bar { transition: none; }
-  .zone-patrol, .water-flow, .water-ripple { animation: none; }
+  .peak-halo, .zone-patrol, .water-flow, .water-ripple { animation: none; }
 }
 
 /* Capas WebGL fijas (portada). Alto de la pantalla «grande» (100lvh): en Safari para iOS las barras del navegador

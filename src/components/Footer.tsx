@@ -29,7 +29,7 @@ export function Footer({ current }: { current?: PageId }) {
           </ul>
         </nav>
       </div>
-      <p className="mt-[clamp(48px,8vh,80px)] mb-0 border-t border-hero-cream/15 pt-6 text-[11px] leading-[1.6] text-hero-cream/60">
+      <p className="mt-[clamp(48px,8vh,80px)] mb-0 border-t border-hero-cream/15 pt-6 text-[11px] leading-[1.6] text-hero-cream/60 max-md:pr-16">
         Relieve: AWS Terrain Tiles · Imagen aérea: Esri, Maxar, Earthstar Geographics
       </p>
     </footer>

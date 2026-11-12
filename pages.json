@@ -4,15 +4,15 @@
     "label": "Inicio",
     "path": "",
     "ready": true,
-    "title": "PANAMOSAB — Parque Nacional Montaña de Santa Bárbara",
-    "description": "Sitio institucional del Parque Nacional Montaña de Santa Bárbara: hero inmersivo sobre el relieve real y transición hacia El Parque."
+    "title": "Parque Nacional Montaña de Santa Bárbara | PANAMOSAB",
+    "description": "Área protegida de Santa Bárbara, Honduras: bosque nublado, uno de los picos más altos del país y agua para cuatro municipios. Conoce su biodiversidad y su comanejo."
   },
   {
     "id": "comanejo",
     "label": "Comanejo",
     "path": "comanejo/",
     "ready": true,
-    "title": "Comanejo — PANAMOSAB",
+    "title": "Comanejo | Parque Nacional Montaña de Santa Bárbara",
     "description": "Las instituciones que comparten el manejo del Parque Nacional Montaña de Santa Bárbara mediante el convenio de comanejo de 2026."
   },
   {
@@ -20,7 +20,7 @@
     "label": "Biodiversidad",
     "path": "biodiversidad/",
     "ready": true,
-    "title": "Biodiversidad — PANAMOSAB",
+    "title": "Biodiversidad | Parque Nacional Montaña de Santa Bárbara",
     "description": "La vida del Parque Nacional Montaña de Santa Bárbara: su flora, el quetzal y la salamandra narizona, endémica del área protegida."
   },
   {
@@ -28,8 +28,8 @@
     "label": "Turismo",
     "path": "turismo/",
     "ready": true,
-    "title": "Turismo — PANAMOSAB",
-    "description": "Turismo de naturaleza en el Parque Nacional Montaña de Santa Bárbara: puntos de interés y actividades mencionados en su Plan de Manejo."
+    "title": "Turismo | Parque Nacional Montaña de Santa Bárbara",
+    "description": "Turismo de naturaleza en el Parque Nacional Montaña de Santa Bárbara: puntos de interés, aviturismo y actividades en el bosque nublado."
   },
   {
     "id": "contacto",
@@ -37,7 +37,7 @@
     "path": "contacto/",
     "ready": true,
     "contact": true,
-    "title": "Contacto — PANAMOSAB",
-    "description": "Contacto del Parque Nacional Montaña de Santa Bárbara."
+    "title": "Contacto | Parque Nacional Montaña de Santa Bárbara",
+    "description": "Sitios oficiales de las instituciones que participan en el comanejo del Parque Nacional Montaña de Santa Bárbara."
   }
 ]

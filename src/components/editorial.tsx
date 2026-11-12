@@ -1,4 +1,5 @@
 /* Piezas editoriales compartidas por la portada y las páginas interiores. */
+import { ArrowRightIcon } from '@phosphor-icons/react';
 import type { ReactNode } from 'react';
 import { Eyebrow } from './Eyebrow';
 
@@ -63,12 +64,7 @@ export function CtaLink({ href, children, onDark = false }: { href: string; chil
       }
     >
       {children}
-      <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+      <ArrowRightIcon aria-hidden="true" size={16} weight="regular" className="transition-transform duration-300 group-hover:translate-x-1" />
     </a>
   );
-}
-
-/** Nota de fuentes al pie de una página o sección. */
-export function Sources({ children }: { children: ReactNode }) {
-  return <p className="mt-[clamp(72px,12vh,128px)] mb-0 max-w-[80ch] border-t border-rule pt-5 text-[12px] leading-[1.6] text-ink-dim">{children}</p>;
 }

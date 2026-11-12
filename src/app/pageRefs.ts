@@ -12,6 +12,7 @@ export interface PageRefs {
   parkPeak: RefObject<HTMLDivElement | null>;
   territory: RefObject<HTMLElement | null>;
   territoryStage: RefObject<HTMLDivElement | null>;
+  territoryMap: RefObject<HTMLDivElement | null>;
   territoryColumn: RefObject<HTMLDivElement | null>;
 }
 
@@ -26,6 +27,7 @@ export function usePageRefs(): PageRefs {
     parkPeak: useRef<HTMLDivElement>(null),
     territory: useRef<HTMLElement>(null),
     territoryStage: useRef<HTMLDivElement>(null),
+    territoryMap: useRef<HTMLDivElement>(null),
     territoryColumn: useRef<HTMLDivElement>(null),
   };
 }

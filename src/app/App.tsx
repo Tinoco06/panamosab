@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
+import { BackToTop } from '../components/BackToTop';
 import { Footer } from '../components/Footer';
 import { Loader } from '../components/Loader';
 import { ComanejoSection } from '../sections/ComanejoSection';
-import { ExploreSection } from '../sections/ExploreSection';
 import { HeroSection } from '../sections/HeroSection';
 import { ParkSection } from '../sections/ParkSection';
 import { TerritorySection } from '../sections/TerritorySection';
@@ -63,9 +63,9 @@ export default function App() {
         <ZonesSection />
         <WaterSection />
         <ComanejoSection />
-        <ExploreSection />
       </main>
       <Footer current="inicio" />
+      <BackToTop />
 
       <Loader status={status} />
     </div>

@@ -361,6 +361,7 @@ export const VEIL_FS = /* glsl */ `
     uniform vec4 uWin;             // ventana de 01 mientras se abre: x0, y0, x1, y1 (px del canvas)
     uniform vec2 uWinEdge;         // ancho del borde difuso (px), intensidad
     uniform float uAir;            // tono del aire sobre el territorio (0 mientras aún es un fragmento sobre papel)
+    uniform float uLobe;           // amplitud de los entrantes del límite (fracción del eje transversal)
     uniform float uTime;
     varying vec2 vUv;
     ${NOISE}
@@ -386,7 +387,7 @@ export const VEIL_FS = /* glsl */ `
       float base = uProfile.y + (uProfile.x - uProfile.z) * 0.5 * t
                  + ((uProfile.x + uProfile.z) * 0.5 - uProfile.y) * t * t;
       // 2–3 entrantes y salientes a lo largo del alto (la textura de ruido repite cada 8 unidades)
-      float lobes = (fbm(vec2(along * 6.0 + 3.7, 0.4 + uTime * 0.02)) - 0.5) * 0.15;
+      float lobes = (fbm(vec2(along * 6.0 + 3.7, 0.4 + uTime * 0.02)) - 0.5) * uLobe;
       float bw = uProfile.w;
       float d = across / span - (base + lobes);              // > 0: territorio
 
@@ -481,6 +482,7 @@ export const EDGE_AA_FS = /* glsl */ `
     uniform sampler2D tColor;
     uniform sampler2D tDepth;
     uniform vec2 uInv;             // 1 / tamaño del búfer (px)
+    uniform vec2 uScale;           // parte del búfer que se usa (el búfer se reserva a la densidad máxima)
     uniform vec2 uNF;              // planos cercano y lejano de la cámara
     varying vec2 vUv;
     float lin(vec2 uv) {
@@ -489,25 +491,26 @@ export const EDGE_AA_FS = /* glsl */ `
     }
     float luma(vec4 c) { return dot(c.rgb, vec3(0.299, 0.587, 0.114)) + 0.5 * c.a; }
     void main() {
-      vec4 c = texture2D(tColor, vUv);
+      vec2 uv = vUv * uScale;
+      vec4 c = texture2D(tColor, uv);
       // segunda diferencia de la profundidad lineal: ~0 en una pendiente continua, grande en un salto
-      float dc = lin(vUv);
-      float ex = abs(lin(vUv - vec2(uInv.x, 0.0)) + lin(vUv + vec2(uInv.x, 0.0)) - 2.0 * dc);
-      float ey = abs(lin(vUv - vec2(0.0, uInv.y)) + lin(vUv + vec2(0.0, uInv.y)) - 2.0 * dc);
+      float dc = lin(uv);
+      float ex = abs(lin(uv - vec2(uInv.x, 0.0)) + lin(uv + vec2(uInv.x, 0.0)) - 2.0 * dc);
+      float ey = abs(lin(uv - vec2(0.0, uInv.y)) + lin(uv + vec2(0.0, uInv.y)) - 2.0 * dc);
       if (max(ex, ey) < 0.03 * dc) { gl_FragColor = c; return; }
 
-      vec4 nw = texture2D(tColor, vUv + vec2(-1.0, -1.0) * uInv);
-      vec4 ne = texture2D(tColor, vUv + vec2( 1.0, -1.0) * uInv);
-      vec4 sw = texture2D(tColor, vUv + vec2(-1.0,  1.0) * uInv);
-      vec4 se = texture2D(tColor, vUv + vec2( 1.0,  1.0) * uInv);
+      vec4 nw = texture2D(tColor, uv + vec2(-1.0, -1.0) * uInv);
+      vec4 ne = texture2D(tColor, uv + vec2( 1.0, -1.0) * uInv);
+      vec4 sw = texture2D(tColor, uv + vec2(-1.0,  1.0) * uInv);
+      vec4 se = texture2D(tColor, uv + vec2( 1.0,  1.0) * uInv);
       float lNW = luma(nw), lNE = luma(ne), lSW = luma(sw), lSE = luma(se), lM = luma(c);
       float lMin = min(lM, min(min(lNW, lNE), min(lSW, lSE)));
       float lMax = max(lM, max(max(lNW, lNE), max(lSW, lSE)));
       vec2 dir = vec2(-((lNW + lNE) - (lSW + lSE)), (lNW + lSW) - (lNE + lSE));
       float reduce = max((lNW + lNE + lSW + lSE) * 0.03125, 1.0 / 128.0);
       dir = clamp(dir / (min(abs(dir.x), abs(dir.y)) + reduce), -8.0, 8.0) * uInv;
-      vec4 a = 0.5 * (texture2D(tColor, vUv - dir / 6.0) + texture2D(tColor, vUv + dir / 6.0));
-      vec4 b = 0.5 * a + 0.25 * (texture2D(tColor, vUv - dir * 0.5) + texture2D(tColor, vUv + dir * 0.5));
+      vec4 a = 0.5 * (texture2D(tColor, uv - dir / 6.0) + texture2D(tColor, uv + dir / 6.0));
+      vec4 b = 0.5 * a + 0.25 * (texture2D(tColor, uv - dir * 0.5) + texture2D(tColor, uv + dir * 0.5));
       float lB = luma(b);
       gl_FragColor = (lB < lMin || lB > lMax) ? a : b;
     }

@@ -36,7 +36,10 @@ export function ZonesSection() {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) { setInView(true); return; }
     const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setInView(true); io.disconnect(); } }, { threshold: 0.25 });
     io.observe(el);
-    return () => io.disconnect();
+    // la ronda de la frontera y el halo de la cumbre solo se animan con la sección en pantalla (data-active)
+    const live = new IntersectionObserver(([e]) => el.toggleAttribute('data-active', e.isIntersecting));
+    live.observe(el);
+    return () => { io.disconnect(); live.disconnect(); };
   }, []);
 
   const hover = (id: ZoneId) => ({
@@ -143,7 +146,7 @@ export function ZonesSection() {
             </p>
             {/* cumbre */}
             <div className="pointer-events-none absolute" style={{ left: `${zones.peak[0]}%`, top: `${zones.peak[1]}%` }}>
-              <span aria-hidden="true" className="absolute -top-[18px] -left-[18px] size-[36px] rounded-full border border-hero-cream/80 motion-safe:animate-[peak-halo_3.2s_ease-out_infinite]" />
+              <span aria-hidden="true" className="peak-halo absolute -top-[18px] -left-[18px] size-[36px] rounded-full border border-hero-cream/80" />
               <span aria-hidden="true" style={delay(2.2)} className="reveal-fade absolute -top-[6px] -left-[6px] size-[12px] rounded-full border-2 border-hero-cream bg-forest" />
               <p style={delay(2.5)} className="reveal-fade absolute -top-[12px] left-4 m-0 whitespace-nowrap rounded-full bg-hero-cream/90 px-2.5 py-0.5 text-[12px] font-semibold tracking-[0.02em] text-forest">
                 Cumbre · 2,744 msnm

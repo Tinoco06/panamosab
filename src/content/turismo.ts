@@ -6,17 +6,19 @@ import mar900 from '../assets/turismo/mar-de-nubes-900.webp';
 import mar1867 from '../assets/turismo/mar-de-nubes-1867.webp';
 import bosqueVideo from '../assets/turismo/bosque-nublado-720.mp4';
 import bosquePoster from '../assets/turismo/bosque-nublado-poster.webp';
+import cascadaH1280 from '../assets/biblioteca/cascada-bosque-h-1280.webp';
+import cascadaH1920 from '../assets/biblioteca/cascada-bosque-h-1920.webp';
+import cascada640 from '../assets/biblioteca/cascada-bosque-640.webp';
+import cascada1280 from '../assets/biblioteca/cascada-bosque-1280.webp';
 import quetzal from '../assets/biodiversidad/quetzal-435.webp';
-import { photo, single } from './media';
-
-const PLAN = 'Plan de Manejo 2026–2038 (borrador)';
+import { photo, single, sized } from './media';
 
 export const TURISMO = {
   eyebrow: 'Turismo',
   title: ['Descubre', 'la montaña.'],
   hero: photo(mar1867, mar900, 1867, 900, 1867, 805,
     'Atardecer sobre un mar de nubes; al fondo, la silueta de las montañas contra el cielo anaranjado.',
-    { credit: `Fotografía incluida en el ${PLAN}.`, focus: '50% 40%' }),
+    { focus: '50% 40%' }),
   // portada en prueba: el video sustituye a la fotografía (que se conserva para volver a ella). Video propio
   // (sin pie de crédito), 9 s en bucle, sin audio; se reproduce más lento (`rate`) para que la neblina avance despacio
   heroVideo: {
@@ -45,6 +47,15 @@ export const TURISMO = {
     'Según el Plan de Manejo, son los únicos lugares de la zona con cabañas para albergar turistas y con guías. ' +
     'El documento no confirma que funcionen actualmente.',
 
+  // franja entre los lugares y las actividades (fotografía propia): horizontal en pantallas anchas, vertical en
+  // móvil. No se sitúa en ningún punto de interés: el lugar de la toma no consta
+  walk: {
+    wide: sized([[cascadaH1280, 1280], [cascadaH1920, 1920]], 1920, 1080,
+      'Cascada que baja entre rocas cubiertas de musgo, rodeada de helechos y bosque.'),
+    tall: sized([[cascada640, 640], [cascada1280, 1280]], 1280, 1707,
+      'Cascada que baja entre rocas cubiertas de musgo, rodeada de helechos y bosque.'),
+  },
+
   activitiesTitle: 'Actividades',
   // p. 49: las tres actividades que nombra el documento, sin descripciones añadidas
   activities: ['Caminatas en el bosque', 'Campamentos', 'Aviturismo'],
@@ -53,10 +64,9 @@ export const TURISMO = {
     text:
       'De las actividades que se realizan en la zona, el documento destaca la observación de quetzales en la aldea ' +
       'El Cedral.',
-    season: { months: ['Diciembre', 'Enero'], label: 'Temporada de observación mencionada' },
+    season: { months: ['Diciembre', 'Enero'], label: 'Temporada de observación' },
     caveat: 'La temporada no garantiza avistamientos: el quetzal es un ave silvestre.',
-    photo: single(quetzal, 435, 332, 'Quetzal posado en una rama cubierta de musgo, con su larga cola verde iridiscente.',
-      { credit: `Fotografía de la portada del ${PLAN}.` }),
+    photo: single(quetzal, 435, 332, 'Quetzal posado en una rama cubierta de musgo, con su larga cola verde iridiscente.'),
   },
 
   visit: {
@@ -65,6 +75,4 @@ export const TURISMO = {
       'Este sitio no publica rutas, horarios, tarifas ni servicios disponibles. Consulta previamente las condiciones ' +
       'de acceso y la disponibilidad de los servicios.',
   },
-
-  sources: `Fuente: ${PLAN}, pp. 6 y 49; documento en revisión.`,
 };

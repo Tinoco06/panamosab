@@ -3,6 +3,8 @@
 
 export type Vec3 = [number, number, number];
 
+/** `mobileProfile`: perfil del dispositivo (datos del relieve, malla, lente y poses del hero y de 01), decidido una vez
+ *  al crear el motor. No decide la composición de 02: esa la fija el CSS (ver TERR_STACK). */
 export function createConfig(isMobile: boolean) {
   return {
     exaggeration: 1.15,                        // relieve vertical, apenas acentuado
@@ -30,12 +32,35 @@ export function createConfig(isMobile: boolean) {
       start: { el: 58, dist: 30, az: -12 },
       end: { el: 78, dist: 27, az: -4, pan: [0.3, -0.6] as [number, number] }, // la cámara rodea apenas el territorio (8°) y se desplaza
       radius: 6.5,                                   // radio del macizo (km)…
-      size: isMobile ? 0.5 : 0.52,                   // …como fracción del ancho (móvil) o del alto (escritorio)
-      x: isMobile ? 0.52 : 0.82, y: isMobile ? 0.3 : 0.46,
+      // …en la composición lateral (texto a la izquierda): fracción del alto, sin pasar de una fracción del ancho
+      // (solo limita en pantallas casi cuadradas o verticales), y centro. En la apilada se encaja en su hueco.
+      side: { size: 0.52, maxW: 0.36, x: 0.82, y: 0.46 },
     },
   };
 }
 export type Config = ReturnType<typeof createConfig>;
+
+/**
+ * 02 El Territorio en composición apilada (CSS: ancho ≤ 820 px, o cuando la columna no cabe junto al mapa): el mapa
+ * arriba, en su hueco (`territoryMap`), y el texto debajo, sobre papel. El motor encaja el macizo en el hueco con
+ * estos valores y la sección los usa para decidir si la columna cabe en el escenario fijo sin empequeñecer el mapa;
+ * si no cabe, el escenario muestra solo el mapa y el texto sigue debajo, con scroll normal.
+ */
+export const TERR_STACK = {
+  fade: 56,          // px: el papel sube hasta aquí por encima del borde inferior del hueco (transición de niebla)
+  top: 16,           // px libres sobre el macizo
+  margin: 0.04,      // margen a cada lado, fracción del ancho del hueco
+  extent: 0.98,      // semieje del disco de 6.5 km proyectado, en radios (vista cenital, medido en 02)
+  lift: 0.15,        // el disco proyectado queda ~0.15 radios por debajo del punto de mira (relieve y perspectiva)
+  minWidth: 0.72,    // con el texto en el escenario, el macizo mide al menos este ancho del hueco…
+  minPx: 420,        // …o estos px (tablets): si no llega, el texto sale del escenario
+};
+
+/** Radio en px (del punto de mira) con el que el macizo cabe en un hueco de w × h px en la composición apilada. */
+export function stackRadius(w: number, h: number) {
+  const S = TERR_STACK;
+  return Math.max(0, Math.min(w * (0.5 - S.margin), (h - S.fade - S.top) * 0.5)) / S.extent;
+}
 
 // Mañana clara sobre la montaña (colores sRGB; se pasan a lineal donde corresponde)
 export const LOOK = {

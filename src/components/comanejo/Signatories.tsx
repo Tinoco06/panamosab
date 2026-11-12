@@ -1,4 +1,5 @@
-import { COMANEJO, PROFILES, SIGNATORIES } from '../../content/comanejo';
+import { ArrowDownIcon } from '@phosphor-icons/react';
+import { COMANEJO, isWideMark, PROFILES, SIGNATORIES } from '../../content/comanejo';
 import { onAnchorClick } from '../../lib/smoothScroll';
 import { Reveal } from '../Reveal';
 import { delay, label, section } from '../ui';
@@ -27,7 +28,7 @@ export function Signatories() {
                   alt=""
                   loading="lazy"
                   decoding="async"
-                  className="block h-auto max-h-full w-auto max-w-[min(100%,184px)] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1.5 motion-reduce:transition-none"
+                  className={`block h-auto max-h-full w-auto ${isWideMark(s.mark) ? 'max-w-full' : 'max-w-[min(100%,184px)]'} transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-y-1.5 motion-reduce:transition-none`}
                 />
               </span>
               <span className="mt-7 block border-t border-rule pt-4 max-md:mt-0 max-md:border-t-0 max-md:pt-0">
@@ -36,7 +37,7 @@ export function Signatories() {
                 {linked && (
                   <span className={`${label} mt-4 inline-flex items-center gap-2 text-forest`}>
                     <span className="border-b border-forest/40 pb-0.5 transition-colors duration-300 group-hover:border-forest">Ver perfil</span>
-                    <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-y-0.5">↓</span>
+                    <ArrowDownIcon aria-hidden="true" size={14} weight="bold" className="transition-transform duration-300 group-hover:translate-y-0.5" />
                   </span>
                 )}
               </span>

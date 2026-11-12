@@ -2,6 +2,7 @@
    <div id="root" data-page="…">. No carga el motor 3D ni los datos del relieve. */
 import { StrictMode, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
+import { BackToTop } from './components/BackToTop';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { page, type PageId } from './lib/routes';
@@ -23,6 +24,10 @@ function Content({ id }: { id: PageId }) {
   }
 }
 
+// páginas que terminan en una banda a todo el ancho (salvia: en Comanejo, el último perfil): la banda llega hasta
+// el pie, sin franja marfil
+const FLUSH: PageId[] = ['comanejo', 'biodiversidad', 'turismo'];
+
 function InnerApp({ id }: { id: PageId }) {
   // enlaces con ancla desde otra página (p. ej. /comanejo/#casm): el contenido se dibuja después de que el
   // navegador intenta el salto, así que se repite al montar
@@ -36,10 +41,11 @@ function InnerApp({ id }: { id: PageId }) {
         Saltar al contenido
       </a>
       <Header current={id} />
-      <main id="contenido" className="relative px-gutter pt-[clamp(56px,12vh,128px)] pb-[clamp(96px,16vh,180px)]">
+      <main id="contenido" className={`relative px-gutter pt-[clamp(56px,12vh,128px)] ${FLUSH.includes(id) ? '' : 'pb-[clamp(96px,16vh,180px)]'}`}>
         <Content id={id} />
       </main>
       <Footer current={id} />
+      <BackToTop />
     </>
   );
 }

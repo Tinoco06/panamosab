@@ -8,7 +8,7 @@
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { createConfig, HERO_LOOK, LOOK, PAGE_CLOUDS, PAGE_COLOR, SCROLL_LAG } from './config';
+import { createConfig, HERO_LOOK, LOOK, PAGE_CLOUDS, PAGE_COLOR, SCROLL_LAG, stackRadius, TERR_STACK } from './config';
 import { clamp, easeInOut, lerp, smooth } from './math';
 import { makeNoiseTexture } from './noise';
 import * as SH from './shaders';
@@ -29,6 +29,7 @@ export interface ExperienceElements {
   parkPeak: HTMLElement;          // marca de la cumbre (altitud) sobre el fragmento: el motor la sigue
   territory: HTMLElement;
   territoryStage: HTMLElement;
+  territoryMap: HTMLElement;      // hueco del mapa en la composición apilada (02)
   territoryColumn: HTMLElement;
 }
 
@@ -64,12 +65,14 @@ const rad = THREE.MathUtils.degToRad;
 export function createExperience(els: ExperienceElements, layers: LayerClasses, cb: ExperienceCallbacks): Experience {
   const qs = new URLSearchParams(location.search);
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isMobile = matchMedia('(max-width: 820px), (pointer: coarse)').matches;
+  // Perfil del dispositivo, una vez: datos del relieve, malla, lente y poses del hero y de 01 (no cambian al girar,
+  // así no se recrea nada). La composición de 02 no sale de aquí sino del CSS (layout.stacked), que sí cambia al girar.
+  const mobileProfile = matchMedia('(max-width: 820px), (pointer: coarse)').matches;
   const canHover = matchMedia('(hover: hover) and (pointer: fine)').matches;
   const skipIntro = reduceMotion || qs.has('skip');
   const perf = qs.has('perf');                 // expone contadores para las pruebas de rendimiento
 
-  const CFG = createConfig(isMobile);
+  const CFG = createConfig(mobileProfile);
   const PAGE = new THREE.Color(PAGE_COLOR);
   const cleanups: (() => void)[] = [];
   let disposed = false;
@@ -129,7 +132,7 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
   renderer.setPixelRatio(CFG.dpr);
   renderer.setClearColor(0x000000, 0);
   skyRenderer.setPixelRatio(0.5);
-  mistRenderer.setPixelRatio(isMobile ? 0.35 : 0.5);
+  mistRenderer.setPixelRatio(mobileProfile ? 0.35 : 0.5);
   mistRenderer.setClearColor(0x000000, 0);
 
   const scene = new THREE.Scene();
@@ -163,7 +166,8 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
     vertexShader: SH.QUAD_VS, fragmentShader: SH.EDGE_AA_FS,
     uniforms: {
       tColor: { value: aaTarget.texture }, tDepth: { value: aaTarget.depthTexture },
-      uInv: { value: new THREE.Vector2(1, 1) }, uNF: { value: new THREE.Vector2(camera.near, camera.far) },
+      uInv: { value: new THREE.Vector2(1, 1) }, uScale: { value: new THREE.Vector2(1, 1) },
+      uNF: { value: new THREE.Vector2(camera.near, camera.far) },
     },
     blending: THREE.NoBlending, depthTest: false, depthWrite: false,
   })) : null;
@@ -234,11 +238,12 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
       uRes: { value: new THREE.Vector2(1, 1) },
       uProfile: { value: new THREE.Vector4(0.46, 0.41, 0.53, 0.085) },
       uGuard: { value: 0 },
-      uAxis: { value: isMobile ? 0 : 1 },
+      uAxis: { value: 1 },             // lo fija la composición en cada fotograma (updateTerritory)
       uAmount: { value: 0 },
       uWin: { value: new THREE.Vector4(0, 0, 1, 1) },
       uWinEdge: { value: new THREE.Vector2(0, 0) },
       uAir: { value: 1 },
+      uLobe: { value: 0.15 },
       uTime: SHARED.uTime,
       uNoise: SHARED.uNoise,
     },
@@ -275,13 +280,20 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
 
   let W = 1, H = 1;
   const bufSize = new THREE.Vector2();
-  // el canvas del terreno y su búfer intermedio, siempre del mismo tamaño
-  function sizeScene() {
-    renderer.setSize(W, H, false);
+  // El búfer intermedio se reserva a la densidad máxima y solo cambia con el tamaño de la pantalla: al bajar o subir
+  // la densidad (calidad adaptativa) se dibuja en una parte de él (viewport) y la pasada de bordes lee esa parte.
+  function fitAA() {
     if (!aaTarget || !aaMat) return;
     renderer.getDrawingBufferSize(bufSize);
-    aaTarget.setSize(bufSize.x, bufSize.y);
-    aaMat.uniforms.uInv.value.set(1 / bufSize.x, 1 / bufSize.y);
+    const tw = Math.floor(W * CFG.dpr), th = Math.floor(H * CFG.dpr);
+    aaTarget.setSize(tw, th);             // sin cambio de tamaño, three no reserva nada
+    aaTarget.viewport.set(0, 0, bufSize.x, bufSize.y);
+    aaMat.uniforms.uInv.value.set(1 / tw, 1 / th);
+    aaMat.uniforms.uScale.value.set(bufSize.x / tw, bufSize.y / th);
+  }
+  function sizeScene() {
+    renderer.setSize(W, H, false);
+    fitAA();
   }
   // Alto de la pantalla «grande» (100lvh, el mismo que tienen los canvas: ver .webgl-layer). Se mide con una sonda
   // de estilo en línea, no con el canvas: al crear el motor la hoja de estilos puede no estar aplicada todavía y el
@@ -306,20 +318,54 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
     camera.aspect = W / H;
     fogBackMat.uniforms.uAspect.value = W / H;
     fogFrontMat.uniforms.uAspect.value = W / H;
+    measure();
     layoutTitle();
   }
   listen('resize', () => resize());
   // al girar el dispositivo, iOS informa del tamaño nuevo con retraso: se vuelve a medir tras el giro
-  listen('orientationchange', () => setTimeout(() => resize(), 250));
+  let turnTimer = 0;
+  listen('orientationchange', () => { clearTimeout(turnTimer); turnTimer = window.setTimeout(() => resize(), 250); });
+  cleanups.push(() => clearTimeout(turnTimer));
+
+  // ---------------------------------------------------------------------------
+  // Layout: dónde están los elementos que el motor sigue. Se mide al cambiar el tamaño de la pantalla o de la página
+  // (ResizeObserver, refresco de ScrollTrigger), no en cada fotograma: leer el layout dentro del bucle obligaba al
+  // navegador a recalcular estilos y posiciones de forma síncrona. En cada fotograma solo se resta scrollY.
+  // Posiciones en coordenadas del documento; las del escenario fijo de 02, relativas a él.
+  // ---------------------------------------------------------------------------
+  const layout = {
+    stacked: false,                           // 02 apilada (mapa arriba, texto abajo): la decide el CSS (--terr-stack)
+    frame: { l: 0, t: 0, w: 1, h: 1 },        // hueco del fragmento de 01
+    parkText: { right: 0, bottom: 0 },        // texto de 01
+    terrTop: 0, terrH: 1, stageH: 1,          // sección 02 y su escenario fijo (sticky top: 0)
+    map: { l: 0, t: 0, w: 1, h: 1 },          // hueco del mapa (apilada), relativo al escenario
+    colTop: 0, colRight: 0,                   // columna de texto: arriba (relativo al escenario) y borde derecho
+  };
+  function measure() {
+    const sy = window.scrollY;
+    const f = els.parkFrame.getBoundingClientRect(), t1 = els.parkText.getBoundingClientRect();
+    const sec = els.territory.getBoundingClientRect(), st = els.territoryStage.getBoundingClientRect();
+    const map = els.territoryMap.getBoundingClientRect(), col = els.territoryColumn.getBoundingClientRect();
+    layout.stacked = getComputedStyle(els.territoryStage).getPropertyValue('--terr-stack').trim() === '1';
+    layout.frame = { l: f.left, t: f.top + sy, w: f.width, h: f.height };
+    layout.parkText = { right: t1.right, bottom: t1.bottom + sy };
+    layout.terrTop = sec.top + sy;
+    layout.terrH = sec.height;
+    layout.stageH = st.height;
+    layout.map = { l: map.left, t: map.top - st.top, w: map.width, h: map.height };
+    layout.colTop = col.top - st.top;
+    layout.colRight = col.right;
+  }
+  // borde superior del escenario fijo de 02 en pantalla (antes de fijarse, al fijarse y al soltarse)
+  const stageY = (sy: number) =>
+    Math.min(Math.max(layout.terrTop - sy, 0), layout.terrTop + layout.terrH - layout.stageH - sy);
 
   // Ventana de la sección institucional. Durante la transición se usa su posición "de llegada";
   // después sigue al scroll real, como cualquier fotografía de la página.
   function frameTarget() {
-    const r = els.parkFrame.getBoundingClientRect();
-    const sy = window.scrollY;
+    const sy = window.scrollY, F = layout.frame;
     const end = phases ? phases.p.end : H;
-    const top = r.top + sy - Math.max(sy, end);
-    return { l: r.left, t: top, w: r.width, h: r.height };
+    return { l: F.l, t: F.t - Math.max(sy, end), w: F.w, h: F.h };
   }
 
   // Una "pose" describe cámara + encuadre en pantalla.
@@ -341,14 +387,27 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
     };
   }
 
+  // Encuadre del macizo en 02: punto de mira en pantalla y radio en px. Lateral (escritorio): a la derecha del texto,
+  // por fracciones de la pantalla (valores aprobados). Apilada: encajado en el hueco del mapa, que sigue al escenario
+  // (entra desde abajo y, si el texto va debajo del escenario, sube con él al final).
+  function terrFrame() {
+    if (!layout.stacked) {
+      const S = CFG.terr.side;
+      return { x: S.x * W, y: S.y * H, r: Math.min(S.size * H, S.maxW * W) };
+    }
+    const M = layout.map, r = stackRadius(M.w, M.h);
+    const top = stageY(window.scrollY) + M.t;
+    const S = TERR_STACK;
+    return { x: M.l + M.w / 2, y: top + S.top + (M.h - S.fade - S.top) / 2 - S.lift * r, r };
+  }
+
   function terrPose(k: number): Pose {
-    const T = CFG.terr, a = T.start, b = T.end;
+    const T = CFG.terr, a = T.start, b = T.end, f = terrFrame();
     const dist = lerp(a.dist, b.dist, k);
-    const target = (isMobile ? W : H) * T.size; // radio del macizo en píxeles
-    const zoom = (target * dist) / (T.radius * focalPx());
+    const zoom = (f.r * dist) / (T.radius * focalPx());
     return {
       az: lerp(a.az, b.az, k), el: lerp(a.el, b.el, k), dist, logZoom: Math.log(zoom),
-      tx: T.x * W, ty: T.y * H, panX: b.pan[0] * k, panZ: b.pan[1] * k,
+      tx: f.x, ty: f.y, panX: b.pan[0] * k, panZ: b.pan[1] * k,
     };
   }
 
@@ -389,27 +448,27 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
     camera.updateMatrixWorld(); // project() la usa antes del render (silueta del título, recuadro del fragmento)
   }
 
-  const stageTop = () => Math.max(0, els.territoryStage.getBoundingClientRect().top);
-
   // Marca de la cumbre en 01: sigue la proyección real del punto más alto sobre el fragmento flotante.
-  // Aparece cuando el fragmento ya está formado y se retira al empezar el paso a 02.
+  // Aparece cuando el fragmento ya está formado y se retira al empezar el paso a 02. Mientras no se ve, su halo no
+  // se anima (data-shown, ver .peak-halo en index.css).
   const peakPt = new THREE.Vector3();
   let peakShown = false;
   function updatePeak() {
     const el = els.parkPeak;
     const vis = smooth(0.84, 0.98, scroll.p) * (1 - smooth(0, 0.05, scroll.q1));
     if (vis <= 0.001) {
-      if (peakShown) { el.style.opacity = '0'; el.style.visibility = 'hidden'; peakShown = false; }
+      if (peakShown) {
+        el.style.opacity = '0'; el.style.visibility = 'hidden'; delete el.dataset.shown; peakShown = false;
+      }
       return;
     }
     const { anchor, peakY } = terrain!;
     peakPt.set(anchor.x, peakY, anchor.z).project(camera);
-    const f = els.parkFrame.getBoundingClientRect();
-    const x = (peakPt.x * 0.5 + 0.5) * W - f.left, y = (0.5 - peakPt.y * 0.5) * H - f.top;
+    const F = layout.frame, top = F.t - window.scrollY;
+    const x = (peakPt.x * 0.5 + 0.5) * W - F.l, y = (0.5 - peakPt.y * 0.5) * H - top;
     el.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
     el.style.opacity = vis.toFixed(3);
-    el.style.visibility = 'visible';
-    peakShown = true;
+    if (!peakShown) { el.style.visibility = 'visible'; el.dataset.shown = ''; peakShown = true; }
   }
 
   // El nombre del parque se apoya sobre la cresta: se busca el punto más alto de la silueta del macizo
@@ -449,13 +508,15 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
 
   function updateCamera() {
     const { p, q1, q2 } = scroll;
-    let P = mixPose(heroPose(), parquePose(), easeInOut(p));
+    // en el hero en reposo no hace falta la pose de 01
+    let P = p > 0 ? mixPose(heroPose(), parquePose(), easeInOut(p)) : heroPose();
     if (q1 > 0) {
       // 01 → 02: el fragmento vuelve a extenderse en territorio (updateIsland) mientras la cámara se eleva
-      P = mixPose(P, terrPose(0), easeInOut(q1));
-      if (isMobile) {
-        // en móvil la vista cenital entra pegada a la sección; su borde superior es niebla, no una línea
-        P = { ...P, tx: CFG.terr.x * W, ty: CFG.terr.y * H + stageTop() };
+      const T0 = terrPose(0);
+      P = mixPose(P, T0, easeInOut(q1));
+      if (layout.stacked) {
+        // apilada: la vista cenital entra pegada al hueco del mapa; su borde superior es niebla, no una línea
+        P = { ...P, tx: T0.tx, ty: T0.ty };
       }
     }
     if (q2 > 0) P = mixPose(P, terrPose(easeInOut(q2)), 1);
@@ -535,36 +596,39 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
 
   // Sección 02: borde atmosférico del territorio, nubes bajas, curvas de nivel
   function updateTerritory(island: number) {
-    const { q1 } = scroll;
-    const v = isMobile ? smooth(0, 0.08, q1) : smooth(0, 0.1, q1); // el papel llega antes de que el territorio se extienda
-    const vw = isMobile && q1 > 0;
+    const { q1 } = scroll, stacked = layout.stacked;
+    const v = stacked ? smooth(0, 0.08, q1) : smooth(0, 0.1, q1); // el papel llega antes de que el territorio se extienda
+    const vw = stacked && q1 > 0;
     veil.visible = v > 0.001 || vw;
     if (!veil.visible) return;
-    const k = renderer.getPixelRatio(), U = veilMat.uniforms;
+    const k = renderer.getPixelRatio(), U = veilMat.uniforms, sy = window.scrollY;
     U.uRes.value.set(W * k, H * k);
     U.uAmount.value = v;
     U.uAir.value = 1 - island;
+    U.uAxis.value = stacked ? 0 : 1;
 
-    if (isMobile) {
-      // papel abajo; el territorio arriba. Distancia medida desde el borde inferior.
-      const guard = H - els.territoryColumn.getBoundingClientRect().top + 28;
-      const g = guard / H;
-      U.uGuard.value = guard * k;
-      U.uProfile.value.set(g + 0.1, g + 0.07, g + 0.14, 0.12);
+    const top = stageY(sy);
+    if (stacked) {
+      // papel abajo, desde el borde inferior del hueco del mapa (distancias desde el borde inferior de la pantalla);
+      // transición corta y en px: la niebla no sube sobre el macizo (que se encaja por encima de TERR_STACK.fade)
+      const edge = H - (top + layout.map.t + layout.map.h), bw = 32;
+      U.uGuard.value = (H - (top + layout.colTop) + 8) * k;   // el texto, siempre sobre papel limpio
+      U.uProfile.value.set((edge + 6) / H, edge / H, (edge + 10) / H, bw / H);
+      U.uLobe.value = (0.5 * bw) / H;
     } else {
       // el texto de 01 (más ancho) también se protege mientras sigue en pantalla
-      const r2 = els.territoryColumn.getBoundingClientRect(), r1 = els.parkText.getBoundingClientRect();
-      const vis1 = clamp(r1.bottom / (H * 0.35));
-      const guard = lerp(r2.right, Math.max(r1.right, r2.right), vis1) + 28;
+      const vis1 = clamp((layout.parkText.bottom - sy) / (H * 0.35));
+      const guard = lerp(layout.colRight, Math.max(layout.parkText.right, layout.colRight), vis1) + 28;
       const g = guard / W;
       U.uGuard.value = guard * k;
       // arriba arranca cerca del centro, al centro avanza un poco, abajo se retira
       U.uProfile.value.set(g + 0.15, g + 0.1, g + 0.25, 0.15);
+      U.uLobe.value = 0.15;
     }
 
     if (vw) {
-      // móvil: papel por encima del escenario de 02
-      U.uWin.value.set(0, 0, W * k, (H - stageTop()) * k);
+      // apilada: papel por encima del hueco del mapa mientras la sección entra (y si sube al final)
+      U.uWin.value.set(0, 0, W * k, (H - Math.max(0, top + layout.map.t)) * k);
       U.uWinEdge.value.set(150 * k, 1);
     } else {
       U.uWinEdge.value.set(0, 0);
@@ -609,32 +673,109 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
     mistVisible = needMist;
   }
 
-  // Resolución adaptativa: si la GPU no sostiene ~40 fps, se baja la densidad de píxeles; si vuelve a ir
-  // holgada ~3 s, se recupera. Si una subida fracasa enseguida, la siguiente espera el doble (sin vaivén,
-  // pero sin quedarse para siempre en baja: al volver a una vista más ligera, como el hero, se recupera).
+  // ---------------------------------------------------------------------------
+  // Calidad gráfica adaptativa. La palanca es la densidad de píxeles del terreno: el 75–85 % del coste es sombrear
+  // píxeles (auditoría, §5.1); geometría, materiales, luz y efectos no cambian. Hay dos grupos de fases, cada uno con
+  // su densidad, porque el coste no es uniforme: «escena» (hero y 01) y «territorio» (01 → 02 y 02, ~1.5× más caro).
+  // - Nivel de partida según el equipo (no según el ancho): alto · medio (el territorio un escalón más bajo) ·
+  //   limitado (los dos grupos a 1 px por px CSS o menos y bordes suavizados solo al principio de la transición).
+  // - Después, un regulador por ventanas de 16 fotogramas: si la mediana pasa de 25 ms (< 40 fps) en dos ventanas
+  //   seguidas, baja un escalón el grupo en el que se está; si bajar no mejora (el cuello de botella no era la GPU), lo
+  //   deshace y no lo vuelve a intentar. Solo sube con el scroll en reposo y tras 6 ventanas holgadas (≥ 55 fps o el
+  //   ritmo de la pantalla); una subida que va lenta enseguida se deshace y no se repite. Así la densidad cambia pocas
+  //   veces y nunca en vaivén.
   // En escritorio nunca baja de 1 px de canvas por px CSS: la nitidez del relieve manda.
-  const DPR_MIN = isMobile ? 0.75 : Math.min(1, CFG.dpr);
-  let dpr = CFG.dpr, slowFrames = 0, fastFrames = 0, lastNow = 0, raisedAt = -1e9, raiseWait = 180;
+  // ---------------------------------------------------------------------------
+  type Group = 'scene' | 'terrain';
+  type Tier = 'high' | 'medium' | 'limited';
+  const DPR_FLOOR = mobileProfile ? 0.75 : Math.min(1, CFG.dpr);
+  const LEVELS = [CFG.dpr, ...[1.25, 1, 0.85, 0.75].filter((v) => v < CFG.dpr - 0.01 && v > DPR_FLOOR - 0.01)];
+  const levelOf = (v: number) => Math.max(0, LEVELS.findIndex((l) => l <= v + 0.01));
+  function startTier(): Tier {
+    const forced = perf ? qs.get('quality') : null;   // pruebas: ?perf&quality=medium
+    if (forced === 'high' || forced === 'medium' || forced === 'limited') return forced;
+    const gl = renderer.getContext(), dbg = gl.getExtension('WEBGL_debug_renderer_info');
+    const gpu = String(gl.getParameter(dbg ? dbg.UNMASKED_RENDERER_WEBGL : gl.RENDERER) ?? '');
+    const nav = navigator as Navigator & { deviceMemory?: number };
+    const mem = nav.deviceMemory ?? 8, cores = nav.hardwareConcurrency || 8;
+    if (/swiftshader|llvmpipe|softpipe|software|basic render/i.test(gpu) || mem <= 2 || cores <= 2) return 'limited';
+    // tablets: GPU de móvil para 2–4 veces los píxeles de un teléfono
+    const px = window.innerWidth * window.innerHeight * CFG.dpr ** 2;
+    if (mem <= 4 || (mobileProfile && px > 1.6e6)) return 'medium';
+    return 'high';
+  }
+  const tier = startTier();
+  const quality = {
+    level: {
+      scene: tier === 'limited' ? levelOf(1) : 0,
+      terrain: tier === 'limited' ? levelOf(mobileProfile ? 0.85 : 1) : tier === 'medium' ? Math.min(1, LEVELS.length - 1) : 0,
+    } as Record<Group, number>,
+    noDown: { scene: false, terrain: false } as Record<Group, boolean>,
+    noUp: { scene: false, terrain: false } as Record<Group, boolean>,
+    raised: null as Group | null,             // grupo recién subido: si va lento enseguida, se vuelve y se bloquea
+    trial: null as { group: Group; from: number; before: number } | null,
+    group: 'scene' as Group,
+    slow: 0,                                  // ventanas lentas seguidas
+    calm: 0,                                  // ventanas holgadas seguidas (en reposo)
+    vsync: 1000 / 60,                         // intervalo mínimo observado (pantallas de 60, 120, 144 Hz…)
+    win: [] as number[],
+  };
+  let dpr = CFG.dpr, lastNow = 0, lastMove = 0, lastY = 0;
   const dprChanges: [number, number][] = [];
   function setDpr(v: number) {
+    if (Math.abs(v - dpr) < 0.001) return;
     dpr = v;
     if (perf) dprChanges.push([Math.round(performance.now()), v]);
-    renderer.setPixelRatio(dpr);
-    sizeScene();
-    slowFrames = fastFrames = 0;
+    renderer.setPixelRatio(dpr);            // cambia el canvas (three llama a setSize); el búfer intermedio, no
+    fitAA();
   }
+  const applyQuality = () => setDpr(LEVELS[quality.level[quality.group]]);
+  const governed = !(perf && qs.has('fixed'));   // pruebas: ?perf&fixed mide cada nivel sin que el regulador lo mueva
   function adaptResolution(now: number) {
     const dt = now - lastNow;
     lastNow = now;
-    if (dt <= 0 || dt > 250) return; // pestaña en segundo plano, etc.
-    slowFrames = dt > 25 ? slowFrames + 1 : Math.max(0, slowFrames - 2);
-    fastFrames = dt < 20 ? fastFrames + 1 : 0;
-    if (slowFrames > 40 && dpr > DPR_MIN) {
-      raiseWait = now - raisedAt < 4000 ? Math.min(raiseWait * 2, 2880) : 180;
-      setDpr(Math.max(DPR_MIN, dpr - 0.25));
-    } else if (fastFrames > raiseWait && dpr < CFG.dpr) {
-      raisedAt = now;
-      setDpr(Math.min(CFG.dpr, dpr + 0.25));
+    const Q = quality;
+    // grupo de fases, con histéresis para no alternar en el límite
+    const g: Group = Q.group === 'scene' ? (scroll.q1 > 0.55 ? 'terrain' : 'scene') : (scroll.q1 < 0.45 ? 'scene' : 'terrain');
+    if (g !== Q.group) {
+      Object.assign(Q, { group: g, slow: 0, calm: 0, trial: null, raised: null });
+      Q.win.length = 0;
+      applyQuality();
+    }
+    if (!governed || dt <= 0 || dt > 250) return; // pestaña en segundo plano, etc.
+    Q.win.push(dt);
+    if (Q.win.length < 16) return;
+    const s = Q.win.sort((a, b) => a - b), med = s[8], p90 = s[14];
+    const mean = s.reduce((a, b) => a + b, 0) / s.length; // sin el escalonado de la mediana (múltiplos del refresco)
+    Q.win.length = 0;
+    Q.vsync = Math.min(Q.vsync, s[2]);
+    const lv = Q.level[g];
+    if (Q.trial) {
+      // ¿bajar la densidad sirvió? Si el tiempo medio por fotograma no mejora al menos un 8 %, se deshace y el grupo
+      // ya no baja
+      if (mean > Q.trial.before * 0.92) { Q.level[g] = Q.trial.from; Q.noDown[g] = true; applyQuality(); }
+      Q.trial = null;
+      return;
+    }
+    if (med > 25) {
+      Q.calm = 0;
+      if (Q.raised === g) { Q.level[g] = lv + 1; Q.noUp[g] = true; Q.raised = null; applyQuality(); return; }
+      if (++Q.slow < 2 || Q.noDown[g] || lv >= LEVELS.length - 1) return;
+      Q.slow = 0;
+      Q.trial = { group: g, from: lv, before: mean };
+      Q.level[g] = lv + 1;
+      // el territorio cuesta más que la escena: nunca queda con más densidad que ella
+      if (g === 'scene') Q.level.terrain = Math.max(Q.level.terrain, Q.level.scene);
+      applyQuality();
+      return;
+    }
+    Q.raised = null;
+    Q.slow = 0;
+    const atRest = Math.abs(window.scrollY - scroll.y) < 0.5 && now - lastMove > 800;
+    if (lv > 0 && !Q.noUp[g] && atRest && p90 <= Math.max(Q.vsync * 1.25 + 1, 18)) {
+      if (++Q.calm >= 6) { Q.calm = 0; Q.level[g] = lv - 1; Q.raised = g; applyQuality(); }
+    } else {
+      Q.calm = 0;
     }
   }
 
@@ -663,7 +804,8 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
   function render() {
     const r = ready ? islandRect() : null;
     const drawScene = !r || (r.w > 1 && r.h > 1);
-    const needAA = !!aaTarget && scroll.q1 === 0 && SHARED.uPaper.value.w < 0.999;
+    // nivel limitado: bordes suavizados en el hero y al principio de la transición, no durante toda ella
+    const needAA = !!aaTarget && scroll.q1 === 0 && SHARED.uPaper.value.w < 0.999 && (tier !== 'limited' || scroll.p < 0.3);
     if (!needAA || !aaTarget) {
       renderer.setScissorTest(false);
       if (r) renderer.clear();
@@ -708,6 +850,7 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
   function updateScroll(now: number) {
     if (!phases) return;
     const dt = Math.min(0.1, Math.max(0, (now - lastFrame) / 1000));
+    if (Math.abs(window.scrollY - lastY) > 0.5) { lastY = window.scrollY; lastMove = now; }
     scroll.y += (window.scrollY - scroll.y) * (1 - Math.exp(-dt / SCROLL_LAG));
     if (Math.abs(window.scrollY - scroll.y) < 0.05) scroll.y = window.scrollY;
     const prog = (st: ScrollTrigger) => clamp((scroll.y - st.start) / Math.max(1, st.end - st.start));
@@ -726,7 +869,7 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
     const t = now / 1000;
     // Pasado «El Territorio», las secciones siguientes (fondo opaco) cubren toda la pantalla: no se dibuja
     // nada. El scroll sigue sincronizado, así al volver la cámara está donde debe.
-    if (ready && els.territory.getBoundingClientRect().bottom <= 0) {
+    if (ready && layout.terrTop + layout.terrH - window.scrollY <= 0) {
       // la niebla delantera va por encima del contenido: se borra para que no quede un fotograma viejo
       if (mistVisible) { mistRenderer.clear(); mistVisible = false; }
       updateScroll(now);
@@ -777,11 +920,12 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
   function setupScroll() {
     ctx.add(() => {
       // Tramos de scroll de cada fase (solo miden; el progreso se calcula en updateScroll)
-      const range = (trigger: Element, start: string, end: string) => ScrollTrigger.create({ trigger, start, end });
+      const range = (trigger: Element, start: string, end: string | (() => string)) => ScrollTrigger.create({ trigger, start, end });
       phases = {
         p: range(els.park, 'top bottom', 'top top'),               // hero → 01: hasta que "El Parque" llega arriba
         q1: range(els.territory, 'top bottom', 'top top'),         // 01 → 02: la cámara se eleva sobre el macizo
-        q2: range(els.territory, 'top top', 'bottom bottom'),      // dentro de 02 (escenario fijo)
+        // dentro de 02, mientras el escenario está fijo (si el texto va debajo del escenario, no cuenta su recorrido)
+        q2: range(els.territory, 'top top', () => `+=${els.territory.offsetHeight - els.territoryStage.offsetHeight}`),
       };
       scroll.y = window.scrollY;
 
@@ -833,6 +977,10 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
     PANAMOSAB_SCROLL: scroll,
     __js: frameJs,
     __dpr: dprChanges,
+    __quality: () => ({
+      tier, governed, dpr, group: quality.group, levels: LEVELS,
+      scene: LEVELS[quality.level.scene], terrain: LEVELS[quality.level.terrain], stacked: layout.stacked,
+    }),
     __R: { renderer, skyRenderer, mistRenderer, scene, skyScene, mistScene, quadCam, camera },
     __renderFull: () => render(),
   } : null;
@@ -845,12 +993,26 @@ export function createExperience(els: ExperienceElements, layers: LayerClasses, 
     requestAnimationFrame(() => (disposed ? reject(new Cancelled()) : resolve()));
   });
 
+  // Cambios de tamaño de la página sin cambio de ventana (fuentes, la columna de 02 que sale del escenario o vuelve):
+  // se vuelve a medir y ScrollTrigger recalcula sus tramos, que a su vez vuelven a pedir medidas.
+  let pageH = -1;
+  const ro = new ResizeObserver(() => {
+    measure();
+    const h = els.root.offsetHeight;
+    if (h !== pageH) { pageH = h; if (phases) ScrollTrigger.refresh(); }
+  });
+  ro.observe(els.root);
+  cleanups.push(() => ro.disconnect());
+  ScrollTrigger.addEventListener('refresh', measure);
+  cleanups.push(() => ScrollTrigger.removeEventListener('refresh', measure));
+
+  applyQuality();
   resize(true);
   raf = requestAnimationFrame(frame);
 
   (async () => {
     try {
-      const data = await loadTerrainData(isMobile);
+      const data = await loadTerrainData(mobileProfile);
       if (disposed) throw new Cancelled();
       terrain = await buildTerrain({ data, cfg: CFG, renderer, scene, camera, shared: SHARED, nextFrame });
       if (disposed) { terrain.dispose(); terrain = null; throw new Cancelled(); }

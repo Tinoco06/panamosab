@@ -1,20 +1,20 @@
-import { markOf, type OrgProfile as Profile } from '../../content/comanejo';
+import { ArrowUpRightIcon } from '@phosphor-icons/react';
+import { isWideMark, markOf, type OrgProfile as Profile } from '../../content/comanejo';
 import { Frame, Img } from '../media/Photo';
 import { Eyebrow } from '../Eyebrow';
 import { Reveal } from '../Reveal';
-import { blockTitle, delay, grid, label, mobile, section } from '../ui';
+import { blockTitle, delay, grid, label, section } from '../ui';
 
 /*
- * Perfil de una organización comanejadora. Todos los perfiles comparten piezas y jerarquía:
- *   identidad (sigla en grande, nombre oficial, datos) → presentación → material propio → listas → su papel
- *   en PANAMOSAB (siempre con el mismo tratamiento, para poder compararlos).
- * Cambia la distribución según el material disponible:
- *   - con fotografías (`photos`): fondo marfil, la fotografía a todo el ancho y una segunda junto a las listas;
- *     `flip` invierte los lados para que dos perfiles con fotografías seguidos no se repitan;
- *   - sin fotografías: el logotipo grande ocupa el lugar de la imagen y las declaraciones institucionales
- *     (misión, enfoque) el de la fotografía. No se usan imágenes de relleno. Si el logotipo oficial solo existe
- *     para fondo oscuro (`logo.onDark`), va sobre una placa verde bosque, sin recolorearlo; `flip` lo pasa a la
- *     derecha.
+ * Perfil de una organización comanejadora. Todos los perfiles siguen el mismo sistema, para poder recorrerlos y
+ * compararlos sin reaprender la página:
+ *   encabezado (logotipo sobre la sigla, a la izquierda · presentación a la derecha) → material propio →
+ *   listas (con la cifra bajo la más corta) → su papel en PANAMOSAB (un párrafo de síntesis).
+ * Lo único que cambia es el material disponible:
+ *   - con fotografías (`photos`): la fotografía a todo el ancho y una segunda junto a las listas; `flip` pasa esa
+ *     segunda fotografía al otro lado para que dos perfiles con fotografías seguidos no se repitan;
+ *   - sin fotografías: las declaraciones institucionales (misión, enfoque) sostienen el perfil. No se usan
+ *     imágenes de relleno.
  * El fondo (`tone`: marfil o salvia) lo decide la página para alternar el ritmo entre perfiles.
  */
 
@@ -29,53 +29,78 @@ function Website({ site }: { site: Profile['website'] }) {
       <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:100%_1px] bg-bottom-left bg-no-repeat pb-1 transition-[background-size] duration-500 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:bg-[length:0%_1px] group-hover:bg-right-bottom">
         {site.label}
       </span>
-      <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+      <ArrowUpRightIcon aria-hidden="true" size={14} weight="bold" className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
       <span className="sr-only">(sitio oficial, se abre en una pestaña nueva)</span>
     </a>
   );
 }
 
-/** Sigla, nombre oficial y datos breves. */
-function Identity({ org, index, withMark }: { org: Profile; index: string; withMark: boolean }) {
-  const mark = markOf(org.id);
-  // sin sigla (un nombre de varias palabras): dos líneas, en minúscula, y el logotipo encima en lugar de al lado
+/**
+ * Logotipo, sigla, nombre oficial y datos breves. El logotipo va siempre encima de la sigla y alineado a su borde
+ * izquierdo, apoyado en una franja de la misma altura en todos los perfiles: así cada perfil empieza igual y el
+ * logotipo se lee como parte del nombre. Es el mismo logotipo de la franja de firmantes. Los apaisados (ICF) se
+ * limitan por ancho en lugar de por alto; los verticales (CASM), con poco ancho, ganan altura para tener el mismo
+ * peso visual que los demás.
+ */
+function Identity({ org, index }: { org: Profile; index: string }) {
+  const logo = markOf(org.id);
+  const tall = logo.height > logo.width;
+  // sin sigla (un nombre de varias palabras): dos líneas y en minúscula
   const long = org.acronym.includes(' ');
   // siglas largas (CODEMUSSBA): una escala menor, para que quepan en su columna y en móvil
   const wide = !long && org.acronym.length > 6;
   return (
     <div>
       <Eyebrow num={index} className="reveal-fade">Perfil institucional</Eyebrow>
-      <div style={delay(0.1)} className={`reveal-fade flex gap-[clamp(16px,2vw,32px)] ${long ? 'flex-col items-start' : 'items-end'}`}>
-        {withMark && (
-          <img
-            src={mark.src}
-            width={mark.width}
-            height={mark.height}
-            alt={`Logotipo de ${org.acronym}`}
-            className={`block w-auto shrink-0 ${long ? 'h-[clamp(64px,6vw,96px)]' : 'mb-[0.6%] h-[clamp(56px,6vw,104px)]'}`}
-          />
-        )}
-        {/* la sigla (o el nombre corto) es la firma visual del perfil; el nombre oficial es el encabezado */}
-        <p
-          aria-hidden="true"
-          className={
-            'm-0 font-display font-extrabold text-forest ' +
-            (long
-              ? 'max-w-[9ch] text-[length:clamp(52px,6.2vw,108px)] leading-[0.9] tracking-[-0.04em] max-md:text-[length:clamp(44px,12.4vw,60px)]'
-              : wide
-                ? 'text-[length:clamp(52px,6.4vw,112px)] uppercase leading-[0.84] tracking-[-0.035em] max-md:text-[length:clamp(38px,11.6vw,56px)]'
-                : 'text-[length:clamp(76px,10.5vw,184px)] uppercase leading-[0.8] tracking-[-0.035em] max-md:text-[length:clamp(64px,21vw,96px)]')
-          }
-        >
-          {org.acronym}
-        </p>
+      <div style={delay(0.05)} className={`reveal-fade flex items-end ${tall ? 'h-[clamp(116px,11vw,184px)] max-md:h-[104px]' : 'h-[clamp(88px,8.4vw,140px)] max-md:h-[80px]'}`}>
+        <img
+          src={logo.src}
+          width={logo.width}
+          height={logo.height}
+          alt={`Logotipo de ${org.acronym}`}
+          loading="lazy"
+          decoding="async"
+          className={isWideMark(logo) ? 'block h-auto max-h-full w-[min(100%,440px)]' : 'block h-full w-auto max-w-full object-contain object-left-bottom'}
+        />
       </div>
+      {/* la sigla (o el nombre corto) es la firma visual del perfil; el nombre oficial es el encabezado */}
+      <p
+        aria-hidden="true"
+        style={delay(0.1)}
+        className={
+          'reveal-fade m-0 mt-[clamp(20px,2.2vw,32px)] font-display font-extrabold text-forest ' +
+          (long
+            ? 'max-w-[9ch] text-[length:clamp(52px,6.2vw,108px)] leading-[0.9] tracking-[-0.04em] max-md:text-[length:clamp(44px,12.4vw,60px)]'
+            : wide
+              ? 'text-[length:clamp(52px,6.4vw,112px)] uppercase leading-[0.84] tracking-[-0.035em] max-md:text-[length:clamp(38px,11.6vw,56px)]'
+              : 'text-[length:clamp(76px,10.5vw,184px)] uppercase leading-[0.8] tracking-[-0.035em] max-md:text-[length:clamp(64px,21vw,96px)]')
+        }
+      >
+        {org.acronym}
+      </p>
       {/* con un nombre largo, el logotipo y el nombre en grande ya lo dicen: el encabezado queda solo para lectores de pantalla */}
       <h2 id={`${org.id}-name`} style={delay(0.2)} className={long ? 'sr-only' : 'reveal-fade mt-7 mb-0 max-w-[34ch] text-[length:clamp(17px,1.45vw,22px)] font-semibold uppercase leading-[1.35] tracking-[0.03em] text-forest'}>
         {org.name}
       </h2>
       <p style={delay(0.25)} className={`reveal-fade mb-0 text-[15px] leading-[1.5] text-ink-dim ${long ? 'mt-6' : 'mt-3'}`}>{org.meta.join(' · ')}</p>
     </div>
+  );
+}
+
+/** Encabezado común: identidad a la izquierda y presentación a la derecha, apoyadas en la misma línea de base. */
+function Header({ org, index }: { org: Profile; index: string }) {
+  return (
+    <Reveal className={`${grid} items-end gap-y-10`}>
+      <div className="col-span-7 max-nav:col-span-12 max-md:col-span-1">
+        <Identity org={org} index={index} />
+      </div>
+      <div className="col-span-4 col-start-9 max-nav:col-span-8 max-nav:col-start-1 max-md:col-span-1">
+        <p style={delay(0.3)} className="reveal-fade m-0 text-[length:clamp(18px,1.3vw,20px)] leading-[1.6] text-ink">{org.summary}</p>
+        <div style={delay(0.4)} className="reveal-fade">
+          <Website site={org.website} />
+        </div>
+      </div>
+    </Reveal>
   );
 }
 
@@ -107,11 +132,24 @@ function Areas({ org }: { org: Profile }) {
   );
 }
 
+// ítems cortos (departamentos, ejes): en línea, en lugar de uno por fila
+const isInline = (items: string[]) => items.every((a) => a.length <= 16);
+
+/**
+ * La cifra va bajo la lista más corta, para que las dos columnas terminen a una altura parecida (con la cifra
+ * siempre bajo las líneas de trabajo, la otra columna quedaba vacía). Estimación por líneas de texto.
+ */
+function figureUnderExtra(org: Profile) {
+  const lines = (items: string[], perLine: number) => items.reduce((n, a) => n + Math.ceil(a.length / perLine), 0);
+  const extra = isInline(org.extra.items) ? Math.ceil(org.extra.items.length / 2) : lines(org.extra.items, 40);
+  return extra < lines(org.areas.items, 34);
+}
+
 /** Lista secundaria (áreas protegidas, departamentos): el ítem de PANAMOSAB se distingue en verde. */
 function Extra({ org }: { org: Profile }) {
   const { title, items, highlight, note } = org.extra;
   const marked = new Set(Array.isArray(highlight) ? highlight : highlight ? [highlight] : []);
-  const inline = items.every((a) => a.length <= 16);
+  const inline = isInline(items);
   return (
     <div>
       <h3 className={`${label} mt-0 mb-6 text-ink-dim`}>{title}</h3>
@@ -166,51 +204,34 @@ function Statements({ org }: { org: Profile }) {
   );
 }
 
-/** Responsabilidades que el convenio asigna a la organización: mismo bloque en todos los perfiles. */
+/** Responsabilidades que el convenio asigna a la organización, en un párrafo: mismo bloque en todos los perfiles. */
 function Role({ org }: { org: Profile }) {
   return (
-    <Reveal className={`${grid} mt-[clamp(72px,12vh,128px)] gap-y-8 border-t border-forest/20 pt-[clamp(32px,5vh,52px)]`}>
-      <div className="col-span-4 max-md:col-span-1">
-        <h3 style={delay(0)} className={`${blockTitle} reveal-fade m-0 max-w-[12ch] text-forest`}>{org.role.title}</h3>
-        <p style={delay(0.1)} className="reveal-fade mt-5 mb-0 max-w-[32ch] text-[14px] leading-[1.55] text-ink-dim">{org.role.source}</p>
+    <Reveal className={`${grid} mt-[clamp(72px,12vh,128px)] gap-y-6 border-t border-forest/20 pt-[clamp(32px,5vh,52px)]`}>
+      <h3 style={delay(0)} className={`${blockTitle} reveal-fade col-span-4 m-0 max-w-[12ch] text-forest max-md:col-span-1`}>{org.role.title}</h3>
+      <div className="col-span-7 col-start-6 max-nav:col-span-8 max-nav:col-start-5 max-md:col-span-1 max-md:col-start-auto">
+        <p style={delay(0.1)} className="reveal-fade m-0 max-w-[60ch] text-[length:clamp(19px,1.5vw,23px)] leading-[1.6] tracking-[-0.005em] text-ink">{org.role.text}</p>
+        <p style={delay(0.2)} className="reveal-fade mt-5 mb-0 text-[14px] leading-[1.55] text-ink-dim">{org.role.source}</p>
       </div>
-      <ol className="col-span-8 col-start-5 m-0 grid list-none grid-cols-2 gap-x-[clamp(24px,3vw,48px)] gap-y-9 p-0 max-nav:grid-cols-1 max-nav:gap-y-6 max-md:col-span-1 max-md:col-start-auto">
-        {org.role.items.map((item, i) => (
-          <li key={item} style={delay(0.15 + i * 0.08)} className="reveal-fade grid grid-cols-[2.4em_1fr] items-baseline text-[18px] leading-[1.5] text-ink max-md:text-[17px]">
-            <span aria-hidden="true" className="font-display text-[15px] font-extrabold tracking-[-0.01em] text-gold tabular-nums">{String(i + 1).padStart(2, '0')}</span>
-            {item}
-          </li>
-        ))}
-      </ol>
     </Reveal>
   );
 }
 
-/** Perfil con fotografías: identidad y presentación, la fotografía a todo el ancho y, debajo, las listas. */
+/** Perfil con fotografías: encabezado, la fotografía a todo el ancho y, debajo, las listas junto a la segunda. */
 function PhotoProfile({ org, index, flip }: { org: Profile; index: string; flip: boolean }) {
   const photos = org.photos!;
-  // con `flip`, en escritorio: identidad a la derecha y presentación a la izquierda; abajo, la fotografía
-  // secundaria pasa a la primera columna. En tablet y móvil se vuelve al orden del documento.
+  const below = figureUnderExtra(org);
+  // con `flip`, en escritorio la fotografía secundaria pasa a la primera columna (las listas conservan su orden);
+  // en tablet y móvil se vuelve al orden del documento
   const reset = 'max-nav:col-start-auto max-nav:row-start-auto';
   return (
     <>
-      <Reveal className={`${grid} items-end gap-y-10`}>
-        <div className={`max-nav:col-span-12 max-md:col-span-1 ${flip ? `col-span-7 col-start-6 row-start-1 ${reset}` : 'col-span-7'}`}>
-          <Identity org={org} index={index} withMark />
-        </div>
-        <div className={`max-nav:col-span-8 max-nav:col-start-1 max-md:col-span-1 ${flip ? 'col-span-4 col-start-1 row-start-1 max-nav:row-start-auto' : 'col-span-4 col-start-9'}`}>
-          <p style={delay(0.3)} className="reveal-fade m-0 text-[length:clamp(18px,1.3vw,20px)] leading-[1.6] text-ink">{org.summary}</p>
-          <div style={delay(0.4)} className="reveal-fade">
-            <Website site={org.website} />
-          </div>
-        </div>
-      </Reveal>
+      <Header org={org} index={index} />
 
       <Reveal as="figure" threshold={0.25} className="m-0 mt-[clamp(48px,8vh,88px)] max-md:-mx-gutter">
         <Frame className="aspect-[2/1] max-nav:aspect-[16/9] max-md:aspect-[4/3]">
           <Img photo={photos.main} sizes="(max-width: 820px) 100vw, 92vw" className="object-[50%_42%]" />
         </Frame>
-        <figcaption className={`mt-3 text-[13px] leading-[1.5] text-ink-dim max-md:px-gutter max-md:text-left ${flip ? 'text-left' : 'text-right'}`}>{photos.credit}</figcaption>
       </Reveal>
 
       <Statements org={org} />
@@ -218,10 +239,11 @@ function PhotoProfile({ org, index, flip }: { org: Profile; index: string; flip:
       <Reveal className={`${grid} mt-[clamp(64px,10vh,112px)] gap-y-14`}>
         <div className={`col-span-4 max-nav:col-span-6 max-md:col-span-1 ${flip ? `col-start-5 row-start-1 ${reset}` : ''}`}>
           <Areas org={org} />
-          <Figure org={org} />
+          {!below && <Figure org={org} />}
         </div>
         <div className={`col-span-4 max-nav:col-span-6 max-md:col-span-1 ${flip ? `col-start-9 row-start-1 ${reset}` : ''}`}>
           <Extra org={org} />
+          {below && <Figure org={org} />}
         </div>
         {/* en tablet, la segunda fotografía pasa a una franja horizontal bajo las dos listas */}
         <figure className={`col-span-4 m-0 max-nav:col-span-12 max-md:col-span-1 ${flip ? `col-start-1 row-start-1 ${reset}` : ''}`}>
@@ -236,52 +258,23 @@ function PhotoProfile({ org, index, flip }: { org: Profile; index: string; flip:
   );
 }
 
-/** Perfil sin fotografías: el logotipo grande y las declaraciones institucionales sostienen la composición. */
-function StatementProfile({ org, index, flip }: { org: Profile; index: string; flip: boolean }) {
-  const logo = org.logo ?? markOf(org.id);
-  const plate = !!org.logo?.onDark;
-  const img = (
-    <img
-      src={logo.src}
-      width={logo.width}
-      height={logo.height}
-      alt={`Logotipo de ${org.acronym}`}
-      loading="lazy"
-      decoding="async"
-      className={plate ? 'block h-auto w-full max-w-[420px]' : 'block h-[clamp(200px,22vw,320px)] w-auto max-w-full object-contain max-md:h-[150px]'}
-    />
-  );
+/** Perfil sin fotografías: encabezado, declaraciones institucionales y listas. */
+function StatementProfile({ org, index }: { org: Profile; index: string }) {
+  const below = figureUnderExtra(org);
   return (
     <>
-      <Reveal className={`${grid} items-end gap-y-12`}>
-        {/* el logotipo ocupa el lugar que en los perfiles con fotografías tiene la imagen */}
-        <figure style={delay(0.1)} className={`reveal-fade m-0 row-start-1 ${mobile} max-md:order-1 ${flip ? 'col-span-4 col-start-9' : 'col-span-4'}`}>
-          {plate ? (
-            // versión oficial para fondo oscuro: sobre una placa verde bosque, sin recolorear
-            <div className="flex aspect-[4/3] items-center justify-center bg-forest p-[12%] max-md:aspect-[16/10]">{img}</div>
-          ) : (
-            img
-          )}
-          {org.logo?.credit && <figcaption className="mt-3 text-[13px] leading-[1.5] text-ink-dim">{org.logo.credit}</figcaption>}
-        </figure>
-        <div className={`row-start-1 ${mobile} max-md:order-0 ${flip ? 'col-span-7 col-start-1' : 'col-span-7 col-start-6'}`}>
-          <Identity org={org} index={index} withMark={false} />
-          <p style={delay(0.3)} className="reveal-fade mt-8 mb-0 max-w-[52ch] text-[length:clamp(18px,1.3vw,20px)] leading-[1.6] text-ink">{org.summary}</p>
-          <div style={delay(0.4)} className="reveal-fade">
-            <Website site={org.website} />
-          </div>
-        </div>
-      </Reveal>
+      <Header org={org} index={index} />
 
       <Statements org={org} />
 
       <Reveal className={`${grid} mt-[clamp(64px,10vh,112px)] gap-y-14`}>
         <div className="col-span-5 max-nav:col-span-6 max-md:col-span-1">
           <Areas org={org} />
-          <Figure org={org} />
+          {!below && <Figure org={org} />}
         </div>
         <div className="col-span-6 col-start-7 max-nav:col-span-6 max-md:col-span-1 max-md:col-start-auto">
           <Extra org={org} />
+          {below && <Figure org={org} />}
         </div>
       </Reveal>
 
@@ -301,7 +294,7 @@ export function OrgProfile({ org, index, flip = false, tone }: { org: Profile; i
       aria-labelledby={`${org.id}-name`}
       className={`${section} scroll-mt-8 outline-none ${bg === 'sage' ? '-mx-gutter bg-sage px-gutter py-[clamp(88px,14vh,160px)]' : ''}`}
     >
-      {withPhotos ? <PhotoProfile org={org} index={index} flip={flip} /> : <StatementProfile org={org} index={index} flip={flip} />}
+      {withPhotos ? <PhotoProfile org={org} index={index} flip={flip} /> : <StatementProfile org={org} index={index} />}
     </article>
   );
 }

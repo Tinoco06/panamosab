@@ -58,7 +58,6 @@ export const PARQUE = {
     communities: {
       value: '94',
       label: 'comunidades, dentro del área protegida y en su área de influencia, reciben agua de la montaña.',
-      source: 'Plan de Manejo 2026–2038 (borrador), p. 10.',
     },
     // fotografía propia (sin pie de crédito)
     photo: {

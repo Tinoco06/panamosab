@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import photo800 from '../assets/water/sendero-bosque-800.webp';
-import photo1280 from '../assets/water/sendero-bosque-1280.webp';
-import photo2000 from '../assets/water/sendero-bosque-2000.webp';
+import wide1280 from '../assets/water/sendero-bosque-h-1280.webp';
+import wide2000 from '../assets/water/sendero-bosque-h-2000.webp';
+import tall800 from '../assets/water/sendero-bosque-800.webp';
+import tall1280 from '../assets/water/sendero-bosque-1280.webp';
 import { Eyebrow } from '../components/Eyebrow';
 import { PARQUE } from '../content/parque';
 
@@ -72,12 +73,11 @@ export function WaterSection() {
         </div>
         <div className="col-span-4 col-start-9 pb-2 max-md:col-span-1">
           <p className="m-0 text-[18px] leading-[1.6] text-ink max-md:text-[17px]">{W.body}</p>
-          {/* la relación con las comunidades, con su fuente */}
+          {/* la relación con las comunidades (fuente en src/content/parque.ts) */}
           <p className="mt-8 mb-0 flex items-start gap-4 border-t border-water/25 pt-5">
             <span className="font-display text-[length:clamp(48px,4.4vw,72px)] font-extrabold leading-[0.82] tracking-[-0.04em] text-water tabular-nums">{W.communities.value}</span>
             <span className="text-[16px] leading-[1.5] text-ink">{W.communities.label}</span>
           </p>
-          <p className="mt-3 mb-0 text-[12px] leading-[1.5] text-ink-dim">{W.communities.source}</p>
         </div>
       </div>
 
@@ -87,19 +87,22 @@ export function WaterSection() {
           ref={band}
           className="relative h-[clamp(520px,86vh,900px)] overflow-hidden transition-[clip-path] duration-[1600ms] ease-[cubic-bezier(0.65,0,0.35,1)] [clip-path:inset(10%_5%_6%_5%_round_48px)] in-[[data-inview]]:[clip-path:inset(0_0_0_0_round_0)] motion-reduce:transition-none max-md:h-[min(118svh,880px)]"
         >
-          {/* fotografía vertical: en pantallas anchas se ve la franja central (helechos y luz entre los árboles) */}
-          <img
-            ref={img}
-            src={photo2000}
-            srcSet={`${photo800} 800w, ${photo1280} 1280w, ${photo2000} 2000w`}
-            sizes="100vw"
-            alt={W.photo.alt}
-            width={2000}
-            height={2666}
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-x-0 -top-[7%] block h-[114%] w-full object-cover object-[50%_45%] transition-transform duration-[2200ms] ease-[cubic-bezier(0.22,1,0.36,1)] [scale:1.08] in-[[data-inview]]:[scale:1] motion-reduce:transition-none"
-          />
+          {/* en pantallas anchas, un recorte horizontal (solo se descarga lo que se ve); en móvil, la vertical */}
+          <picture>
+            <source media="(max-width: 820px)" srcSet={`${tall800} 800w, ${tall1280} 1280w`} sizes="100vw" width={1280} height={1706} />
+            <img
+              ref={img}
+              src={wide2000}
+              srcSet={`${wide1280} 1280w, ${wide2000} 2000w`}
+              sizes="100vw"
+              alt={W.photo.alt}
+              width={2000}
+              height={1125}
+              loading="lazy"
+              decoding="async"
+              className="absolute inset-x-0 -top-[7%] block h-[114%] w-full object-cover object-[50%_50%] transition-transform duration-[2200ms] ease-[cubic-bezier(0.22,1,0.36,1)] [scale:1.08] in-[[data-inview]]:[scale:1] motion-reduce:transition-none"
+            />
+          </picture>
 
           {/* lectura del texto: un velo suave de agua profunda, abajo (municipios) y a la izquierda (frase) */}
           <div aria-hidden="true" className="absolute inset-0 bg-[radial-gradient(ellipse_52%_46%_at_14%_34%,rgb(14_40_36/0.62),transparent),linear-gradient(0deg,rgb(18_52_64/0.82)_0%,rgb(18_52_64/0.38)_34%,transparent_58%),linear-gradient(90deg,rgb(16_44_40/0.42)_0%,transparent_46%)] max-md:bg-[radial-gradient(ellipse_90%_40%_at_20%_36%,rgb(14_40_36/0.6),transparent),linear-gradient(0deg,rgb(18_52_64/0.85)_0%,rgb(18_52_64/0.4)_36%,transparent_60%)]" />
